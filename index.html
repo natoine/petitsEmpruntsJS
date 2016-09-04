@@ -1,0 +1,24 @@
+<html lang="fr">
+	<head>
+	  <meta charset="utf-8">
+		<title>Liste des Emprunts entre amis</title>
+		<meta descr="Suivez vos emprunts entre amis.">
+		<script type="text/javascript" src="world.js"></script>
+		<script type="text/javascript" src="init.js"></script>
+	</head>
+	<body>
+		<h1>Liste des Emprunts</h1>
+		<a href="index.html">Tous</a>
+		<ul>
+			<script type="text/javascript">
+				const query = document.location.search.split('?q=')[1]
+				const world = new World()
+				world.findLendings(query).map(lending => document.write(
+					`<li>
+						${lending.name} emprunté par ${lending.friend} depuis le ${lending.date}
+					 </li>`
+				))
+			</script>
+		</ul>
+	</body>
+</html>
