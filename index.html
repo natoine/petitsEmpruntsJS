@@ -28,9 +28,10 @@
 			<script type="text/javascript">
 				const query = document.location.search.split('?q=')[1]
 				const world = new World()
+				//way to add remove button seems to be dirty to me ... shouldn't I use the dom and addElement ?
 				world.findLendings(query).map(lending => document.write(
 					`<li>
-						${lending.name} emprunté par ${lending.friend} depuis le ${lending.date}
+						${lending.name} emprunté par ${lending.friend} depuis le ${lending.date} <button type="button" onclick="remove('${lending.name}')">Remove</button>
 					 </li>`
 				))
 				const submitNewLending = () => {
@@ -41,6 +42,11 @@
 					//It works but you need to refresh the page.
 					//should be an http request and an auto refresh through callback of list of lendings
 					world.new(lending)
+				}
+				const remove = (name) => {
+					//It works but you need to refresh the page.
+					//should be an http request and an auto refresh through callback of list of lendings
+					world.remove(name)
 				}
 			</script>
 		</ul>
