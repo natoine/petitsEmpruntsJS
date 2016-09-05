@@ -20,4 +20,7 @@ class World {
 		//maintenant notre liste d'emprunts locale est cette liste filtrée
 		localStorage.setItem('lendings', JSON.stringify(lendings))
 	}
+	findFriends() {
+		return new Set(this.collection().map( lending => lending.friend))
+	}
 }
