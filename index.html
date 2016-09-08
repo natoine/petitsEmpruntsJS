@@ -22,12 +22,25 @@
 					<td><button type="button" onclick="submitNewLending()">Nouvel Emprunt</button></td>
 				</tr>
 			</table>
+		<ul>
+			<li><a href="index.html">Tous</a></li>
+			<script type="text/javascript">
+			const world = new World()
+			const friends = world.findFriends()
+			friends.forEach(friend => {
+			 document.write(
+				`<li>
+					<a href="?friendName=${friend}">${friend}</a>
+				</li>`
+				)
+				})
+			</script>
+		</ul>
 		<h1>Liste des Emprunts</h1>
-		<a href="index.html">Tous</a>
 		<ul>
 			<script type="text/javascript">
-				const query = document.location.search.split('?q=')[1]
-				const world = new World()
+				const query = document.location.search.split('?friendName=')[1]
+				//const world = new World()
 				//way to add remove button seems to be dirty to me ... shouldn't I use the dom and addElement ?
 				world.findLendings(query).map(lending => document.write(
 					`<li>
@@ -48,6 +61,7 @@
 					//should be an http request and an auto refresh through callback of list of lendings
 					world.remove(name)
 				}
+
 			</script>
 		</ul>
 	</body>

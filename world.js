@@ -11,7 +11,7 @@ class World {
 		if (! query) {
 			return this.collection()
 		}
-		//return this.collection().filter(lending => lending.state === query)
+		return this.collection().filter(lending => lending.friend === query)
 	}
 	//remove by name means you cannot lend two things with a same name in a same time. Should be checked ob remove by Id.
 	remove(name) {
