@@ -4,6 +4,7 @@
 		<title>Liste des Emprunts entre amis</title>
 		<meta descr="Suivez vos emprunts entre amis.">
 		<script type="text/javascript" src="world.js"></script>
+		<script type="text/javascript" src="dom.js"></script>
 		<script type="text/javascript" src="init.js"></script>
 	</head>
 	<body>
@@ -22,22 +23,19 @@
 					<td><button type="button" onclick="submitNewLending()">Nouvel Emprunt</button></td>
 				</tr>
 			</table>
-		<ul>
+		<ul id="friends">
 			<li><a href="index.html">Tous</a></li>
+			<!-- dynamical -->
+
 			<script type="text/javascript">
 			const world = new World()
 			const friends = world.findFriends()
-			friends.forEach(friend => {
-			 document.write(
-				`<li>
-					<a href="?friendName=${friend}">${friend}</a>
-				</li>`
-				)
-				})
+			Dom.displayFriends(friends)
 			</script>
 		</ul>
 		<h1>Liste des Emprunts</h1>
-		<ul>
+		<ul id="lendings">
+			<!-- dynamical -->
 			<script type="text/javascript">
 				const query = document.location.search.split('?friendName=')[1]
 				//const world = new World()
