@@ -5,3 +5,13 @@ const generateLendings = () => {
 	]
 	lendings.map(lending => world.new(lending))
 }
+
+const world = new World()
+
+document.addEventListener('DOMContentLoaded', () => {
+	const friends = world.findFriends()
+	Dom.displayFriends(friends)
+
+	const query = document.location.search.split('?friendName=')[1]
+	Dom.displayLendings(world.findLendings(query))
+})

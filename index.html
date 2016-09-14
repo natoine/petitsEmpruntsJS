@@ -26,21 +26,11 @@
 		<ul id="friends">
 			<li><a href="index.html">Tous</a></li>
 			<!-- dynamical -->
-
-			<script type="text/javascript">
-			const world = new World()
-			const friends = world.findFriends()
-			Dom.displayFriends(friends)
-			</script>
 		</ul>
 		<h1>Liste des Emprunts</h1>
 		<ul id="lendings">
 			<!-- dynamical -->
 			<script type="text/javascript">
-				const query = document.location.search.split('?friendName=')[1]
-				//const world = new World()
-				//way to add remove button seems to be dirty to me ... shouldn't I use the dom and addElement ?
-				Dom.displayLendings(world.findLendings(query))
 				const submitNewLending = () => {
 					const who = document.querySelector("#fieldWho").value ;
 					const when = document.querySelector("#fieldWhen").value
