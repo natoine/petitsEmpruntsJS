@@ -20,7 +20,7 @@
 					<td>Quand ?</td> <td><input type='text' id="fieldWhen"></td>
 				</tr>
 				<tr>
-					<td><button type="button" onclick="submitNewLending()">Nouvel Emprunt</button></td>
+					<td><button type="button" id="submitNewLoanButton">Nouvel Emprunt</button></td>
 				</tr>
 			</table>
 		<ul id="friends">
@@ -30,25 +30,6 @@
 		<h1>Liste des Emprunts</h1>
 		<ul id="lendings">
 			<!-- dynamical -->
-			<script type="text/javascript">
-				const submitNewLending = () => {
-					const who = document.querySelector("#fieldWho").value ;
-					const when = document.querySelector("#fieldWhen").value
-					const what = document.querySelector("#fieldWhat").value
-					const lending = {name: what, date : when, friend: who}
-					//It works but you need to refresh the page.
-					//should be an http request and an auto refresh through callback of list of lendings
-					world.new(lending)
-					location.reload()
-				}
-				const remove = (name) => {
-					//It works but you need to refresh the page.
-					//should be an http request and an auto refresh through callback of list of lendings
-					world.remove(name)
-					location.reload()
-				}
-
-			</script>
 		</ul>
 	</body>
 </html>
