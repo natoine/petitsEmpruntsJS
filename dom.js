@@ -29,7 +29,7 @@ Dom.submitNewLoan = () => {
 	const what = document.querySelector("#fieldWhat").value
 	const lending = {name: what, date : when, friend: who}
 	//It works but you need to refresh the page.
-	//should be an http request and an auto refresh through callback of list of lendings
+	//should be an http request and list of lendings update through callback
 	world.new(lending)
 	location.reload()
 }
