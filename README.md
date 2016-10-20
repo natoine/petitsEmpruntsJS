@@ -1,1 +1,3 @@
 # petitsEmpruntsJS
+
+Readme bien fourni
