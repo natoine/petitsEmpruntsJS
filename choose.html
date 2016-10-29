@@ -1,0 +1,20 @@
+<html lang="fr">
+	<head>
+	  <meta charset="utf-8">
+		<title>Petis Emprunts entre amis</title>
+		<meta descr="Suivez vos emprunts entre amis.">
+		<script type="text/javascript" src="nav.js"></script>
+	</head>
+	<body>
+		<button type="button" id="IBorrowButton">J'emprunte</button>
+		<button type="button" id="ILoanButton">Je prête</button>
+		<script>
+			const username = document.location.search.split('?user=')[1]
+			if(!username) window.location.href = `index.html`
+			document.addEventListener('DOMContentLoaded', () => {
+				document.querySelector("#IBorrowButton").addEventListener("click", Nav.iBorrow)
+				document.querySelector("#ILoanButton").addEventListener("click", Nav.iLoan)
+			})
+		</script>
+	</body>
+</html>

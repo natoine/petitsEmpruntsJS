@@ -1,35 +1,18 @@
 <html lang="fr">
 	<head>
 	  <meta charset="utf-8">
-		<title>Liste des Emprunts entre amis</title>
+		<title>Bienvenue sur Petis Emprunts entre amis</title>
 		<meta descr="Suivez vos emprunts entre amis.">
-		<script type="text/javascript" src="world.js"></script>
-		<script type="text/javascript" src="dom.js"></script>
-		<script type="text/javascript" src="init.js"></script>
+		<script type="text/javascript" src="nav.js"></script>
 	</head>
 	<body>
-		<h1>Ajouter un emprunt</h1>
-			<table>
-				<tr>
-					<td>Quoi ?</td> <td><input type='text' id="fieldWhat"></td>
-				</tr>
-				<tr>
-					<td>Par Qui ?</td> <td><input type='text' id="fieldWho"></td>
-				</tr>
-				<tr>
-					<td>Quand ?</td> <td><input type='text' id="fieldWhen"></td>
-				</tr>
-				<tr>
-					<td><button type="button" id="submitNewLoanButton">Nouvel Emprunt</button></td>
-				</tr>
-			</table>
-		<ul id="friends">
-			<li><a href="index.html">Tous</a></li>
-			<!-- dynamical -->
-		</ul>
-		<h1>Liste des Emprunts</h1>
-		<ul id="lendings">
-			<!-- dynamical -->
-		</ul>
+		<h1>Connectez vous à petits emprunts entre amis</h1>
+		Login : <input type='text' id="username">
+		<button type="button" id="fakeConnectButton">Connectez vous</button>
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				document.querySelector("#fakeConnectButton").addEventListener("click", Nav.connect)
+			})
+		</script>
 	</body>
 </html>
