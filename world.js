@@ -9,18 +9,20 @@ class World {
 		return JSON.parse(localStorage.getItem('lendings')) || []
 	}
 	
-	findLendingsILoan(friendName){
+	findLendingsILoan(friendName, username){
+		var collectionUser = this.collection().filter(lending => lending.loaner === username)
 		if (! friendName) {
-			return this.collection()
+			return collectionUser
 		}
-		return this.collection().filter(lending => lending.borrower === friendName)
+		return collectionUser.filter(lending => lending.borrower === friendName)
 	}
 
-	findLendingsIBorrow(friendName){
+	findLendingsIBorrow(friendName, username){
+		var collectionUser = this.collection().filter(lending => lending.borrower === username)
 		if (! friendName) {
-			return this.collection()
+			return collectionUser
 		}
-		return this.collection().filter(lending => lending.loaner === friendName)
+		return collectionUser.filter(lending => lending.loaner === friendName)
 	}
 	
 	//remove by name means you cannot lend two things with a same name in a same time. Should be checked ob remove by Id.

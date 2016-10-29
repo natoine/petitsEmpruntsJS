@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	Dom.displayFriends(friends, username, status)
 	//find loans and build the 2 loans list
 	const friendname = params.get("friendName")
-	Dom.displayLendingsBorrower(world.findLendingsIBorrow(friendname))
-	Dom.displayLendingsLoaner(world.findLendingsILoan(friendname))
+	Dom.displayLendingsBorrower(world.findLendingsIBorrow(friendname, username))
+	Dom.displayLendingsLoaner(world.findLendingsILoan(friendname, username))
 
 	//add the submit action onclick on the right button : submitNewLoanButton
 	document.querySelector("#submitNewLoanButton").addEventListener("click", function() {Dom.submitNewLoan(username, status)})
