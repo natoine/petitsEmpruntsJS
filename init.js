@@ -1,7 +1,7 @@
 const generateLendings = () => {
 	const lendings = [
-		{name: 'Thorgal', date : '24/03/2014', friend: 'Thomas'},
-		{name: '5é élément', date : '19/02/2015', friend: 'NaturalPad'}
+		{name: 'Thorgal', date : '24/03/2014', borrower: 'Thomas', loaner:'me'},
+		{name: '5é élément', date : '19/02/2015', borrower: 'NaturalPad', loaner:'me'}
 	]
 	lendings.map(lending => world.new(lending))
 }
@@ -20,16 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	const status = params.get("status")
 	Dom.titlePage(status)
 	
-	//Dom.titlePage(status)
 	//find friends and build friend list
-	const friends = world.findFriends()
-	Dom.displayFriends(friends)
-	//find loans and build laons list
-	//const query = document.location.search.split('?friendName=')[1]
-	const query = params.get("friendName")
-	Dom.displayLendings(world.findLendings(query))
+	const friends = world.findFriends(username)
+	Dom.displayFriends(friends, username, status)
+	//find loans and build the 2 loans list
+	const friendname = params.get("friendName")
+	Dom.displayLendingsBorrower(world.findLendingsIBorrow(friendname))
+	Dom.displayLendingsLoaner(world.findLendingsILoan(friendname))
 
 	//add the submit action onclick on the right button : submitNewLoanButton
-	document.querySelector("#submitNewLoanButton").addEventListener("click", Dom.submitNewLoan)
+	document.querySelector("#submitNewLoanButton").addEventListener("click", function() {Dom.submitNewLoan(username, status)})
 
 })

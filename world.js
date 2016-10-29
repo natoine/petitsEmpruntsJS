@@ -4,15 +4,25 @@ class World {
 		lendings.push(lending)
 		localStorage.setItem('lendings', JSON.stringify(lendings))
 	}
+	
 	collection() {
 		return JSON.parse(localStorage.getItem('lendings')) || []
 	}
-	findLendings(query){
-		if (! query) {
+	
+	findLendingsILoan(friendName){
+		if (! friendName) {
 			return this.collection()
 		}
-		return this.collection().filter(lending => lending.friend === query)
+		return this.collection().filter(lending => lending.borrower === friendName)
 	}
+
+	findLendingsIBorrow(friendName){
+		if (! friendName) {
+			return this.collection()
+		}
+		return this.collection().filter(lending => lending.loaner === friendName)
+	}
+	
 	//remove by name means you cannot lend two things with a same name in a same time. Should be checked ob remove by Id.
 	remove(name) {
 		//récupérer la liste des emprunts dont le nom n'est pas celui passé en paramètre
@@ -20,7 +30,17 @@ class World {
 		//maintenant notre liste d'emprunts locale est cette liste filtrée
 		localStorage.setItem('lendings', JSON.stringify(lendings))
 	}
-	findFriends() {
-		return new Set(this.collection().map( lending => lending.friend))
+
+	findFriends(username) {
+		var friends = new Set()
+		const collectionLoaner = this.collection().filter(lending => lending.loaner === username)
+		collectionLoaner.map( lending => {if(!friends.has(lending.borrower)) friends.add(lending.borrower)})
+		const collectionBorrower = this.collection().filter(lending => lending.borrower === username)
+		collectionBorrower.map( lending => {if(!friends.has(lending.loaner)) friends.add(lending.loaner)})
+		return friends
+	}
+
+	flush() {
+		localStorage.clear()
 	}
 }

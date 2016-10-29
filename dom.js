@@ -11,18 +11,22 @@ Dom.titlePage = (status) => {
 	if(status === "iloan") titleElm.innerHTML = "Je prête"
 }
 
-Dom.displayFriends = (friends) => {
+Dom.displayFriends = (friends, username, status) => {
+	const li = document.createElement('li')
+	li.innerHTML = `<a href="?user=${username}&status=${status}">Tous</a>`
+	document.querySelector('#friends').appendChild(li)
 	friends.forEach(friend => {
 		const li = document.createElement('li')
-		li.innerHTML = `<a href="?friendName=${friend}">${friend}</a>`
+		li.innerHTML = `<a href="?friendName=${friend}&user=${username}&status=${status}">${friend}</a>`
 		document.querySelector('#friends').appendChild(li)
 	})
 }
 
-Dom.displayLendings = (lendings) => {
+//display the lendings Im the borrower
+Dom.displayLendingsBorrower = (lendings) => {
 	lendings.map(lending => {
 		const li = document.createElement('li')
-		li.innerHTML = `${lending.name} emprunté par ${lending.friend} depuis le ${lending.date}`
+		li.innerHTML = `${lending.name} emprunté à ${lending.loaner} depuis le ${lending.date}`
 		const buttonRm = document.createElement('button')
 		buttonRm.innerHTML = `x`
 		buttonRm.addEventListener("click" , function (event) {
@@ -30,17 +34,38 @@ Dom.displayLendings = (lendings) => {
 			location.reload()
 		})
 		li.appendChild(buttonRm)
-		document.querySelector('#lendings').appendChild(li)
+		document.querySelector('#lendingsIBorrow').appendChild(li)
 	})
 }
 
-Dom.submitNewLoan = () => {
+//display the lendings Im the loaner
+Dom.displayLendingsLoaner = (lendings) => {
+	lendings.map(lending => {
+		const li = document.createElement('li')
+		li.innerHTML = `${lending.name} emprunté par ${lending.borrower} depuis le ${lending.date}`
+		const buttonRm = document.createElement('button')
+		buttonRm.innerHTML = `x`
+		buttonRm.addEventListener("click" , function (event) {
+			world.remove(lending.name)
+			location.reload()
+		})
+		li.appendChild(buttonRm)
+		document.querySelector('#lendingsILoan').appendChild(li)
+	})
+}
+
+Dom.submitNewLoan = (username, status) => {
+	console.log("new loan")
+	console.log(username)
 	const who = document.querySelector("#fieldWho").value ;
 	const when = document.querySelector("#fieldWhen").value
 	const what = document.querySelector("#fieldWhat").value
-	const lending = {name: what, date : when, friend: who}
+	var lending
+	if(status === "iborrow") lending = {name: what, date: when, borrower: username , loaner: who}
+	if(status === "iloan") lending = {name: what, date: when, borrower: who , loaner: username}
 	//It works but you need to refresh the page.
 	//should be an http request and an auto refresh through callback of list of lendings
+	//no verification that values are not empty ...
 	world.new(lending)
 	location.reload()
 }
