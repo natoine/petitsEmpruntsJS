@@ -1,5 +1,16 @@
 const Dom = {}
 
+Dom.printUsername = (username) => {
+	const usernameElm = document.querySelector("#username")
+	usernameElm.innerHTML = username
+}
+
+Dom.titlePage = (status) => {
+	const titleElm = document.querySelector("#titleAction")
+	if(status === "iborrow") titleElm.innerHTML = "J'emprunte"
+	if(status === "iloan") titleElm.innerHTML = "Je prête"
+}
+
 Dom.displayFriends = (friends) => {
 	friends.forEach(friend => {
 		const li = document.createElement('li')
