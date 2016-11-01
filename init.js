@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	//change title page (iborrow or iloan)
 	const status = params.get("status")
 	Dom.titlePage(status)
+	Dom.changeButton(status)
 	
 	//find friends and build friend list
 	const friends = world.findFriends(username)

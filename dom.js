@@ -11,6 +11,29 @@ Dom.titlePage = (status) => {
 	if(status === "iloan") titleElm.innerHTML = "Je prête"
 }
 
+Dom.changeButton = (status) => {
+	var newStatus
+	const buttonChangeElm = document.querySelector("#wantToChangeButton")
+	if(status === "iborrow") 
+		{
+			buttonChangeElm.innerHTML = "Je prête"
+			newStatus = "iloan"
+		}
+	if(status === "iloan") 
+		{
+			buttonChangeElm.innerHTML = "J'emprunte"
+			newStatus = "iborrow"
+		}
+	buttonChangeElm.addEventListener("click" , function (event) {
+			const params = new URLSearchParams(document.location.search)
+			const user = params.get("user")
+			const friendName = params.get("friendName")
+			var url = document.location.href.split("?")[0] + `?user=${user}&status=${newStatus}`
+			if(friendName != null) url = url + `&friendName=${friendName}`
+			location.assign(url)
+		})
+}
+
 Dom.displayFriends = (friends, username, status) => {
 	const li = document.createElement('li')
 	li.innerHTML = `<a href="?user=${username}&status=${status}">Tous</a>`
