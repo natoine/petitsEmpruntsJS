@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
 	<head>
 	  <meta charset="utf-8">
@@ -6,36 +7,69 @@
 		<script type="text/javascript" src="world.js"></script>
 		<script type="text/javascript" src="dom.js"></script>
 		<script type="text/javascript" src="init.js"></script>
+		<!-- bootstrap -->
+		<link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<!-- responsve -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="libs/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 	</head>
 	<body>
-		<h1 id="username"></h1>
-		<h1 id="titleAction"></h1>
-		Finalement vous voulez <button type="button" id="wantToChangeButton"></button>
-			<table>
-				<tr>
-					<td>Quoi ?</td> <td><input type='text' id="fieldWhat"></td>
-				</tr>
-				<tr>
-					<td>A Qui ?</td> <td><input type='text' id="fieldWho"></td>
-				</tr>
-				<tr>
-					<td>Quand ?</td> <td><input type='text' id="fieldWhen"></td>
-				</tr>
-				<tr>
-					<td><button type="button" id="submitNewLoanButton">Nouvel Emprunt</button></td>
-				</tr>
-			</table>
-		<ul id="friends">
-			<!--<li><a href="index.html">Tous</a></li>-->
-			<!-- dynamical -->
-		</ul>
-		<h1>Liste de mes Emprunts</h1>
-		<ul id="lendingsIBorrow">
-			<!-- dynamical -->
-		</ul>
-		<h1>Liste de mes Prets</h1>
-		<ul id="lendingsILoan">
-			<!-- dynamical -->
-		</ul>
+		<div class="container">
+			<div class="row-fluid" id="topPart">
+				<div class="span3">
+					Changer pour <button type="button" id="wantToChangeButton" class="btn btn-primary btn-large"></button>
+				</div>
+				<div class="span3">
+					<h1 id="titleAction" class="text-center"></h1>
+				</div>
+				<div class="span6">
+					<h3 id="username" class="text-right"></h3>
+				</div>
+			</div>
+
+			<div class="row-fluid" id="mainForm">
+				<div class="span4 offset3">
+					<form>
+			  			<fieldset>
+			  			<label>Quoi ?</label>
+			  			<input type="text" placeholder="Quoi ?" id="fieldWhat">
+			  			<label>A Qui ?</label>
+			  			<input type="text" placeholder="A Qui ?" id="fieldWho">
+			  			<label>Quand ?</label>
+			  			<input type="text" placeholder="Quand ?" id="fieldWhen">
+			  			<button type="button" id="submitNewLoanButton" class="btn btn-primary btn-large btn-block">Nouvel Emprunt</button>
+			  			</fieldset>
+			  		</form>
+			  	</div>
+			 </div>
+
+			<div class="row-fluid" id="activity">
+				<div class="span3">
+					<h3 class="text-left">Mes amis</h3>
+					<ul id="friends">
+						<!-- dynamical -->
+					</ul>
+				</div>
+				<div class="span9">
+					<h3 class="text-left">Mes Emprunts</h3>
+					<table id="lendingsIBorrow" class="table table-striped">
+						<tbody id="lendingsIBorrowBody">
+						<!-- dynamical -->
+						</tbody>
+					</table>
+					<h3 class="text-left">Mes Prêts</h3>
+					<table id="lendingsILoan" class="table table-striped">
+						<tbody id="lendingsILoanBody">
+						<!-- dynamical -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+		<!-- bootstrap -->
+		<script src="http://code.jquery.com/jquery.js"></script>
+		<script src="libs/bootstrap/js/bootstrap.min.js"></script>
 	</body>
 </html>
