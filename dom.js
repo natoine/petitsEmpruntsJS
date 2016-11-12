@@ -57,7 +57,8 @@ Dom.displayLendingsBorrower = (lendings) => {
 		tdMain.innerHTML = `${lending.name} emprunté à ${lending.loaner} depuis le ${lending.date}`
 		const tdButton = document.createElement('td')
 		const buttonRm = document.createElement('button')
-		buttonRm.innerHTML = `x`
+		buttonRm.setAttribute("class" , "btn btn-danger")
+		buttonRm.innerHTML = `<i class="icon-remove icon-white"></i>`
 		buttonRm.addEventListener("click" , function (event) {
 			world.remove(lending.name)
 			location.reload()
@@ -82,7 +83,8 @@ Dom.displayLendingsLoaner = (lendings) => {
 		tdMain.innerHTML = `${lending.name} emprunté par ${lending.borrower} depuis le ${lending.date}`
 		const tdButton = document.createElement('td')
 		const buttonRm = document.createElement('button')
-		buttonRm.innerHTML = `x`
+		buttonRm.setAttribute("class" , "btn btn-danger")
+		buttonRm.innerHTML = `<i class="icon-remove icon-white"></i>`
 		buttonRm.addEventListener("click" , function (event) {
 			world.remove(lending.name)
 			location.reload()
