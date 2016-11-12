@@ -47,33 +47,51 @@ Dom.displayFriends = (friends, username, status) => {
 
 //display the lendings Im the borrower
 Dom.displayLendingsBorrower = (lendings) => {
+	var count = 0
 	lendings.map(lending => {
-		const li = document.createElement('li')
-		li.innerHTML = `${lending.name} emprunté à ${lending.loaner} depuis le ${lending.date}`
+		count ++
+		const tr = document.createElement('tr')
+		const tdcount = document.createElement('td')
+		tdcount.innerHTML = count 
+		const tdMain = document.createElement('td')
+		tdMain.innerHTML = `${lending.name} emprunté à ${lending.loaner} depuis le ${lending.date}`
+		const tdButton = document.createElement('td')
 		const buttonRm = document.createElement('button')
 		buttonRm.innerHTML = `x`
 		buttonRm.addEventListener("click" , function (event) {
 			world.remove(lending.name)
 			location.reload()
 		})
-		li.appendChild(buttonRm)
-		document.querySelector('#lendingsIBorrow').appendChild(li)
+		tdButton.appendChild(buttonRm)
+		tr.appendChild(tdcount)
+		tr.appendChild(tdMain)
+		tr.appendChild(tdButton)
+		document.querySelector('#lendingsIBorrowBody').appendChild(tr)
 	})
 }
 
 //display the lendings Im the loaner
 Dom.displayLendingsLoaner = (lendings) => {
+	var count = 0
 	lendings.map(lending => {
-		const li = document.createElement('li')
-		li.innerHTML = `${lending.name} emprunté par ${lending.borrower} depuis le ${lending.date}`
+		count ++
+		const tr = document.createElement('tr')
+		const tdcount = document.createElement('td')
+		tdcount.innerHTML = count
+		const tdMain = document.createElement('td')
+		tdMain.innerHTML = `${lending.name} emprunté par ${lending.borrower} depuis le ${lending.date}`
+		const tdButton = document.createElement('td')
 		const buttonRm = document.createElement('button')
 		buttonRm.innerHTML = `x`
 		buttonRm.addEventListener("click" , function (event) {
 			world.remove(lending.name)
 			location.reload()
 		})
-		li.appendChild(buttonRm)
-		document.querySelector('#lendingsILoan').appendChild(li)
+		tdButton.appendChild(buttonRm)
+		tr.appendChild(tdcount)
+		tr.appendChild(tdMain)
+		tr.appendChild(tdButton)
+		document.querySelector('#lendingsILoanBody').appendChild(tr)
 	})
 }
 
