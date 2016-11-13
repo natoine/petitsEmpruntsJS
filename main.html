@@ -12,6 +12,8 @@
 		<!-- responsve -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="libs/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<!-- pikaday -->
+		<link rel="stylesheet" href="libs/pikaday/css/pikaday.css">
 	</head>
 	<body>
 		<div class="container">
@@ -71,5 +73,11 @@
 		<!-- bootstrap -->
 		<script src="http://code.jquery.com/jquery.js"></script>
 		<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+		<!-- pickaday -->
+		<script src="libs/moment.js"></script>
+		<script src="libs/pikaday/pikaday.js"></script>
+		<script>
+    		var picker = new Pikaday({ field: document.getElementById('fieldWhen') });
+		</script>
 	</body>
 </html>
