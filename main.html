@@ -77,7 +77,19 @@
 		<script src="libs/moment.js"></script>
 		<script src="libs/pikaday/pikaday.js"></script>
 		<script>
-    		var picker = new Pikaday({ field: document.getElementById('fieldWhen') });
+		moment.locale("fr")
+    		//var picker = new Pikaday({ field: document.getElementById('fieldWhen') });
+    		 var picker = new Pikaday({
+        field: document.getElementById('fieldWhen'),
+        format: 'D MMM YYYY',
+        i18n: {
+		    previousMonth : 'Mois précédent',
+		    nextMonth     : 'Mois suivant',
+		    months        : ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+		    weekdays      : ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+		    weekdaysShort : ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']
+		}
+    });
 		</script>
 	</body>
 </html>
