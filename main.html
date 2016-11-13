@@ -12,6 +12,8 @@
 		<!-- responsve -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="libs/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<!-- pikaday -->
+		<link rel="stylesheet" href="libs/pikaday/css/pikaday.css">
 	</head>
 	<body>
 		<div class="container">
@@ -71,5 +73,23 @@
 		<!-- bootstrap -->
 		<script src="http://code.jquery.com/jquery.js"></script>
 		<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+		<!-- pickaday -->
+		<script src="libs/moment.js"></script>
+		<script src="libs/pikaday/pikaday.js"></script>
+		<script>
+		moment.locale("fr")
+    		//var picker = new Pikaday({ field: document.getElementById('fieldWhen') });
+    		 var picker = new Pikaday({
+        field: document.getElementById('fieldWhen'),
+        format: 'D MMM YYYY',
+        i18n: {
+		    previousMonth : 'Mois précédent',
+		    nextMonth     : 'Mois suivant',
+		    months        : ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+		    weekdays      : ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+		    weekdaysShort : ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']
+		}
+    });
+		</script>
 	</body>
 </html>
