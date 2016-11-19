@@ -98,17 +98,43 @@ Dom.displayLendingsLoaner = (lendings) => {
 }
 
 Dom.submitNewLoan = (username, status) => {
-	console.log("new loan")
-	console.log(username)
-	const who = document.querySelector("#fieldWho").value ;
-	const when = document.querySelector("#fieldWhen").value
-	const what = document.querySelector("#fieldWhat").value
-	var lending
-	if(status === "iborrow") lending = {name: what, date: when, borrower: username , loaner: who}
-	if(status === "iloan") lending = {name: what, date: when, borrower: who , loaner: username}
-	//It works but you need to refresh the page.
-	//should be an http request and an auto refresh through callback of list of lendings
-	//no verification that values are not empty ...
-	world.new(lending)
-	location.reload()
+	const who = document.querySelector("#fieldWho").value.trim()
+	const when = document.querySelector("#fieldWhen").value.trim()
+	const what = document.querySelector("#fieldWhat").value.trim()
+
+	//check no blank field
+	if(who.length == 0) 
+		{
+			document.querySelector("#dangerWho").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
+			document.querySelector("#dangerWho").removeAttribute("hidden")
+		} 
+		else document.querySelector("#dangerWho").setAttribute("hidden" , true) 
+	if(when.length == 0) 
+		{
+			document.querySelector("#dangerWhen").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
+			document.querySelector("#dangerWhen").removeAttribute("hidden")
+		}
+		else document.querySelector("#dangerWhen").setAttribute("hidden" , true)
+	if(what.length == 0) 
+		{
+			document.querySelector("#dangerWhat").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
+			document.querySelector("#dangerWhat").removeAttribute("hidden")
+		}
+		else document.querySelector("#dangerWhat").setAttribute("hidden" , true)
+
+	if( !( who.length == 0 )
+		&& !( when.length == 0 )
+		&& !( what.length == 0 )
+		)
+	{
+		var lending
+		if(status === "iborrow") lending = {name: what, date: when, borrower: username , loaner: who}
+		if(status === "iloan") lending = {name: what, date: when, borrower: who , loaner: username}
+		//It works but you need to refresh the page.
+		//should be an http request and an auto refresh through callback of list of lendings
+		//no verification that values are not empty ...
+		world.new(lending)
+		location.reload()	
+	}
+	
 }
