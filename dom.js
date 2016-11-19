@@ -103,13 +103,24 @@ Dom.submitNewLoan = (username, status) => {
 	const what = document.querySelector("#fieldWhat").value.trim()
 
 	//check no blank field
-	if(who.length == 0) document.querySelector("#dangerWho").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
-	if(when.length == 0) document.querySelector("#dangerWhen").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
-	if(what.length == 0) document.querySelector("#dangerWhat").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
-
-	console.log(who.length)
-	console.log(what.length)
-	console.log(when.length)
+	if(who.length == 0) 
+		{
+			document.querySelector("#dangerWho").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
+			document.querySelector("#dangerWho").removeAttribute("hidden")
+		} 
+		else document.querySelector("#dangerWho").setAttribute("hidden" , true) 
+	if(when.length == 0) 
+		{
+			document.querySelector("#dangerWhen").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
+			document.querySelector("#dangerWhen").removeAttribute("hidden")
+		}
+		else document.querySelector("#dangerWhen").setAttribute("hidden" , true)
+	if(what.length == 0) 
+		{
+			document.querySelector("#dangerWhat").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
+			document.querySelector("#dangerWhat").removeAttribute("hidden")
+		}
+		else document.querySelector("#dangerWhat").setAttribute("hidden" , true)
 
 	if( !( who.length == 0 )
 		&& !( when.length == 0 )
