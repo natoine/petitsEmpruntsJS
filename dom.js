@@ -98,17 +98,32 @@ Dom.displayLendingsLoaner = (lendings) => {
 }
 
 Dom.submitNewLoan = (username, status) => {
-	console.log("new loan")
-	console.log(username)
-	const who = document.querySelector("#fieldWho").value ;
-	const when = document.querySelector("#fieldWhen").value
-	const what = document.querySelector("#fieldWhat").value
-	var lending
-	if(status === "iborrow") lending = {name: what, date: when, borrower: username , loaner: who}
-	if(status === "iloan") lending = {name: what, date: when, borrower: who , loaner: username}
-	//It works but you need to refresh the page.
-	//should be an http request and an auto refresh through callback of list of lendings
-	//no verification that values are not empty ...
-	world.new(lending)
-	location.reload()
+	const who = document.querySelector("#fieldWho").value.trim()
+	const when = document.querySelector("#fieldWhen").value.trim()
+	const what = document.querySelector("#fieldWhat").value.trim()
+
+	//check no blank field
+	if(who.length == 0) document.querySelector("#dangerWho").innerHTML = "danger"
+	if(when.length == 0) document.querySelector("#dangerWhen").innerHTML = "danger"
+	if(what.length == 0) document.querySelector("#dangerWhat").innerHTML = "danger"
+
+	console.log(who.length)
+	console.log(what.length)
+	console.log(when.length)
+
+	if( !( who.length == 0 )
+		&& !( when.length == 0 )
+		&& !( what.length == 0 )
+		)
+	{
+		var lending
+		if(status === "iborrow") lending = {name: what, date: when, borrower: username , loaner: who}
+		if(status === "iloan") lending = {name: what, date: when, borrower: who , loaner: username}
+		//It works but you need to refresh the page.
+		//should be an http request and an auto refresh through callback of list of lendings
+		//no verification that values are not empty ...
+		world.new(lending)
+		location.reload()	
+	}
+	
 }
