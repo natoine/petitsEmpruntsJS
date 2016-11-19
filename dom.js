@@ -103,9 +103,9 @@ Dom.submitNewLoan = (username, status) => {
 	const what = document.querySelector("#fieldWhat").value.trim()
 
 	//check no blank field
-	if(who.length == 0) document.querySelector("#dangerWho").innerHTML = "danger"
-	if(when.length == 0) document.querySelector("#dangerWhen").innerHTML = "danger"
-	if(what.length == 0) document.querySelector("#dangerWhat").innerHTML = "danger"
+	if(who.length == 0) document.querySelector("#dangerWho").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
+	if(when.length == 0) document.querySelector("#dangerWhen").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
+	if(what.length == 0) document.querySelector("#dangerWhat").innerHTML = "<strong>Attention :</strong> veillez à remplir ce champ."
 
 	console.log(who.length)
 	console.log(what.length)
