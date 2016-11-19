@@ -1,8 +1,9 @@
 const Nav = {}
 
 Nav.connect = () => {
-	const user = document.querySelector("#username").value ;
-	if(user.length && user.trim().length) window.location.href = `choose.html?user=${user}`
+	const user = document.querySelector("#username").value
+	const userTrim = user.trim()
+	if(userTrim.length) window.location.href = `choose.html?user=${userTrim}`
 }
 
 Nav.iBorrow = () => {
