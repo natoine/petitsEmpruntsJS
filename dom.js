@@ -5,33 +5,17 @@ Dom.printUsername = (username) => {
 	usernameElm.innerHTML = username
 }
 
-Dom.titlePage = (status) => {
-	const titleElm = document.querySelector("#titleAction")
-	if(status === "iborrow") titleElm.innerHTML = "J'emprunte"
-	if(status === "iloan") titleElm.innerHTML = "Je prête"
-}
-
 Dom.changeButton = (status) => {
-	var newStatus
-	const buttonChangeElm = document.querySelector("#wantToChangeButton")
-	if(status === "iborrow") 
-		{
-			buttonChangeElm.innerHTML = "Je prête"
-			newStatus = "iloan"
-		}
-	if(status === "iloan") 
-		{
-			buttonChangeElm.innerHTML = "J'emprunte"
-			newStatus = "iborrow"
-		}
-	buttonChangeElm.addEventListener("click" , function (event) {
-			const params = new URLSearchParams(document.location.search)
-			const user = params.get("user")
-			const friendName = params.get("friendName")
-			var url = document.location.href.split("?")[0] + `?user=${user}&status=${newStatus}`
-			if(friendName != null) url = url + `&friendName=${friendName}`
-			location.assign(url)
-		})
+	if(status === "iloan")
+	{
+		document.querySelector("#iLoanLi").classList.add("active")
+		document.querySelector("#iBorrowLi").classList.remove("active")
+	}
+	if(status === "iborrow")
+	{
+		document.querySelector("#iBorrowLi").classList.add("active")
+		document.querySelector("#iLoanLi").classList.remove("active")
+	}
 }
 
 Dom.displayFriends = (friends, username, status) => {

@@ -4,6 +4,7 @@
 	  <meta charset="utf-8">
 		<title>Liste des Emprunts entre amis</title>
 		<meta descr="Suivez vos emprunts entre amis.">
+		<script type="text/javascript" src="nav.js"></script>
 		<script type="text/javascript" src="world.js"></script>
 		<script type="text/javascript" src="dom.js"></script>
 		<script type="text/javascript" src="init.js"></script>
@@ -16,19 +17,24 @@
 		<link rel="stylesheet" href="libs/pikaday/css/pikaday.css">
 	</head>
 	<body>
-		<div class="container">
-			<div class="row-fluid" id="topPart">
-				<div class="span3">
-					Changer pour <button type="button" id="wantToChangeButton" class="btn btn-primary btn-large"></button>
-				</div>
-				<div class="span3">
-					<h1 id="titleAction" class="text-center"></h1>
-				</div>
-				<div class="span6">
-					<h3 id="username" class="text-right"></h3>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<ul class="nav navbar-nav">
+						<li><a class="navbar-brand" href="index.html">Petits Emprunts</a></li>
+       					<li id="iBorrowLi" class=""><a href="#" id="IBorrowButton">J'emprunte</a></li>
+       					<li id="iLoanLi" class=""><a href="#" id="ILoanButton">Je prête</a></li>
+       				</ul>
+       			</div>
+       			<div class="navbar-right pull-right">
+  					<ul class="nav navbar-nav navbar-right">
+  						<li><a href="#" id="username">username</a></li>
+        				<li><a href="index.html">Déconnexion</a></li>
+        			</ul>
 				</div>
 			</div>
-
+		</nav>
+		<div class="container">
 			<div class="row-fluid" id="mainForm">
 				<div class="span4 offset3">
 					<form>
@@ -80,19 +86,30 @@
 		<script src="libs/moment.js"></script>
 		<script src="libs/pikaday/pikaday.js"></script>
 		<script>
-		moment.locale("fr")
+			moment.locale("fr")
     		//var picker = new Pikaday({ field: document.getElementById('fieldWhen') });
     		 var picker = new Pikaday({
-        field: document.getElementById('fieldWhen'),
-        format: 'D MMM YYYY',
-        i18n: {
-		    previousMonth : 'Mois précédent',
-		    nextMonth     : 'Mois suivant',
-		    months        : ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
-		    weekdays      : ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
-		    weekdaysShort : ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']
-		}
-    });
+		        field: document.getElementById('fieldWhen'),
+		        format: 'D MMM YYYY',
+		        i18n: {
+				    previousMonth : 'Mois précédent',
+				    nextMonth     : 'Mois suivant',
+				    months        : ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+				    weekdays      : ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+				    weekdaysShort : ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']
+					}
+			    });
+
+	    	//navigation
+	    	const username = new URLSearchParams(document.location.search).get("user")
+			if(!username) window.location.href = `index.html`
+			const status = new URLSearchParams(document.location.search).get("status")
+			if(!status || (status!=="iborrow" && status!=="iloan")) window.location.href = `index.html`
+			document.addEventListener('DOMContentLoaded', () => {
+				document.querySelector("#IBorrowButton").addEventListener("click", Nav.iBorrow)
+				document.querySelector("#ILoanButton").addEventListener("click", Nav.iLoan)
+			})
+
 		</script>
 	</body>
 </html>
