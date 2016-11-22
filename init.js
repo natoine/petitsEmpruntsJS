@@ -16,11 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	const username = params.get("user")
 	if(!username) window.location.href = `index.html`
 	Dom.printUsername(username)
-	//change title page (iborrow or iloan)
+	//print iloan or iborrow button
 	const status = params.get("status")
-	Dom.titlePage(status)
 	Dom.changeButton(status)
-	
+
 	//find friends and build friend list
 	const friends = world.findFriends(username)
 	Dom.displayFriends(friends, username, status)

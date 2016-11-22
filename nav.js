@@ -3,13 +3,21 @@ const Nav = {}
 Nav.connect = () => {
 	const user = document.querySelector("#username").value
 	const userTrim = user.trim()
-	if(userTrim.length) window.location.href = `choose.html?user=${userTrim}`
+	if(userTrim.length) window.location.href = `main.html?user=${userTrim}&status=iborrow`
 }
 
 Nav.iBorrow = () => {
-	window.location.href = `main.html?user=${username}&status=iborrow`
+	console.log("iBorrow")
+	const params = new URLSearchParams(document.location.search)
+	const friendName = params.get("friendName")
+	if(friendName != null) window.location.href = `main.html?user=${username}&status=iborrow&friendName=${friendName}`
+	else window.location.href = `main.html?user=${username}&status=iborrow`
 }
 
 Nav.iLoan = () => {
-	window.location.href = `main.html?user=${username}&status=iloan`
+	console.log("iLoan")
+	const params = new URLSearchParams(document.location.search)
+	const friendName = params.get("friendName")
+	if(friendName != null) window.location.href = `main.html?user=${username}&status=iloan&friendName=${friendName}`
+	else window.location.href = `main.html?user=${username}&status=iloan`
 }
