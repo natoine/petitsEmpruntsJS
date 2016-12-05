@@ -1,0 +1,19 @@
+{
+  "name": "petitsemprunts",
+  "version": "0.0.1",
+  "description": "a simple app to borrow and lend belongings between friends",
+  "main": "dom.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/natoine/petitsEmpruntsJS.git"
+  },
+  "author": "natoine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/natoine/petitsEmpruntsJS/issues"
+  },
+  "homepage": "https://github.com/natoine/petitsEmpruntsJS#readme"
+}
