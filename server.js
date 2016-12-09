@@ -6,7 +6,6 @@ const accepts = require('accepts')
 const requestHandler = (request, response) => {  
 	//dans tous les cas je veux récupérer et logger ces infos
 	var headers = request.headers
-
 	var method = request.method
 	var url = request.url
 	//console.log(`method : ${method}`)
@@ -21,9 +20,7 @@ const requestHandler = (request, response) => {
     	}).on('end', function() {
     		body = Buffer.concat(body).toString()
     		//console.log(`body : ${body}`)
-	    // At this point, we have the headers, method, url and body, and can now
-	    // do whatever we need to in order to respond to this request.
-
+	   
 	    //build response
 	    response.on('error', function(err) {
 	      console.error(err)
@@ -32,7 +29,7 @@ const requestHandler = (request, response) => {
 	    if( method === "GET" )
 	    {	
 
-	    	//rooting
+	    	//routing
 	    	switch(url)
 	    	{
 	    		case '/':
@@ -43,6 +40,7 @@ const requestHandler = (request, response) => {
 	    		default:
 	    			console.log("unexpected url : " + url)
 	    			response.statusCode = 404
+	    			response.write(`<b>no resource here for you at : ${url}</b>`)
 	    			break
 	    	}
 	    	//Content Negotiation
