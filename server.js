@@ -31,13 +31,29 @@ const requestHandler = (request, response) => {
 
 	    if( method === "GET" )
 	    {	
-	    	//Content Negociation
-	    	console.log(headers.accept)
+
+	    	//rooting
+	    	switch(url)
+	    	{
+	    		case '/':
+	    			response.statusCode = 200
+	    			response.setHeader('Content-Type', 'text/html')
+	    			response.write('<b>Want Index</b>')
+	    			break
+	    		default:
+	    			console.log("unexpected url : " + url)
+	    			response.statusCode = 404
+	    			break
+	    	}
+	    	//Content Negotiation
+	    	//console.log(headers.accept)
 	    	/*var accept = headers.accept.split(",")
 	    	console.log(accept.length)
 	    	console.log(accept)*/
-	    	const accept = accepts(request)
-	    	 switch(accept.type(['json', 'html', 'xml', 'rdf+xml'])) {
+	    	
+	    	/*const accept = accepts(request)
+	    	 switch(accept.type(['html', 'json', 'xml', 'rdf+xml'])) 
+	    	 {
 			   case 'html':
 			   	response.statusCode = 200
 			    response.setHeader('Content-Type', 'text/html')
@@ -67,22 +83,9 @@ const requestHandler = (request, response) => {
 			    response.setHeader('Content-Type', 'text/plain')
 			    response.write('hello, world!')
 			    break
-			  }
+			  }*/
 
-	    	//response.setHeader('Content-Type', 'application/json')
-
-	    	/*
-		    var responseBody = {
-		      "headers": headers,
-		      "method": method,
-		      "url": url,
-		      "body": body
-		    }
-			*/
-		    //response.write(JSON.stringify(responseBody))
 		    response.end()
-	    	//négociation de contenu
-	    	//if( headers. )
 	    }
 
   	})
