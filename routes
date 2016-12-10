@@ -1,0 +1,12 @@
+APP :
+
+GET	http	/							renders index.html
+
+bootstrap :
+
+GET	http	/bootstrap.min.css 			renders resources/bootstrap/css/bootstrap.min.css
+GET	http	/bootstrap.min/js 			renders resources/bootstrap/js/bootstrap.min.js
+GET	http	/bootstrap-responsive.css	renders resources/bootstrap/css/bootstrap-responsive.css
+
+JS (excepts bootstrap): 
+GET	http	/nav.js 					renders resources/js/nav.js

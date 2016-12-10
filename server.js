@@ -1,16 +1,14 @@
-const http = require('http')  
+const http = require('http')
 const port = 3000
-//needed fot content negociation
+//needed for content negociation
 const accepts = require('accepts')
+//needed for filesystem
+const fs = require('fs') 
 
 const requestHandler = (request, response) => {  
-	//dans tous les cas je veux récupérer et logger ces infos
 	var headers = request.headers
 	var method = request.method
 	var url = request.url
-	//console.log(`method : ${method}`)
-	//console.log(`url : ${url}`)
-	//console.log(`headers : ${headers}`)
 	var body = []
 
 	request.on('error', function(err) {
@@ -19,7 +17,6 @@ const requestHandler = (request, response) => {
     		body.push(chunk)
     	}).on('end', function() {
     		body = Buffer.concat(body).toString()
-    		//console.log(`body : ${body}`)
 	   
 	    //build response
 	    response.on('error', function(err) {
@@ -28,19 +25,58 @@ const requestHandler = (request, response) => {
 
 	    if( method === "GET" )
 	    {	
-
 	    	//routing
 	    	switch(url)
 	    	{
+	    		//navigation in the app
 	    		case '/':
-	    			response.statusCode = 200
-	    			response.setHeader('Content-Type', 'text/html')
-	    			response.write('<b>Want Index</b>')
+		    		fs.readFile("resources/renderHtml/index.html", function(err, data)
+		    		{
+	  					response.writeHead(200, {'Content-Type': 'text/html'})
+	  					response.write(data)
+	  					response.end()
+					})
 	    			break
+	    		//JS for client ( except bootstrap )
+	    		case '/nav.js':
+	    			fs.readFile("resources/js/nav.js", function(err, data)
+		    		{
+	  					response.writeHead(200, {'Content-Type': 'text/plain'})
+	  					response.write(data)
+	  					response.end()
+					})
+	    		break
+	    		//bootstrap
+	    		case '/bootstrap.min.css':
+	    			fs.readFile("resources/bootstrap/css/bootstrap.min.css", function(err, data)
+		    		{
+	  					response.writeHead(200, {'Content-Type': 'text/css'})
+	  					response.write(data)
+	  					response.end()
+					})
+	    		break
+	    		case '/bootstrap.min.js':
+	    			fs.readFile("resources/bootstrap/js/bootstrap.min.js", function(err, data)
+		    		{
+	  					response.writeHead(200, {'Content-Type': 'text/plain'})
+	  					response.write(data)
+	  					response.end()
+					})
+	    		break
+	    		case '/bootstrap-responsive.css':
+	    			fs.readFile("resources/bootstrap/css/bootstrap-responsive.css", function(err, data)
+		    		{
+	  					response.writeHead(200, {'Content-Type': 'text/css'})
+	  					response.write(data)
+	  					response.end()
+					})
+	    		break
+	    		//default 404
 	    		default:
 	    			console.log("unexpected url : " + url)
 	    			response.statusCode = 404
 	    			response.write(`<b>no resource here for you at : ${url}</b>`)
+	    			response.end()
 	    			break
 	    	}
 	    	//Content Negotiation
@@ -82,8 +118,6 @@ const requestHandler = (request, response) => {
 			    response.write('hello, world!')
 			    break
 			  }*/
-
-		    response.end()
 	    }
 
   	})
