@@ -3,6 +3,7 @@ const Nav = {}
 Nav.connect = () => {
 	const user = document.querySelector("#username").value
 	const userTrim = user.trim()
+	//changes it to POST !!! so server can make a redirect /username
 	if(userTrim.length) window.location.href = `main.html?user=${userTrim}&status=iborrow`
 }
 
