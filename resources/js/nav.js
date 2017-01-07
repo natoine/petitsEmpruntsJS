@@ -4,7 +4,25 @@ Nav.connect = () => {
 	const user = document.querySelector("#username").value
 	const userTrim = user.trim()
 	//changes it to POST !!! so server can make a redirect /username
-	if(userTrim.length) window.location.href = `main.html?user=${userTrim}&status=iborrow`
+	if(userTrim.length) 
+	{
+		var request =  new Request('/connect', {
+			method: 'POST', 
+			redirect: 'follow',
+			headers: new Headers({
+				'Content-Type': 'text/plain'
+			}),
+			body: user
+		})
+
+		fetch(request).then(function(response) {
+			return response.json()
+		 }).then(function(json) {
+			console.log( "response :" + json )
+			})
+	}
+
+		//window.location.href = `main.html?user=${userTrim}&status=iborrow`
 }
 
 Nav.iBorrow = () => {

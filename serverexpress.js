@@ -57,3 +57,9 @@ app.get('/bootstrap-responsive.css', function (request, response)
 	  	response.end()
 	})
 })
+
+//handle 404
+app.use(function(request, response, next){
+  response.status(404)
+  console.log("404 request. URL : " + request.url + " method : " + request.method )
+})
