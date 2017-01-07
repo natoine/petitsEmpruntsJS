@@ -1,6 +1,7 @@
 # petitsEmpruntsJS
 
-Github Page to test the app : https://natoine.github.io/petitsEmpruntsJS
+Pour tester, lancer :
+node serverexpress.js
 
 Dependencies :
 * Twitter Bootsrap : http://getbootstrap.com/2.3.2/
@@ -9,3 +10,7 @@ Dependencies :
 
 petitsEmpruntsJS uses NodeJS
 https://nodejs.org/en/
+
+Express :
+http://expressjs.com/
+
