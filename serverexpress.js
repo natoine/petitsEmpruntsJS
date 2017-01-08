@@ -40,8 +40,7 @@ app.post('/connect' , function(request, response)
 	response.end()
 })
 
-//might be generic with ${user} instead of natoine, but good for a test only
-app.get('/natoine/borrow' , function(request, response)
+app.get('/:username/borrow' , function(request, response)
 {
 	//TODO should first try to see if usert is really connected
 	fs.readFile("resources/renderHtml/main.html", function(err, data)
@@ -54,11 +53,41 @@ app.get('/natoine/borrow' , function(request, response)
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-//js scripts routing
+//js client scripts routing
 
 app.get('/nav.js', function (request, response) 
 {
 	fs.readFile("resources/js/nav.js", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/plain'})
+	  	response.write(data)
+	  	response.end()
+	})	
+})
+
+app.get('/world.js', function (request, response) 
+{
+	fs.readFile("resources/js/world.js", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/plain'})
+	  	response.write(data)
+	  	response.end()
+	})	
+})
+
+app.get('/dom.js', function (request, response) 
+{
+	fs.readFile("resources/js/dom.js", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/plain'})
+	  	response.write(data)
+	  	response.end()
+	})	
+})
+
+app.get('/init.js', function (request, response) 
+{
+	fs.readFile("resources/js/init.js", function(err, data)
 	{
 	  	response.writeHead(200, {'Content-Type': 'text/plain'})
 	  	response.write(data)
@@ -95,6 +124,44 @@ app.get('/bootstrap-responsive.css', function (request, response)
 	fs.readFile("resources/bootstrap/css/bootstrap-responsive.css", function(err, data)
 	{
 	  	response.writeHead(200, {'Content-Type': 'text/css'})
+	  	response.write(data)
+	  	response.end()
+	})
+})
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Pickaday routing
+
+app.get('/pikaday.css', function (request, response) 
+{
+	fs.readFile("resources/js/libs/pikaday/css/pikaday.css", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/css'})
+	  	response.write(data)
+	  	response.end()
+	})
+})
+
+app.get('/pikaday.js', function (request, response) 
+{
+	fs.readFile("resources/js/libs/pikaday/pikaday.js", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/plain'})
+	  	response.write(data)
+	  	response.end()
+	})
+})
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Moment routing
+
+app.get('/moment.js', function (request, response) 
+{
+	fs.readFile("resources/js/libs/moment.js", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/plain'})
 	  	response.write(data)
 	  	response.end()
 	})
