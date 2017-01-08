@@ -145,6 +145,17 @@ app.get('/bootstrap-responsive.css', function (request, response)
 	})
 })
 
+app.get('/img/glyphicons-halflings-white.png', function (request, response)
+{
+	fs.readFile("resources/bootstrap/img/glyphicons-halflings-white.png", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'image/png'})
+	  	response.write(data)
+	  	response.end()
+	})
+})
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Pickaday routing

@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const friends = world.findFriends(username)
 	Dom.displayFriends(friends, username, status)
 	//find loans and build the 2 loans list
-	const friendname = params.get("friendName")
+	const friendname = url.searchParams.get("friendName")
 	Dom.displayLendingsBorrower(world.findLendingsIBorrow(friendname, username))
 	Dom.displayLendingsLoaner(world.findLendingsILoan(friendname, username))
 

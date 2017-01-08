@@ -117,6 +117,7 @@ Dom.submitNewLoan = (username, status) => {
 		//It works but you need to refresh the page.
 		//should be an http request and an auto refresh through callback of list of lendings
 		//no verification that values are not empty ...
+		console.log(lending)
 		world.new(lending)
 		location.reload()	
 	}
