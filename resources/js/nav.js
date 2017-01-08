@@ -16,10 +16,9 @@ Nav.connect = () => {
 		})
 
 		fetch(request).then(function(response) {
-			return response.json()
-		 }).then(function(json) {
-			console.log( "response :" + json )
-			})
+			if(response.status == 200) window.location.href = `/${user}/borrow`
+			//TODO prévoir si la réponse est pas ok de changer l'affichage avec un message d'erreur
+		 })
 	}
 
 		//window.location.href = `main.html?user=${userTrim}&status=iborrow`

@@ -31,7 +31,25 @@ app.post('/connect' , function(request, response)
 {
 	console.log("request post /connect")
 	var body = request.body
-	console.log(body)
+	var username = body.username
+	console.log(username + " tries to connect")
+	console.log("for now on it's ok everybody can connect ... but it will have to change !!!! ")
+	//response.redirect(`/${username}/borrow`)
+	//now, always reply OK !
+	response.writeHead(200, {'Content-Type': 'text/html'})
+	response.end()
+})
+
+//might be generic with ${user} instead of natoine, but good for a test only
+app.get('/natoine/borrow' , function(request, response)
+{
+	//TODO should first try to see if usert is really connected
+	fs.readFile("resources/renderHtml/main.html", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/html'})
+	  	response.write(data)
+	  	response.end()
+	})
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////
