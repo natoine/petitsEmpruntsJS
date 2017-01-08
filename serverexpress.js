@@ -42,6 +42,7 @@ app.post('/connect' , function(request, response)
 
 app.get('/disconnect' , function(request, response)
 {
+	//TODO should disconnect user
 	console.log("try to disconnect")	
 })
 
@@ -154,7 +155,6 @@ app.get('/img/glyphicons-halflings-white.png', function (request, response)
 	  	response.end()
 	})
 })
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
