@@ -10,14 +10,13 @@ const world = new World()
 
 //once the page html page is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-	//manage parameters
-	const params = new URLSearchParams(document.location.search)
-	//print username
-	const username = params.get("user")
-	if(!username) window.location.href = `index.html`
+	const url = new URL(document.location)
+	const urlNav = url.pathname.split("/")
+	const username = urlNav[1]
+	const status = urlNav[2]
+	//print Username
 	Dom.printUsername(username)
 	//print iloan or iborrow button
-	const status = params.get("status")
 	Dom.changeButton(status)
 
 	//find friends and build friend list

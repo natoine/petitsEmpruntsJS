@@ -6,12 +6,12 @@ Dom.printUsername = (username) => {
 }
 
 Dom.changeButton = (status) => {
-	if(status === "iloan")
+	if(status === "loan")
 	{
 		document.querySelector("#iLoanLi").classList.add("active")
 		document.querySelector("#iBorrowLi").classList.remove("active")
 	}
-	if(status === "iborrow")
+	if(status === "borrow")
 	{
 		document.querySelector("#iBorrowLi").classList.add("active")
 		document.querySelector("#iLoanLi").classList.remove("active")
@@ -20,11 +20,11 @@ Dom.changeButton = (status) => {
 
 Dom.displayFriends = (friends, username, status) => {
 	const li = document.createElement('li')
-	li.innerHTML = `<a href="?user=${username}&status=${status}">Tous</a>`
+	li.innerHTML = `<a href="/${username}/${status}">Tous</a>`
 	document.querySelector('#friends').appendChild(li)
 	friends.forEach(friend => {
 		const li = document.createElement('li')
-		li.innerHTML = `<a href="?friendName=${friend}&user=${username}&status=${status}">${friend}</a>`
+		li.innerHTML = `<a href="?friendName=${friend}">${friend}</a>`
 		document.querySelector('#friends').appendChild(li)
 	})
 }
@@ -112,8 +112,8 @@ Dom.submitNewLoan = (username, status) => {
 		)
 	{
 		var lending
-		if(status === "iborrow") lending = {name: what, date: when, borrower: username , loaner: who}
-		if(status === "iloan") lending = {name: what, date: when, borrower: who , loaner: username}
+		if(status === "borrow") lending = {name: what, date: when, borrower: username , loaner: who}
+		if(status === "loan") lending = {name: what, date: when, borrower: who , loaner: username}
 		//It works but you need to refresh the page.
 		//should be an http request and an auto refresh through callback of list of lendings
 		//no verification that values are not empty ...

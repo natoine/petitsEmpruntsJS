@@ -28,14 +28,14 @@ Nav.iBorrow = () => {
 	console.log("iBorrow")
 	const params = new URLSearchParams(document.location.search)
 	const friendName = params.get("friendName")
-	if(friendName != null) window.location.href = `main.html?user=${username}&status=iborrow&friendName=${friendName}`
-	else window.location.href = `main.html?user=${username}&status=iborrow`
+	if(friendName != null) window.location.href = `/${username}/borrow?friendName=${friendName}`
+	else window.location.href = `/${username}/borrow`
 }
 
 Nav.iLoan = () => {
 	console.log("iLoan")
 	const params = new URLSearchParams(document.location.search)
 	const friendName = params.get("friendName")
-	if(friendName != null) window.location.href = `main.html?user=${username}&status=iloan&friendName=${friendName}`
-	else window.location.href = `main.html?user=${username}&status=iloan`
+	if(friendName != null) window.location.href = `/${username}/loan?friendName=${friendName}`
+	else window.location.href = `/${username}/loan`
 }

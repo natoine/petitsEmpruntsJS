@@ -28,7 +28,7 @@
 
 				<div class="navbar-header">
 					<ul class="nav navbar-nav">
-						<li><a class="navbar-brand" href="index.html">Petits Emprunts</a></li>
+						<li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
        					<li id="iBorrowLi" class=""><a href="#" id="IBorrowButton">J'emprunte</a></li>
        					<li id="iLoanLi" class=""><a href="#" id="ILoanButton">Je prête</a></li>
        				</ul>
@@ -37,7 +37,7 @@
        				<div class="nav-collapse collapse">
 	  					<ul class="nav navbar-nav navbar-right">
 	  						<li><a href="#" id="username">username</a></li>
-	        				<li><a href="index.html">Déconnexion</a></li>
+	        				<li><a href="/disconnect">Déconnexion</a></li>
         				</ul>
         			</div>
 				</div>
@@ -110,10 +110,10 @@
 			    });
 
 	    	//navigation
-	    	const username = new URLSearchParams(document.location.search).get("user")
-			if(!username) window.location.href = `index.html`
-			const status = new URLSearchParams(document.location.search).get("status")
-			if(!status || (status!=="iborrow" && status!=="iloan")) window.location.href = `index.html`
+	    	const url = new URL(document.location)
+	    	const urlNav = url.pathname.split("/")
+	    	const username = urlNav[1]
+			const status = urlNav[2]
 			document.addEventListener('DOMContentLoaded', () => {
 				document.querySelector("#IBorrowButton").addEventListener("click", Nav.iBorrow)
 				document.querySelector("#ILoanButton").addEventListener("click", Nav.iLoan)

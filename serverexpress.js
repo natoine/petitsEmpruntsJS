@@ -40,9 +40,25 @@ app.post('/connect' , function(request, response)
 	response.end()
 })
 
+app.get('/disconnect' , function(request, response)
+{
+	console.log("try to disconnect")	
+})
+
 app.get('/:username/borrow' , function(request, response)
 {
-	//TODO should first try to see if usert is really connected
+	//TODO should first try to see if user is really connected
+	fs.readFile("resources/renderHtml/main.html", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/html'})
+	  	response.write(data)
+	  	response.end()
+	})
+})
+
+app.get('/:username/loan' , function(request, response)
+{
+	//TODO should first try to see if user is really connected
 	fs.readFile("resources/renderHtml/main.html", function(err, data)
 	{
 	  	response.writeHead(200, {'Content-Type': 'text/html'})
