@@ -1,12 +1,21 @@
+
 const express = require('express')
 const app = express()
 //needed for filesystem
 const fs = require('fs')
+//needed to parse body with express
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.json()); // for parsing application/json
 
 app.listen(3000, function () 
 {
   console.log('Petits Emprunts Express started on port 3000')
 })
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//app routing
 
 app.get('/', function (request, response) 
 {
@@ -18,6 +27,17 @@ app.get('/', function (request, response)
 	})
 })
 
+app.post('/connect' , function(request, response) 
+{
+	console.log("request post /connect")
+	var body = request.body
+	console.log(body)
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+//js scripts routing
+
 app.get('/nav.js', function (request, response) 
 {
 	fs.readFile("resources/js/nav.js", function(err, data)
@@ -27,6 +47,10 @@ app.get('/nav.js', function (request, response)
 	  	response.end()
 	})	
 })
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+//bootstrap routing
 
 app.get('/bootstrap.min.css', function (request, response) 
 {
@@ -57,6 +81,8 @@ app.get('/bootstrap-responsive.css', function (request, response)
 	  	response.end()
 	})
 })
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 //handle 404
 app.use(function(request, response, next){

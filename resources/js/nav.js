@@ -10,9 +10,9 @@ Nav.connect = () => {
 			method: 'POST', 
 			redirect: 'follow',
 			headers: new Headers({
-				'Content-Type': 'text/plain'
+				'Content-Type': 'application/json'
 			}),
-			body: user
+			body: `{ "username" : "${user}" }`
 		})
 
 		fetch(request).then(function(response) {
