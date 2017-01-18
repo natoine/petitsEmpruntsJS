@@ -8,6 +8,10 @@ const bodyParser = require('body-parser')
 
 app.use(bodyParser.json()); // for parsing application/json
 
+//needed for data storage with mongodb
+const MongoClient = require("mongodb").MongoClient;
+const database = "mongodb://localhost/petitsEmprunts"
+
 app.listen(3000, function () 
 {
   console.log('Petits Emprunts Express started on port 3000')
@@ -66,6 +70,12 @@ app.get('/:username/loan' , function(request, response)
 	  	response.write(data)
 	  	response.end()
 	})
+})
+
+app.post('/newloan' , function(request, response)
+{
+	var body = request.body
+	console.log(body)
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////

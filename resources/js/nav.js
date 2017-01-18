@@ -20,8 +20,6 @@ Nav.connect = () => {
 			//TODO prévoir si la réponse est pas ok de changer l'affichage avec un message d'erreur
 		 })
 	}
-
-		//window.location.href = `main.html?user=${userTrim}&status=iborrow`
 }
 
 Nav.iBorrow = () => {

@@ -118,8 +118,21 @@ Dom.submitNewLoan = (username, status) => {
 		//should be an http request and an auto refresh through callback of list of lendings
 		//no verification that values are not empty ...
 		console.log(lending)
-		world.new(lending)
-		location.reload()	
+		var request =  new Request('/newloan', {
+			method: 'POST', 
+			redirect: 'follow',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
+			body: JSON.stringify(lending)
+		})
+
+		fetch(request).then(function(response) {
+			if(response.status == 200) alert("ok")
+		 })
+		//world.new(lending)
+		//location.reload()	
+
 	}
 	
 }
