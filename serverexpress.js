@@ -74,8 +74,30 @@ app.get('/:username/loan' , function(request, response)
 
 app.post('/newloan' , function(request, response)
 {
-	var body = request.body
-	console.log(body)
+	var loan = request.body
+	MongoClient.connect(database, function(error, db) 
+	{
+    	if (error) 
+    	{
+    		response.status(500)
+    		console.log("unable to connect MongoDB")
+    	}
+   		console.log("Connecté à la base de données : " + database)
+		db.collection("loans").insert(loan, null, function (error, results) 
+		{
+			console.log(JSON.stringify(results))
+    		if (error) 
+    		{
+    			response.status(500)
+    			console.log("unable to create loan : " + loan)
+    		}
+    		console.log("loan correctly created : " + JSON.stringify(results.ops[0]))
+    		response.writeHead(200, {'Content-Type': 'application/json'})
+	  		response.write(JSON.stringify(results.ops[0]))
+	  		response.end()
+		})
+	})
+
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////
