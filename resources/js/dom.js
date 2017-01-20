@@ -117,6 +117,8 @@ Dom.submitNewLoan = (username, status) => {
 		//It works but you need to refresh the page.
 		//should be an http request and an auto refresh through callback of list of lendings
 		//no verification that values are not empty ...
+
+		//devrait se passer dans world ... avec fonction de callback sur success ou non
 		console.log(lending)
 		var request =  new Request('/newloan', {
 			method: 'POST', 
@@ -128,11 +130,15 @@ Dom.submitNewLoan = (username, status) => {
 		})
 
 		fetch(request).then(function(response) {
-			if(response.status == 200) alert("ok")
-		 })
-		//world.new(lending)
-		//location.reload()	
+			if(response.status == 200)
+			{
+				alert("ok")	
+			} 
+			else 
+			{
 
+			}
+		 })
 	}
 	
 }
