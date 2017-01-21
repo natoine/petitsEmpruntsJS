@@ -1,8 +1,24 @@
 class World {
-	new(lending) {
-		const lendings = this.collection()
-		lendings.push(lending)
-		localStorage.setItem('lendings', JSON.stringify(lendings))
+	new(lending, ifok, ifnotok) {
+		console.log(lending)
+		var request =  new Request('/newloan', {
+			method: 'POST', 
+			redirect: 'follow',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
+			body: JSON.stringify(lending)
+		})
+
+		fetch(request).then(function(response) {
+			if(response.status == 200) 
+				{
+					response.json().then(function(json){
+						ifok(json)
+					})
+				}
+			else ifnotok(lending)
+		 })
 	}
 	
 	collection() {

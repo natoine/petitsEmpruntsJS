@@ -55,6 +55,27 @@ Dom.displayLendingsBorrower = (lendings) => {
 	})
 }
 
+Dom.addALendingBorrower = (lending) => {
+	const tr = document.createElement('tr')
+	const tdcount = document.createElement('td')
+	tdcount.innerHTML =  lending._id
+	const tdMain = document.createElement('td')
+	tdMain.innerHTML = `${lending.name} emprunté à ${lending.loaner} depuis le ${lending.date}`
+	const tdButton = document.createElement('td')
+	const buttonRm = document.createElement('button')
+	buttonRm.setAttribute("class" , "btn btn-danger")
+	buttonRm.innerHTML = `<i class="icon-remove icon-white"></i>`
+	/*buttonRm.addEventListener("click" , function (event) {
+		world.remove(lending.name)
+		location.reload()
+	})*/
+	tdButton.appendChild(buttonRm)
+	tr.appendChild(tdcount)
+	tr.appendChild(tdMain)
+	tr.appendChild(tdButton)
+	document.querySelector('#lendingsIBorrowBody').appendChild(tr)
+}
+
 //display the lendings Im the loaner
 Dom.displayLendingsLoaner = (lendings) => {
 	var count = 0
@@ -79,6 +100,27 @@ Dom.displayLendingsLoaner = (lendings) => {
 		tr.appendChild(tdButton)
 		document.querySelector('#lendingsILoanBody').appendChild(tr)
 	})
+}
+
+Dom.addALendingLoaner = (lending) => {
+	const tr = document.createElement('tr')
+	const tdcount = document.createElement('td')
+	tdcount.innerHTML = lending._id
+	const tdMain = document.createElement('td')
+	tdMain.innerHTML = `${lending.name} emprunté par ${lending.borrower} depuis le ${lending.date}`
+	const tdButton = document.createElement('td')
+	const buttonRm = document.createElement('button')
+	buttonRm.setAttribute("class" , "btn btn-danger")
+	buttonRm.innerHTML = `<i class="icon-remove icon-white"></i>`
+	/*buttonRm.addEventListener("click" , function (event) {
+		world.remove(lending.name)
+		location.reload()
+	})*/
+	tdButton.appendChild(buttonRm)
+	tr.appendChild(tdcount)
+	tr.appendChild(tdMain)
+	tr.appendChild(tdButton)
+	document.querySelector('#lendingsILoanBody').appendChild(tr)
 }
 
 Dom.submitNewLoan = (username, status) => {
@@ -114,31 +156,26 @@ Dom.submitNewLoan = (username, status) => {
 		var lending
 		if(status === "borrow") lending = {name: what, date: when, borrower: username , loaner: who}
 		if(status === "loan") lending = {name: what, date: when, borrower: who , loaner: username}
-		//It works but you need to refresh the page.
-		//should be an http request and an auto refresh through callback of list of lendings
 		//no verification that values are not empty ...
-
-		//devrait se passer dans world ... avec fonction de callback sur success ou non
-		console.log(lending)
-		var request =  new Request('/newloan', {
-			method: 'POST', 
-			redirect: 'follow',
-			headers: new Headers({
-				'Content-Type': 'application/json'
-			}),
-			body: JSON.stringify(lending)
-		})
-
-		fetch(request).then(function(response) {
-			if(response.status == 200)
-			{
-				alert("ok")	
-			} 
-			else 
-			{
-
-			}
-		 })
+		world.new(lending, Dom.addLendingElt, Dom.errorLending)
 	}
 	
+}
+
+Dom.addLendingElt = (jsonlending) => {
+	const username = document.querySelector("#username").innerHTML
+	if(username === jsonlending.borrower) 
+	{
+		//add in borrow list
+		Dom.addALendingBorrower(jsonlending)
+	}
+	else 
+	{
+		//add in loan list
+		Dom.addALendingLoaner(jsonlending)
+	}
+}
+
+Dom.errorLending = (lending) => {
+	alert("not ok" + lending)
 }
