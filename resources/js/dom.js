@@ -31,27 +31,10 @@ Dom.displayFriends = (friends, username, status) => {
 
 //display the lendings Im the borrower
 Dom.displayLendingsBorrower = (lendings) => {
-	var count = 0
+	//var count = 0
 	lendings.map(lending => {
-		count ++
-		const tr = document.createElement('tr')
-		const tdcount = document.createElement('td')
-		tdcount.innerHTML = count 
-		const tdMain = document.createElement('td')
-		tdMain.innerHTML = `${lending.name} emprunté à ${lending.loaner} depuis le ${lending.date}`
-		const tdButton = document.createElement('td')
-		const buttonRm = document.createElement('button')
-		buttonRm.setAttribute("class" , "btn btn-danger")
-		buttonRm.innerHTML = `<i class="icon-remove icon-white"></i>`
-		buttonRm.addEventListener("click" , function (event) {
-			world.remove(lending.name)
-			location.reload()
-		})
-		tdButton.appendChild(buttonRm)
-		tr.appendChild(tdcount)
-		tr.appendChild(tdMain)
-		tr.appendChild(tdButton)
-		document.querySelector('#lendingsIBorrowBody').appendChild(tr)
+		//count ++
+		Dom.addALendingBorrower(lending)
 	})
 }
 
@@ -78,27 +61,10 @@ Dom.addALendingBorrower = (lending) => {
 
 //display the lendings Im the loaner
 Dom.displayLendingsLoaner = (lendings) => {
-	var count = 0
+	//var count = 0
 	lendings.map(lending => {
-		count ++
-		const tr = document.createElement('tr')
-		const tdcount = document.createElement('td')
-		tdcount.innerHTML = count
-		const tdMain = document.createElement('td')
-		tdMain.innerHTML = `${lending.name} emprunté par ${lending.borrower} depuis le ${lending.date}`
-		const tdButton = document.createElement('td')
-		const buttonRm = document.createElement('button')
-		buttonRm.setAttribute("class" , "btn btn-danger")
-		buttonRm.innerHTML = `<i class="icon-remove icon-white"></i>`
-		buttonRm.addEventListener("click" , function (event) {
-			world.remove(lending.name)
-			location.reload()
-		})
-		tdButton.appendChild(buttonRm)
-		tr.appendChild(tdcount)
-		tr.appendChild(tdMain)
-		tr.appendChild(tdButton)
-		document.querySelector('#lendingsILoanBody').appendChild(tr)
+		//count ++
+		Dom.addALendingLoaner(lending)
 	})
 }
 
@@ -176,6 +142,16 @@ Dom.addLendingElt = (jsonlending) => {
 	}
 }
 
+//Print errors in Dom
+
 Dom.errorLending = (lending) => {
 	alert("not ok" + lending)
+}
+
+Dom.errorRetrievingLendings = () => {
+	alert("pb retrieving lendings")
+}
+
+Dom.errorRetrievingBorrows = () => {
+	alert("pb retrieving borrows")
 }

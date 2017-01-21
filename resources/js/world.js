@@ -25,20 +25,85 @@ class World {
 		return JSON.parse(localStorage.getItem('lendings')) || []
 	}
 	
-	findLendingsILoan(friendName, username){
-		var collectionUser = this.collection().filter(lending => lending.loaner === username)
+	findLendingsILoan(friendName, username, ifok, ifnotok){
+		if(! friendName)
+		{
+			var request =  new Request(`/${username}/loans`, {
+			method: 'GET', 
+			redirect: 'follow',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+				})
+			})
+		}
+		else
+		{
+			var request =  new Request(`/${username}/loans/${friendName}`, {
+			method: 'GET', 
+			redirect: 'follow',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+				})
+			})
+		}
+		
+		fetch(request).then(function(response) {
+			if(response.status == 200)
+			{
+				response.json().then(function(json) {
+					return ifok(json)
+				})
+			}
+			else return ifnotok()
+		})
+		
+		
+
+/*		var collectionUser = this.collection().filter(lending => lending.loaner === username)
 		if (! friendName) {
 			return collectionUser
 		}
 		return collectionUser.filter(lending => lending.borrower === friendName)
+*/
 	}
 
-	findLendingsIBorrow(friendName, username){
-		var collectionUser = this.collection().filter(lending => lending.borrower === username)
+	findLendingsIBorrow(friendName, username, ifok, ifnotok){
+		if(! friendName)
+		{
+			var request =  new Request(`/${username}/borrows`, {
+			method: 'GET', 
+			redirect: 'follow',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+				})
+			})
+		}
+		else
+		{
+			var request =  new Request(`/${username}/borrows/${friendName}`, {
+			method: 'GET', 
+			redirect: 'follow',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+				})
+			})
+		}
+		
+		fetch(request).then(function(response) {
+			if(response.status == 200)
+			{
+				response.json().then(function(json) {
+					return ifok(json)
+				})
+			}
+			else return ifnotok()
+		})
+/*		var collectionUser = this.collection().filter(lending => lending.borrower === username)
 		if (! friendName) {
 			return collectionUser
 		}
 		return collectionUser.filter(lending => lending.loaner === friendName)
+*/
 	}
 	
 	//remove by name means you cannot lend two things with a same name in a same time. Should be checked ob remove by Id.
