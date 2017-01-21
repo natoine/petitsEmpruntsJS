@@ -31,11 +31,14 @@ Dom.displayFriends = (friends, username, status) => {
 
 //display the lendings Im the borrower
 Dom.displayLendingsBorrower = (lendings) => {
-	//var count = 0
-	lendings.map(lending => {
-		//count ++
-		Dom.addALendingBorrower(lending)
-	})
+	if(lendings)
+	{
+		//var count = 0
+		lendings.map(lending => {
+			//count ++
+			Dom.addALendingBorrower(lending)
+		})
+	}
 }
 
 Dom.addALendingBorrower = (lending) => {
@@ -61,11 +64,14 @@ Dom.addALendingBorrower = (lending) => {
 
 //display the lendings Im the loaner
 Dom.displayLendingsLoaner = (lendings) => {
-	//var count = 0
-	lendings.map(lending => {
-		//count ++
-		Dom.addALendingLoaner(lending)
-	})
+	if(lendings)
+	{
+		//var count = 0
+		lendings.map(lending => {
+			//count ++
+			Dom.addALendingLoaner(lending)
+		})
+	}
 }
 
 Dom.addALendingLoaner = (lending) => {

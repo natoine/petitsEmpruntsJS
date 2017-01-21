@@ -130,6 +130,28 @@ app.get('/:username/loans' , function(request, response)
 app.get('/:username/loans/:friendname' , function(request, response)
 {
 	console.log("loans user :" + request.params.username + " friend : " + request.params.friendname)
+	MongoClient.connect(database, function(error, db) 
+	{
+    	if (error) 
+    	{
+    		response.status(500)
+    		console.log("unable to connect MongoDB")
+    	}
+   		console.log("Connecté à la base de données : " + database)
+		db.collection("loans").find( {"loaner" : `${request.params.username}`, "borrower" : `${request.params.friendname}` } ).toArray(function (error, results) 
+		{
+			//console.log(JSON.stringify(results))
+    		if (error) 
+    		{
+    			response.status(500)
+    			console.log("unable to retrieve loans ")
+    		}
+    		console.log("loans correctly retrieved ")
+    		response.writeHead(200, {'Content-Type': 'application/json'})
+	  		response.write(JSON.stringify(results))
+	  		response.end()
+		})
+	})
 })
 
 app.get('/:username/borrows' , function(request, response)
@@ -162,6 +184,28 @@ app.get('/:username/borrows' , function(request, response)
 app.get('/:username/borrows/:friendname' , function(request, response)
 {
 	console.log("borrows user :" + request.params.username + " friend : " + request.params.friendname)
+	MongoClient.connect(database, function(error, db) 
+	{
+    	if (error) 
+    	{
+    		response.status(500)
+    		console.log("unable to connect MongoDB")
+    	}
+   		console.log("Connecté à la base de données : " + database)
+		db.collection("loans").find( {"borrower" : `${request.params.username}`, "loaner" : `${request.params.friendname}` } ).toArray(function (error, results) 
+		{
+			//console.log(JSON.stringify(results))
+    		if (error) 
+    		{
+    			response.status(500)
+    			console.log("unable to retrieve loans ")
+    		}
+    		console.log("loans correctly retrieved ")
+    		response.writeHead(200, {'Content-Type': 'application/json'})
+	  		response.write(JSON.stringify(results))
+	  		response.end()
+		})
+	})
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////
