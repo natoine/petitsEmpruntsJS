@@ -44,6 +44,7 @@ app.post('/connect' , function(request, response)
 	response.end()
 })
 
+//todo
 app.get('/disconnect' , function(request, response)
 {
 	//TODO should disconnect user

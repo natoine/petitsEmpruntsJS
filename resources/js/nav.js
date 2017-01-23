@@ -23,7 +23,6 @@ Nav.connect = () => {
 }
 
 Nav.iBorrow = () => {
-	console.log("iBorrow")
 	const params = new URLSearchParams(document.location.search)
 	const friendName = params.get("friendName")
 	if(friendName != null) window.location.href = `/${username}/borrow?friendName=${friendName}`
@@ -31,7 +30,6 @@ Nav.iBorrow = () => {
 }
 
 Nav.iLoan = () => {
-	console.log("iLoan")
 	const params = new URLSearchParams(document.location.search)
 	const friendName = params.get("friendName")
 	if(friendName != null) window.location.href = `/${username}/loan?friendName=${friendName}`
