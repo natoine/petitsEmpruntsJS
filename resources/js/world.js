@@ -1,6 +1,6 @@
 class World {
-	new(lending, ifok, ifnotok) {
-		console.log(lending)
+	new(lending, ifok, ifnotok) 
+	{
 		var request =  new Request('/newloan', {
 			method: 'POST', 
 			redirect: 'follow',
@@ -21,11 +21,13 @@ class World {
 		 })
 	}
 	
-	collection() {
+	collection() 
+	{
 		return JSON.parse(localStorage.getItem('lendings')) || []
 	}
 	
-	findLendingsILoan(friendName, username, ifok, ifnotok){
+	findLendingsILoan(friendName, username, ifok, ifnotok)
+	{
 		if(! friendName)
 		{
 			var request =  new Request(`/${username}/loans`, {
@@ -67,7 +69,8 @@ class World {
 */
 	}
 
-	findLendingsIBorrow(friendName, username, ifok, ifnotok){
+	findLendingsIBorrow(friendName, username, ifok, ifnotok)
+	{
 		if(! friendName)
 		{
 			var request =  new Request(`/${username}/borrows`, {
@@ -106,15 +109,24 @@ class World {
 */
 	}
 	
-	//remove by name means you cannot lend two things with a same name in a same time. Should be checked ob remove by Id.
-	remove(name) {
-		//récupérer la liste des emprunts dont le nom n'est pas celui passé en paramètre
-		const lendings = this.collection().filter( lending => lending.name !== name )
-		//maintenant notre liste d'emprunts locale est cette liste filtrée
-		localStorage.setItem('lendings', JSON.stringify(lendings))
+	remove(id, ifok, ifnotok) 
+	{
+		var request =  new Request(`/loan/${id}`, {
+			method: 'DELETE', 
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
+			body: `{"id" : "${id}" }`
+		})
+
+		fetch(request).then(function(response) {
+			if(response.status == 200) ifok(id)
+			else ifnotok(id)
+		 })	
 	}
 
-	findFriends(username) {
+	findFriends(username) 
+	{
 		var friends = new Set()
 		const collectionLoaner = this.collection().filter(lending => lending.loaner === username)
 		collectionLoaner.map( lending => {if(!friends.has(lending.borrower)) friends.add(lending.borrower)})
@@ -123,7 +135,8 @@ class World {
 		return friends
 	}
 
-	flush() {
+	flush() 
+	{
 		localStorage.clear()
 	}
 }

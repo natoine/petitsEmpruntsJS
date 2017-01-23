@@ -43,6 +43,7 @@ Dom.displayLendingsBorrower = (lendings) => {
 
 Dom.addALendingBorrower = (lending) => {
 	const tr = document.createElement('tr')
+	tr.setAttribute("id" , "loan" + lending._id)
 	const tdcount = document.createElement('td')
 	tdcount.innerHTML =  lending._id
 	const tdMain = document.createElement('td')
@@ -51,10 +52,9 @@ Dom.addALendingBorrower = (lending) => {
 	const buttonRm = document.createElement('button')
 	buttonRm.setAttribute("class" , "btn btn-danger")
 	buttonRm.innerHTML = `<i class="icon-remove icon-white"></i>`
-	/*buttonRm.addEventListener("click" , function (event) {
-		world.remove(lending.name)
-		location.reload()
-	})*/
+	buttonRm.addEventListener("click" , function (event) {
+		world.remove(lending._id, Dom.removeALending, Dom.errorRemoveALending)
+	})
 	tdButton.appendChild(buttonRm)
 	tr.appendChild(tdcount)
 	tr.appendChild(tdMain)
@@ -76,6 +76,7 @@ Dom.displayLendingsLoaner = (lendings) => {
 
 Dom.addALendingLoaner = (lending) => {
 	const tr = document.createElement('tr')
+	tr.setAttribute("id" , "loan" + lending._id)
 	const tdcount = document.createElement('td')
 	tdcount.innerHTML = lending._id
 	const tdMain = document.createElement('td')
@@ -84,15 +85,23 @@ Dom.addALendingLoaner = (lending) => {
 	const buttonRm = document.createElement('button')
 	buttonRm.setAttribute("class" , "btn btn-danger")
 	buttonRm.innerHTML = `<i class="icon-remove icon-white"></i>`
-	/*buttonRm.addEventListener("click" , function (event) {
-		world.remove(lending.name)
-		location.reload()
-	})*/
+	buttonRm.addEventListener("click" , function (event) {
+		world.remove(lending._id, Dom.removeALending, Dom.errorRemoveALending )
+	})
 	tdButton.appendChild(buttonRm)
 	tr.appendChild(tdcount)
 	tr.appendChild(tdMain)
 	tr.appendChild(tdButton)
 	document.querySelector('#lendingsILoanBody').appendChild(tr)
+}
+
+Dom.removeALending = (id) => {
+	console.log("should suppress tr id : loan" + id)
+	document.querySelector('#loan'+id).remove()
+}
+
+Dom.errorRemoveALending = (id) => {
+	console.log("cannot suppress tr id : " + id)
 }
 
 Dom.submitNewLoan = (username, status) => {
