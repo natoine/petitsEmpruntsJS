@@ -255,6 +255,17 @@ app.delete('/loan/:id' , function(request, response)
 	})
 })
 
+app.get('/:username/profile' , function(request,response)
+{
+	//TODO should first try to see if user is really connected
+	fs.readFile("resources/renderHtml/user.html", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/html'})
+	  	response.write(data)
+	  	response.end()
+	})	
+})
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 //js client scripts routing
