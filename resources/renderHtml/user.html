@@ -41,7 +41,33 @@
 		</nav>
 		<div class="container">
 			<div class="row-fluid" id="mainForm">
-				Bienvenue sur la page de XXX
+				<div class="span4 offset3">
+					<div>
+						<span>Vous êtes inscrits depuis le ...</span>
+					</div>
+					<div>
+						<big>Vos informations :</big>
+						<form>
+							<fieldset>
+							<label>Nom d'utilisateur</label>
+				  			<input type="text" placeholder="username" id="fieldUsername">
+				  			<div class="alert alert-danger" id="dangerUsername" hidden="true"></div>
+				  			<label>Mail</label>
+				  			<input type="text" placeholder="mail" id="fieldMail">
+				  			<div class="alert alert-danger" id="dangerMail" hidden="true"></div>
+				  			<button type="button" id="submitUpdateProfile" class="btn btn-primary btn-large btn-block">Enregistrer</button>
+				  			<button type="button" id="cancelUpdateProfile" class="btn btn-block">Annuler</button>
+				  			</fieldset>
+						</form>
+					</div>
+					<div>
+						<button type="button" id="submitUpdateProfile" class="btn btn-large btn-block">Modifier votre mot de passe</button>
+					</div>
+					<div>
+						<!-- TODO -->
+						<span><a href="#">Supprimer votre compte</a></span>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -61,6 +87,8 @@
 				document.querySelector("#username").href = `/${username}/profile`
 				//print Username
 				Dom.printUsername(username)
+				//populate with user data
+
 			})
 		</script>
 	</body>
