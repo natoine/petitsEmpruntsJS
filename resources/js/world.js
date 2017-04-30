@@ -58,15 +58,6 @@ class World {
 			}
 			else return ifnotok()
 		})
-		
-		
-
-/*		var collectionUser = this.collection().filter(lending => lending.loaner === username)
-		if (! friendName) {
-			return collectionUser
-		}
-		return collectionUser.filter(lending => lending.borrower === friendName)
-*/
 	}
 
 	findLendingsIBorrow(friendName, username, ifok, ifnotok)
@@ -101,14 +92,8 @@ class World {
 			}
 			else return ifnotok()
 		})
-/*		var collectionUser = this.collection().filter(lending => lending.borrower === username)
-		if (! friendName) {
-			return collectionUser
-		}
-		return collectionUser.filter(lending => lending.loaner === friendName)
-*/
 	}
-	
+
 	remove(id, ifok, ifnotok) 
 	{
 		var request =  new Request(`/loan/${id}`, {

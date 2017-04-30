@@ -36,7 +36,7 @@
        			<div class="navbar-right pull-right">
        				<div class="nav-collapse collapse">
 	  					<ul class="nav navbar-nav navbar-right">
-	  						<li><a href="/" id="username">username</a></li>
+	  						<li><a href="/" id="profile">mon profil</a></li>
 	        				<li><a href="/disconnect">Déconnexion</a></li>
         				</ul>
         			</div>
@@ -46,6 +46,8 @@
 		<div class="container">
 			<div class="row-fluid" id="mainForm">
 				<div class="span4 offset3">
+				<span id="helloUserMain">Bonjour User,</span>
+				<span id="whatYouDoMain">what you do : </span>
 					<form>
 			  			<fieldset>
 			  			<label>Quoi ?</label>
@@ -117,7 +119,7 @@
 			document.addEventListener('DOMContentLoaded', () => {
 				document.querySelector("#IBorrowButton").addEventListener("click", Nav.iBorrow)
 				document.querySelector("#ILoanButton").addEventListener("click", Nav.iLoan)
-				document.querySelector("#username").href = `/${username}/profile`
+				document.querySelector("#profile").href = `/${username}/profile`
 			})
 
 		</script>

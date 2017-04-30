@@ -2,19 +2,24 @@ const Dom = {}
 
 Dom.printUsername = (username) => {
 	const usernameElm = document.querySelector("#username")
-	usernameElm.innerHTML = username
+	if(usernameElm) usernameElm.innerHTML = username
+	const helloUser = document.querySelector("#helloUserMain")
+	if(helloUser) helloUser.innerHTML = `Bonjour ${username},`
 }
 
 Dom.changeButton = (status) => {
+	const whatYouDoMain = document.querySelector("#whatYouDoMain")
 	if(status === "loan")
 	{
 		document.querySelector("#iLoanLi").classList.add("active")
 		document.querySelector("#iBorrowLi").classList.remove("active")
+		whatYouDoMain.innerHTML = "vous prêtez : <small><i>(vous confiez quelque chose à quelqu'un)</i></small>"
 	}
 	if(status === "borrow")
 	{
 		document.querySelector("#iBorrowLi").classList.add("active")
 		document.querySelector("#iLoanLi").classList.remove("active")
+		whatYouDoMain.innerHTML = "vous empruntez : <small><i>(quelqu'un vous confie quelque chose)</i></small>"
 	}
 }
 

@@ -10,6 +10,7 @@ GET		/:username/loans				lists all loans of username as JSON
 GET		/:username/loans/:friendname	lists all loans of username with regard to friendname as JSON
 GET		/:username/borrows				lists all borrows of username as JSON
 GET		/:username/borrows/:friendname	lists all borrows of username with regard to friendname as JSON
+GET		/:username/profile				renders user.html 
 
 
 bootstrap :
