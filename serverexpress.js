@@ -32,6 +32,15 @@ app.get('/', function (request, response)
 	})
 })
 
+app.get('/createaccount', function(request, response){
+	fs.readFile("resources/renderHtml/createaccount.html", function(err, data)
+	{
+	  	response.writeHead(200, {'Content-Type': 'text/html'})
+	  	response.write(data)
+	  	response.end()
+	})	
+})
+
 app.post('/connect' , function(request, response) 
 {
 	console.log("request post /connect")
