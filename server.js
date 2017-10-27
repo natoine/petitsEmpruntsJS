@@ -17,8 +17,6 @@ const session      = require('express-session')
 const configDB = require('./config/database.js')
 
 // configuration ===============================================================
-//mongoose.connect("mongodb://localhost/iauthenticate") // works but deprecated
-//mongoose.connect(configDB.url) // connect to our database
 const db = mongoose.createConnection(configDB.url)
 
 require('./config/passport')(passport)
