@@ -76,6 +76,7 @@ module.exports = function(passport)
                 newUser.local.password = newUser.generateHash(password) // use the generateHash function in our user model
                 newUser.local.mailvalidated = false
                 newUser.local.activationtoken = newUser.generateHash(email)
+                newUser.local.username = email
                 // save the user
                 newUser.save(function(err) {
                     if (err) throw err
@@ -198,32 +199,53 @@ module.exports = function(passport)
                         }
 
                         return done(null, user) // user found, return that user
-                } else {
-                    // if there is no user found with that facebook id, create them
-                    var newUser            = new User()
-
-                    console.log(profile)
-                    // set all of the facebook information in our user model
-                    newUser.facebook.id    = profile.id // set the users facebook id                   
-                    newUser.facebook.token = token // we will save the token that facebook provides to the user                    
-                    newUser.facebook.name  = profile.displayName // look at the passport user profile to see how names are returned
-                    newUser.local.mailvalidated = true
-                    if(profile.emails.length != null) 
+                } 
+                else 
+                {
+                    if(profile.emails.length != null)
                     {
-                        newUser.facebook.email = profile.emails[0].value // facebook can return multiple emails so we'll take the first
+                        User.findOne({ 'local.email' : profile.emails[0].value}, function(err, user) {
+                            if(err)
+                            {
+                                console.log(err)
+                                return done(err)
+                            }
+                            if(user)
+                            {
+                                console.log("fb strat : user email already exists by local strat")
+                                return done(err)
+                                //TODO makes the user log by local strat and merge fb local accounts
+                            } 
+                            else 
+                            {
+                                // if there is no user found with that facebook id, create them
+                                var newUser            = new User()
+
+                                console.log(profile)
+                                // set all of the facebook information in our user model
+                                newUser.facebook.id    = profile.id // set the users facebook id                   
+                                newUser.facebook.token = token // we will save the token that facebook provides to the user                    
+                                newUser.facebook.name  = profile.displayName // look at the passport user profile to see how names are returned
+                                newUser.local.mailvalidated = true
+                                newUser.facebook.email = profile.emails[0].value // facebook can return multiple emails so we'll take the first
+                                newUser.local.email = profile.emails[0].value
+                                newUser.local.username = profile.emails[0].value
+                                // save our user to the database
+                                newUser.save(function(err) {
+                                    if (err)
+                                        throw err
+                                    // if successful, return the new user
+                                    return done(null, newUser)
+                                })            
+                            }
+
+                        })    
                     }
-                    else 
+                    else
                     {
                         console.log("User id : " + profile.id + " facebook should authorize one mail public")
+                        return done(err)   
                     }
-                    // save our user to the database
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err
-
-                        // if successful, return the new user
-                        return done(null, newUser)
-                    })
                 }
             })
         } else {
@@ -256,7 +278,7 @@ module.exports = function(passport)
 // =========================================================================
     // TWITTER =================================================================
     // =========================================================================
-    passport.use(new TwitterStrategy({
+/*    passport.use(new TwitterStrategy({
 
         consumerKey     : configAuth.twitterAuth.consumerKey,
         consumerSecret  : configAuth.twitterAuth.consumerSecret,
@@ -338,7 +360,7 @@ module.exports = function(passport)
         })
 
     }))
-
+*/
 //// end Twitter
 
 //// Google
@@ -384,21 +406,40 @@ module.exports = function(passport)
 
                         return done(null, user) // user found, return that user
                 } else {
-                    // if the user isnt in our database, create a new user
-                    var newUser          = new User()
+                    //checks if an account with that email already exists
+                    User.findOne({'local.email' : profile.emails[0].value}, function(err, user) {
+                        if(err)
+                        {
+                            console.log(err)
+                            return done(err)
+                        }
+                        if(user)
+                        {
+                            console.log("google strat : user email already exists by local strat")
+                            return done(err)
+                            //TODO makes the user log by local strat and merge google local accounts
+                        } 
+                        else 
+                        {
+                            // if the user isnt in our database, create a new user
+                            var newUser          = new User()
 
-                    // set all of the relevant information
-                    newUser.google.id    = profile.id
-                    newUser.google.token = token
-                    newUser.google.name  = profile.displayName
-                    newUser.google.email = profile.emails[0].value // pull the first email
-                    newUser.local.mailvalidated = true
+                            // set all of the relevant information
+                            newUser.google.id    = profile.id
+                            newUser.google.token = token
+                            newUser.google.name  = profile.displayName
+                            newUser.google.email = profile.emails[0].value // pull the first email
+                            newUser.local.mailvalidated = true
+                            newUser.local.email = profile.emails[0].value
+                            newUser.local.username = profile.emails[0].value
 
-                    // save the user
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err
-                        return done(null, newUser)
+                            // save the user
+                            newUser.save(function(err) {
+                                if (err)
+                                    throw err
+                                return done(null, newUser)
+                            })
+                        }
                     })
                 }
             })
