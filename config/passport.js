@@ -86,8 +86,8 @@ module.exports = function(passport)
                         const mailOptions =
                         {
                             to : email,
-                            subject : "iauthenticate account activation",
-                            html : "Welcome on iauthenticate. Please click the link bellow to activate your account : <a href=\"http://localhost:8080/activateaccount?email=" + email + "&token=" + newUser.local.activationtoken +"\">Activate Account</a>"
+                            subject : "petitsEmprunts account activation",
+                            html : "Welcome on petitsEmprunts. Please click the link bellow to activate your account : <a href=\"http://localhost:8080/activateaccount?email=" + email + "&token=" + newUser.local.activationtoken +"\">Activate Account</a>"
                         }
                         smtpTransport.sendMail(mailOptions, function(error, response){
                             if(error)

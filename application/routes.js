@@ -147,7 +147,7 @@ module.exports = function(app, passport) {
                             const mailOptions =
                             {
                                 to : email,
-                                subject : "iauthenticate pwd recovery ok",
+                                subject : "petitsEmprunts pwd recovery ok",
                                 html : "you seem to have lost your pwd. "
                                  + "Click on the following link to change your password : " 
                                  + "<a href=\"http://localhost:8080/pwdrecovery?token=" + user.local.pwdrecotoken
@@ -180,7 +180,7 @@ module.exports = function(app, passport) {
                     const mailOptions =
                     {
                         to : email,
-                        subject : "iauthenticate pwd recovery notok",
+                        subject : "petitsEmprunts pwd recovery notok",
                         text : "someone thinks you use our service"
                     }
                     smtpTransport.sendMail(mailOptions, function(error, response){
