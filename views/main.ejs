@@ -11,6 +11,9 @@
     <!-- responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- pikaday -->
+    <link rel="stylesheet" href="/pikaday.css">
    
 </head>
 <body>
@@ -27,7 +30,7 @@
                 <div class="navbar-header">
                     <ul class="nav navbar-nav">
                         <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
-                        <li id="iBorrowLi" class=""><a href="#" id="IBorrowButton">J'emprunte</a></li>
+                        <li id="iBorrowLi" class="active"><a href="#" id="IBorrowButton">J'emprunte</a></li>
                         <li id="iLoanLi" class=""><a href="#" id="ILoanButton">Je prête</a></li>
                     </ul>
                 </div>
@@ -45,7 +48,7 @@
 <div class="container">
             <div class="row-fluid" id="mainForm">
                 <div class="span4 offset3">
-                <span id="helloUserMain">Bonjour User,</span>
+                <span id="helloUserMain">Bonjour <%= username%>,</span>
                 <span id="whatYouDoMain">what you do : </span>
                     <form>
                         <fieldset>
@@ -92,6 +95,25 @@
 <!-- bootstrap -->
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="/bootstrap.min.js"></script>
+
+<!-- pickaday -->
+        <script src="/moment.js"></script>
+        <script src="/pikaday.js"></script>
+        <script>
+            moment.locale("fr")
+            //var picker = new Pikaday({ field: document.getElementById('fieldWhen') });
+             var picker = new Pikaday({
+                field: document.getElementById('fieldWhen'),
+                format: 'D MMM YYYY',
+                i18n: {
+                    previousMonth : 'Mois précédent',
+                    nextMonth     : 'Mois suivant',
+                    months        : ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+                    weekdays      : ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+                    weekdaysShort : ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']
+                    }
+                });
+        </script>
 
 </body>
 </html>

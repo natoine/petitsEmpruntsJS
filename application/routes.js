@@ -539,6 +539,34 @@ module.exports = function(app, passport) {
         })
     })
 
+// =============================================================================
+// MOMENT PICKADAY JS =============================================================
+// =============================================================================
+
+    app.get('/moment.js', function(req, res) {
+        fs.readFile("resources/js/libs/moment.js", function(err, data) {
+            res.writeHead(200, {'Content-Type': 'text/plain'})
+            res.write(data)
+            res.end()
+        })
+    })
+
+    app.get('/pikaday.js', function(req, res) {
+        fs.readFile("resources/js/libs/pikaday/pikaday.js", function(err, data) {
+            res.writeHead(200, {'Content-Type': 'text/plain'})
+            res.write(data)
+            res.end()
+        })
+    })
+
+    app.get('/pikaday.css', function(req, res) {
+        fs.readFile("resources/js/libs/pikaday/css/pikaday.css", function(err, data) {
+            res.writeHead(200, {'Content-Type': 'text/css'})
+            res.write(data)
+            res.end()
+        })
+    })
+
 }
 
 // route middleware to make sure a user is logged in
