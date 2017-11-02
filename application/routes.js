@@ -352,7 +352,7 @@ module.exports = function(app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/main', isLoggedInAndActivated, function(req, res) {
         res.render('main.ejs', {
-            user : req.user // get the user out of session and pass to template
+            username : req.user.local.username // get the user out of session and pass to template
         })
     })
 
