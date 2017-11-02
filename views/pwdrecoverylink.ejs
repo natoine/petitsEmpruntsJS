@@ -1,44 +1,61 @@
 <!-- views/pwdrecoverylink.ejs -->
 <!doctype html>
-<html>
+<html lang="fr">
 <head>
-    <title>Node Authentication</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body        { padding-top:80px; }
-    </style>
+    <meta charset="utf-8">
+    <title>Petits Emprunts entre amis</title>
+    <!-- bootstrap -->
+    <link href="/bootstrap.min.css" rel="stylesheet" media="screen">
+    <!-- responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/bootstrap-responsive.css" rel="stylesheet">
 </head>
 <body>
+
+<nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <ul class="nav navbar-nav">
+                        <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
+                    </ul>
+                </div>
+            </div>
+</nav>
+
 <div class="container">
 
-<div class="col-sm-6 col-sm-offset-3">
+    <div class="col-sm-6 col-sm-offset-3">
 
-    <h1><span class="fa fa-sign-in"></span> Change your Password <%= email %></h1>
+        <h1><span class="fa fa-sign-in"></span> Change your Password <%= email %></h1>
 
-    <!-- show any messages that come back with pwdrecoverylinks -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
+        <!-- show any messages that come back with pwdrecoverylinks -->
+        <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+        <% } %>
 
-    <!-- PWD CHANGE FORM -->
-    <form action="/pwdchangerecovery" method="post">
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password">
-            <input type="hidden" name="email" value="<%= email %>">
-            <input type="hidden" name="token" value="<%= token %>">
-        </div>
+        <!-- PWD CHANGE FORM -->
+        <form action="/pwdchangerecovery" method="post">
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password">
+                <input type="hidden" name="email" value="<%= email %>">
+                <input type="hidden" name="token" value="<%= token %>">
+            </div>
 
-        <button type="submit" class="btn btn-warning btn-lg">Change Password</button>
-    </form>
+            <button type="submit" class="btn btn-warning btn-lg">Change Password</button>
+        </form>
 
-    <hr>
+        <hr>
 
-    <p><a href="/">home</a></p>
+        <p><a href="/">home</a></p>
+
+    </div>
 
 </div>
 
-</div>
+<!-- bootstrap -->
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="/bootstrap.min.js"></script>
+
 </body>
 </html>

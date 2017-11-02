@@ -148,9 +148,10 @@ module.exports = function(app, passport) {
                             {
                                 to : email,
                                 subject : "iauthenticate pwd recovery ok",
-                                text : "you seem to have lost your pwd. "
+                                html : "you seem to have lost your pwd. "
                                  + "Click on the following link to change your password : " 
-                                 + "http://localhost:8080/pwdrecovery?token=" + user.local.pwdrecotoken
+                                 + "<a href=\"http://localhost:8080/pwdrecovery?token=" + user.local.pwdrecotoken
+                                 + "\">Password change</a>"
                             }
                             smtpTransport.sendMail(mailOptions, function(error, response){
                                 if(error)
@@ -308,6 +309,7 @@ module.exports = function(app, passport) {
                     {
                         if(user.isActivated())
                         {
+                            console.log("user already activated")
                             res.redirect('/')
                         }
                         else
@@ -333,9 +335,13 @@ module.exports = function(app, passport) {
                             })
                         }    
                     }
-                    else res.redirect('/')    
+                    else {
+                        res.redirect('/')
+                    }
                 }
-                else res.redirect('/')
+                else {
+                        res.redirect('/')
+                }
             })
     })
 

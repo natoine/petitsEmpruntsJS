@@ -1,45 +1,58 @@
 <!-- views/pwdrecovery.ejs -->
 <!doctype html>
-<html>
+<html lang="fr">
 <head>
-    <title>Node Authentication</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body        { padding-top:80px; }
-    </style>
+    <meta charset="utf-8">
+    <title>Petits Emprunts entre amis</title>
+    <!-- bootstrap -->
+    <link href="/bootstrap.min.css" rel="stylesheet" media="screen">
+    <!-- responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/bootstrap-responsive.css" rel="stylesheet">
 </head>
 <body>
+
+<nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <ul class="nav navbar-nav">
+                        <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
+                    </ul>
+                </div>
+            </div>
+</nav>
+
 <div class="container">
 
-<div class="col-sm-6 col-sm-offset-3">
+    <div class="col-sm-6 col-sm-offset-3">
 
-    <h1><span class="fa fa-sign-in"></span> Password Recovery</h1>
+        <h1><span class="fa fa-sign-in"></span> Password Recovery</h1>
 
-    <!-- show any messages that come back with pwdrecovery -->
-    <% if (messagedanger.length > 0) { %>
-        <div class="alert alert-danger"><%= messagedanger %></div>
-    <% } %>
-    <% if (messageok.length > 0) { %>
-        <div class="alert alert-success"><%= messageok %></div>
-    <% } %>
+        <!-- show any messages that come back with pwdrecovery -->
+        <% if (messagedanger.length > 0) { %>
+            <div class="alert alert-danger"><%= messagedanger %></div>
+        <% } %>
+        <% if (messageok.length > 0) { %>
+            <div class="alert alert-success"><%= messageok %></div>
+        <% } %>
 
-    <!-- PWD RECOVERY FORM -->
-    <form action="/pwdrecovery" method="post">
-        <div class="form-group">
-            <label>email</label>
-            <input type="text" class="form-control" name="email">
-        </div>
+        <!-- PWD RECOVERY FORM -->
+        <form action="/pwdrecovery" method="post">
+            <div class="form-group">
+                <label>email</label>
+                <input type="text" class="form-control" name="email">
+            </div>
 
-        <button type="submit" class="btn btn-warning btn-lg">Send email</button>
-    </form>
+            <button type="submit" class="btn btn-warning btn-lg">Send email</button>
+        </form>
 
-    <hr>
-
-    <p><a href="/">home</a></p>
+    </div>
 
 </div>
 
-</div>
+<!-- bootstrap -->
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="/bootstrap.min.js"></script>
+
 </body>
 </html>
