@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
     // =====================================
     app.get('/', function(req, res) {
         req.logout()
-        res.render('index.ejs')// load the index.ejs file
+        res.render('index')// load the index.ejs file
     })
 
     // =====================================
@@ -26,7 +26,7 @@ module.exports = function(app, passport) {
     // show the login form
     app.get('/login', function(req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') })
+        res.render('login', { message: req.flash('loginMessage') })
     })
 
     // process the login form
@@ -42,7 +42,7 @@ module.exports = function(app, passport) {
     // show the signup form
     app.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', { message: req.flash('signupMessage') })
+        res.render('signup', { message: req.flash('signupMessage') })
     })
 
     // process the signup form
@@ -60,7 +60,7 @@ module.exports = function(app, passport) {
         const token = req.query.token
         if(!token)
         {
-            res.render('pwdrecovery.ejs', 
+            res.render('pwdrecovery', 
                 { messagedanger: req.flash('pwdrecoveryMessage') , 
                 messageok: req.flash('pwdrecoveryokMessage') })
         }
@@ -73,7 +73,7 @@ module.exports = function(app, passport) {
                 {
                     console.log(err)
                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
-                    res.render('pwdrecovery.ejs' , 
+                    res.render('pwdrecovery' , 
                         { messagedanger: req.flash('pwdrecoveryMessage') , messageok: ""})
                 }
                 if (user) 
@@ -83,12 +83,12 @@ module.exports = function(app, passport) {
                     {
                         req.flash('pwdrecoveryMessage', 
                             'too late ! more than one hour since you asked to change pwd')
-                        res.render('pwdrecovery.ejs' , 
+                        res.render('pwdrecovery' , 
                             { messagedanger: req.flash('pwdrecoveryMessage') , messageok: "" })
                     }
                     else
                     {
-                        res.render('pwdrecoverylink.ejs' , 
+                        res.render('pwdrecoverylink' , 
                             { message: req.flash('pwdrecoverylinkMessage'), 
                                 email: user.local.email, token: token })
                     }
@@ -109,7 +109,7 @@ module.exports = function(app, passport) {
         const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
         if(!email.match(mailformat)) {
             req.flash('pwdrecoveryMessage', 'That email is not correctly spelled')
-            res.render('pwdrecovery.ejs', { messagedanger: req.flash('pwdrecoveryMessage') , messageok: ""})
+            res.render('pwdrecovery', { messagedanger: req.flash('pwdrecoveryMessage') , messageok: ""})
         }
         else 
         {
@@ -120,7 +120,7 @@ module.exports = function(app, passport) {
                 {
                     console.log(err)
                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
-                    res.render('pwdrecovery.ejs', 
+                    res.render('pwdrecovery', 
                         { messagedanger: req.flash('pwdrecoveryMessage') , messageok: "" })
                 }
                 // check to see if theres already a user with that email
@@ -137,7 +137,7 @@ module.exports = function(app, passport) {
                             //flash
                             req.flash('pwdrecoveryMessage', 'An error occured, try later')
                             req.flash('pwdrecoveryokMessage', '')
-                            res.render('pwdrecovery.ejs', 
+                            res.render('pwdrecovery', 
                                 { messageok: req.flash('pwdrecoveryokMessage') , 
                                 messagedanger: req.flash('pwdrecoveryMessage') })
                         }
@@ -160,7 +160,7 @@ module.exports = function(app, passport) {
                                     //flash
                                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
                                     req.flash('pwdrecoveryokMessage', '')
-                                    res.render('pwdrecovery.ejs', 
+                                    res.render('pwdrecovery', 
                                         { messageok: req.flash('pwdrecoveryokMessage') , 
                                         messagedanger: req.flash('pwdrecoveryMessage') })
                                 }
@@ -169,7 +169,7 @@ module.exports = function(app, passport) {
                             //flash
                             req.flash('pwdrecoveryokMessage', 'An email has been sent')
                             req.flash('pwdrecoveryMessage', '')
-                            res.render('pwdrecovery.ejs', 
+                            res.render('pwdrecovery', 
                                 { messageok: req.flash('pwdrecoveryokMessage') , 
                                 messagedanger: req.flash('pwdrecoveryMessage') })
                         }
@@ -191,7 +191,7 @@ module.exports = function(app, passport) {
                     })
                     //flash
                     req.flash('pwdrecoveryokMessage', 'An email has been sent')
-                    res.render('pwdrecovery.ejs', 
+                    res.render('pwdrecovery', 
                         { messageok: req.flash('pwdrecoveryokMessage') , 
                         messagedanger: "" })
                 }
@@ -209,7 +209,7 @@ module.exports = function(app, passport) {
                 {
                     console.log(err)
                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
-                    res.render('pwdrecovery.ejs', 
+                    res.render('pwdrecovery', 
                         { messagedanger: req.flash('pwdrecoveryMessage') , messageok: "" })
                 }
                 if (user) 
@@ -221,7 +221,7 @@ module.exports = function(app, passport) {
                         req.flash('pwdrecoveryMessage', 
                             'You have taken too long time or are not authorized to change. Try again.')
                         req.flash('pwdrecoveryokMessage', '')
-                        res.render('pwdrecovery.ejs', { messageok: req.flash('pwdrecoveryokMessage') ,
+                        res.render('pwdrecovery', { messageok: req.flash('pwdrecoveryokMessage') ,
                          messagedanger: req.flash('pwdrecoveryMessage') })
                     }
                     else
@@ -237,13 +237,13 @@ module.exports = function(app, passport) {
                                 //flash
                                 req.flash('pwdrecoveryMessage', 'An error occured, try later')
                                 req.flash('pwdrecoveryokMessage', '')
-                                res.render('pwdrecovery.ejs', { messageok: req.flash('pwdrecoveryokMessage') , 
+                                res.render('pwdrecovery', { messageok: req.flash('pwdrecoveryokMessage') , 
                                     messagedanger: req.flash('pwdrecoveryMessage') })
                             }
                             else
                             {
                                 req.flash('loginMessage', 'pwd changed. Try to login.')
-                                res.render('login.ejs', { message: req.flash('loginMessage') })
+                                res.render('login', { message: req.flash('loginMessage') })
                             }
                         })
                     }
@@ -257,7 +257,7 @@ module.exports = function(app, passport) {
 
 
     app.get('/changepwd', isLoggedInAndActivated, function(req, res) {
-        res.render('changepwd.ejs', {email: req.user.local.email, message: req.flash('changepwdMessage')})
+        res.render('changepwd', {email: req.user.local.email, message: req.flash('changepwdMessage')})
     })
 
     app.post('/changepwd', isLoggedInAndActivated, function(req, res){
@@ -265,7 +265,7 @@ module.exports = function(app, passport) {
         if(!user.validPassword(req.body.currentpassword))
         {
             req.flash('changepwdMessage', 'not the right password')
-            res.render('changepwd.ejs', {email: user.local.email, message: req.flash('changepwdMessage')})
+            res.render('changepwd', {email: user.local.email, message: req.flash('changepwdMessage')})
         }
         else
         {
@@ -277,12 +277,12 @@ module.exports = function(app, passport) {
                     console.log(err)
                     //flash
                     req.flash('changepwdMessage', 'An error occured, try later')
-                    res.render('changepwd.ejs', {email: user.local.email, message: req.flash('changepwdMessage')})
+                    res.render('changepwd', {email: user.local.email, message: req.flash('changepwdMessage')})
                 }
                 else
                 {
                     req.flash('loginMessage', 'pwd changed. Try to login.')
-                    res.render('login.ejs', { message: req.flash('loginMessage') })
+                    res.render('login', { message: req.flash('loginMessage') })
                 }
             })
         }
@@ -300,7 +300,7 @@ module.exports = function(app, passport) {
                 {
                     console.log(err)
                     req.flash('activateAccountDangerMessage', 'An error occured, try later')
-                    res.render('activateaccount.ejs', 
+                    res.render('activateaccount', 
                         { messagedanger: req.flash('activateAccountDangerMessage') , messageok: "" })
                 }
                 if(user)
@@ -322,14 +322,14 @@ module.exports = function(app, passport) {
                                     console.log(err)
                                     //flash
                                     req.flash('activateAccountDangerMessage', 'An error occured, try later')
-                                    res.render('activateaccount.ejs', 
+                                    res.render('activateaccount', 
                                         { messagedanger: req.flash('activateAccountDangerMessage') , 
                                         messageok: "" })
                                 }
                                 else
                                 {
                                     req.flash('activateAccountOkMessage', 'Account activated !')
-                                    res.render('activateaccount.ejs', 
+                                    res.render('activateaccount', 
                                         { messagedanger: "" , messageok: req.flash('activateAccountOkMessage') })
                                 }
                             })
@@ -346,13 +346,24 @@ module.exports = function(app, passport) {
     })
 
     // =====================================
-    // PROFILE SECTION =====================
+    // MAIN SECTION =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/main', isLoggedInAndActivated, function(req, res) {
-        res.render('main.ejs', {
-            username : req.user.local.username // get the user out of session and pass to template
+        res.render('main', {
+            username : req.user.local.username
+        })
+    })
+
+// =====================================
+    // PROFILE SECTION =====================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/user/:username', isLoggedInAndActivated, function(req, res) {
+        res.render('profile', {
+            user : req.user // get the user out of session and pass to template
         })
     })
 
@@ -412,7 +423,7 @@ module.exports = function(app, passport) {
 
     // locally --------------------------------
         app.get('/connect/local', isLoggedInAndActivated, function(req, res) {
-            res.render('connect-local.ejs', { message: req.flash('loginMessage') })
+            res.render('connect-local', { message: req.flash('loginMessage') })
         })
         app.post('/connect/local', isLoggedInAndActivated, passport.authenticate('local-signup', {
             successRedirect : '/main', // redirect to the secure main section
