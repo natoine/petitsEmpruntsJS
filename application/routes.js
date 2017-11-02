@@ -368,7 +368,7 @@ module.exports = function(app, passport) {
             successRedirect : '/main',
             failureRedirect : '/'
         }))
-
+/*
 // =====================================
     // TWITTER ROUTES ======================
     // =====================================
@@ -381,7 +381,7 @@ module.exports = function(app, passport) {
             successRedirect : '/main',
             failureRedirect : '/'
         }))
-
+*/
  // =====================================
     // GOOGLE ROUTES =======================
     // =====================================
