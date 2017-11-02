@@ -6,6 +6,9 @@ const smtpTransport = require('../config/mailer')
 
 const TIMINGTOCHANGEPWD = 3600000
 
+//needed for filesystem
+const fs = require('fs')
+
 // application/routes.js
 module.exports = function(app, passport) {
 
@@ -491,6 +494,33 @@ module.exports = function(app, passport) {
         })
     })
 
+// =============================================================================
+// BOOTSTRAP CSS JS =============================================================
+// =============================================================================
+
+    app.get('/bootstrap.min.css', function(req, res) {
+        fs.readFile("resources/bootstrap/css/bootstrap.min.css", function(err, data) {
+            res.writeHead(200, {'Content-Type': 'text/css'})
+            res.write(data)
+            res.end()
+        })
+    })
+
+    app.get('/bootstrap-responsive.css', function(req, res) {
+        fs.readFile("resources/bootstrap/css/bootstrap-responsive.css", function(err, data) {
+            res.writeHead(200, {'Content-Type': 'text/css'})
+            res.write(data)
+            res.end()
+        })
+    })
+
+    app.get('/bootstrap.min.js', function(req, res) {
+        fs.readFile("resources/bootstrap/js/bootstrap.min.js", function(err, data) {
+            res.writeHead(200, {'Content-Type': 'text/plain'})
+            res.write(data)
+            res.end()
+        })
+    })
 
 }
 
