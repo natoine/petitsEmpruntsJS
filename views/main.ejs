@@ -62,7 +62,10 @@
                     <form action="/newloan" method="post">
                         <fieldset>
                         <label>Quoi ?</label>
-                        <input type="text" placeholder="Quoi ?" id="fieldWhat" name="what">
+                        <input type="text" placeholder="Quoi ?" id="fieldWhat" name="what" <% if(what.length > 0) { %>
+                        value=<%= what %>
+                        <% } %>
+                        >
                             <% if(messagedangerwhat.length > 0 ) { %>
                             <div class="alert alert-danger" id="dangerWhat">
                             <%= messagedangerwhat %>
