@@ -351,9 +351,63 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/main', isLoggedInAndActivated, function(req, res) {
+        what = req.flash('what')
+        whom = req.flash('whom')
+        when = req.flash('when')
+        action = req.flash('action')
+        if(action.length === 0) action = "iBorrow" 
+
         res.render('main', {
-            username : req.user.local.username
+            username : req.user.local.username , 
+                messagedangerwhat: req.flash('messagedangerwhat') , 
+                messagedangerwhom: req.flash('messagedangerwhom') ,
+                messagedangerwhen: req.flash('messagedangerwhen') ,
+                what : what ,
+                whom : whom ,
+                when : when ,
+                action : action
         })
+    })
+
+    //creates a new loan !!! 
+    app.post('/newloan', isLoggedInAndActivated, function(req, res) {
+        what = req.body.what.trim()
+        whom = req.body.whom.trim()
+        when = req.body.when.trim()
+        action = req.body.action
+        user = req.user
+        cancreateloan = true
+        if(!what) 
+        {
+                console.log("what is empty")
+                cancreateloan = false
+                req.flash('messagedangerwhat', 'Précisez ce qui est emprunté')
+        }
+        if(!whom) 
+        {
+                console.log("whom is empty")
+                cancreateloan = false
+                req.flash('messagedangerwhom', 'Précisez avec qui se passe l\'emprunt')
+        }
+        if(!when) 
+        {
+                console.log("when is empty")
+                cancreateloan = false
+                req.flash('messagedangerwhen', 'Précisez quand l\'emprunt a lieu')
+        }
+        if(cancreateloan)
+        {
+            console.log("can create loan")
+        }
+        else
+        {
+            req.flash('what', what)
+            req.flash('when', when)
+            req.flash('whom', whom)
+            req.flash('action', action)
+            console.log("action : " + action)
+        }
+        res.redirect('/main')
     })
 
 // =====================================

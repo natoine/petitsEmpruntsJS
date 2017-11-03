@@ -30,8 +30,13 @@
                 <div class="navbar-header">
                     <ul class="nav navbar-nav">
                         <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
-                        <li id="iBorrowLi" class="active"><a href="#" id="IBorrowButton">J'emprunte</a></li>
-                        <li id="iLoanLi" class=""><a href="#" id="ILoanButton">Je prête</a></li>
+                            <% if(action == "iLoan") {%>
+                            <li id="iBorrowLi" class=""><a href="#" id="IBorrowButton">J'emprunte</a></li>
+                            <li id="iLoanLi" class="active"><a href="#" id="ILoanButton">Je prête</a></li>
+                            <% } else {%> 
+                            <li id="iBorrowLi" class="active"><a href="#" id="IBorrowButton">J'emprunte</a></li>
+                            <li id="iLoanLi" class=""><a href="#" id="ILoanButton">Je prête</a></li>
+                            <%}%>
                     </ul>
                 </div>
                 <div class="navbar-right pull-right">
@@ -49,19 +54,46 @@
             <div class="row-fluid" id="mainForm">
                 <div class="span4 offset3">
                 <span id="helloUserMain">Bonjour <%= username%>,</span>
+                <%if(action == "iBorrow") { %>
                 <span id="actionMain">Vous empruntez : </span>
+                <% } else { %>
+                <span id="actionMain">Vous prêtez : </span>
+                <% } %>
                     <form action="/newloan" method="post">
                         <fieldset>
                         <label>Quoi ?</label>
-                        <input type="text" placeholder="Quoi ?" id="fieldWhat">
-                        <div class="alert alert-danger" id="dangerWhat" hidden="true"></div>
+                        <input type="text" placeholder="Quoi ?" id="fieldWhat" name="what">
+                            <% if(messagedangerwhat.length > 0 ) { %>
+                            <div class="alert alert-danger" id="dangerWhat">
+                            <%= messagedangerwhat %>
+                            </div>
+                            <%
+                            }
+                            %>
                         <label>A Qui ?</label>
-                        <input type="text" placeholder="A Qui ?" id="fieldWho">
-                        <div class="alert alert-danger" id="dangerWho" hidden="true"></div>
+                        <input type="text" placeholder="A Qui ?" id="fieldWho" name="whom">
+                            <% if(messagedangerwhom.length > 0) { %>
+                            <div class="alert alert-danger" id="dangerWho">
+                            <%= messagedangerwhom %>
+                            </div>
+                            <%
+                            }
+                            %>
                         <label>Quand ?</label>
-                        <input type="text" placeholder="Quand ?" id="fieldWhen">
-                        <div class="alert alert-danger" id="dangerWhen" hidden="true"></div>
-                        <input type="hidden" id="actionMainForm" value="iBorrow">
+                        <input type="text" placeholder="Quand ?" id="fieldWhen" name="when">
+                            <% if(messagedangerwhen.length > 0) { %>
+                            <div class="alert alert-danger" id="dangerWhen">
+                            <%= messagedangerwhen %>
+                            </div>
+                            <%
+                            }
+                            %>
+                        
+                            <%if(action == "iBorrow") { %>
+                            <input type="hidden" id="actionMainForm" value="iBorrow" name="action">
+                            <% } else { %>
+                            <input type="hidden" id="actionMainForm" value="iLoan" name="action">
+                            <% } %>
                         <input type="submit" id="submitNewLoanButton" class="btn btn-primary btn-large btn-block" value="Nouvel Emprunt">
                         </fieldset>
                     </form>
