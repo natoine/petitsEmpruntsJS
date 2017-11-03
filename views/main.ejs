@@ -50,7 +50,7 @@
                 <div class="span4 offset3">
                 <span id="helloUserMain">Bonjour <%= username%>,</span>
                 <span id="actionMain">Vous empruntez : </span>
-                    <form>
+                    <form action="/newloan" method="post">
                         <fieldset>
                         <label>Quoi ?</label>
                         <input type="text" placeholder="Quoi ?" id="fieldWhat">
@@ -62,7 +62,7 @@
                         <input type="text" placeholder="Quand ?" id="fieldWhen">
                         <div class="alert alert-danger" id="dangerWhen" hidden="true"></div>
                         <input type="hidden" id="actionMainForm" value="iBorrow">
-                        <button type="button" id="submitNewLoanButton" class="btn btn-primary btn-large btn-block">Nouvel Emprunt</button>
+                        <input type="submit" id="submitNewLoanButton" class="btn btn-primary btn-large btn-block" value="Nouvel Emprunt">
                         </fieldset>
                     </form>
                 </div>
