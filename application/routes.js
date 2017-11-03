@@ -484,9 +484,8 @@ module.exports = function(app, passport) {
             req.flash('what', what)
             req.flash('when', when)
             req.flash('whom', whom)
-            req.flash('action', action)
-            console.log("action : " + action)
         }
+        req.flash('action', action)
         res.redirect('/main')
     })
 
