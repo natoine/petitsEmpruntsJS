@@ -74,7 +74,10 @@
                             }
                             %>
                         <label>A Qui ?</label>
-                        <input type="text" placeholder="A Qui ?" id="fieldWho" name="whom">
+                        <input type="text" placeholder="A Qui ?" id="fieldWho" name="whom" <% if(whom.length > 0) { %>
+                        value=<%= whom %>
+                        <% } %>
+                        >
                             <% if(messagedangerwhom.length > 0) { %>
                             <div class="alert alert-danger" id="dangerWho">
                             <%= messagedangerwhom %>
@@ -83,7 +86,10 @@
                             }
                             %>
                         <label>Quand ?</label>
-                        <input type="text" placeholder="Quand ?" id="fieldWhen" name="when">
+                        <input type="text" placeholder="Quand ?" id="fieldWhen" name="when" <% if(when.length > 0) { %>
+                        value=<%= when %>
+                        <% } %>
+                        >
                             <% if(messagedangerwhen.length > 0) { %>
                             <div class="alert alert-danger" id="dangerWhen">
                             <%= messagedangerwhen %>
