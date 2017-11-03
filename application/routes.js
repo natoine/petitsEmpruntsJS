@@ -360,6 +360,10 @@ module.exports = function(app, passport) {
         if(action.length === 0) action = "iBorrow" 
 
         user = req.user
+        //TODO
+        //=================
+        // we should not send borrows and loans in this request
+        // but make an API with token and fetch them from browser
         var myborrows
         Loan.find({ 'borrower' : user.local.email }, function(err, loans) {
             if(err) throw err
