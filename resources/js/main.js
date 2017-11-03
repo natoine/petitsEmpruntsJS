@@ -10,10 +10,13 @@ alertBorrow = () => {
 	document.querySelector("#iBorrowLi").classList.add("active")
 	document.querySelector("#iLoanLi").classList.remove("active")
 	document.querySelector("#actionMain").innerHTML = "Vous empruntez : "
+	document.querySelector("#actionMainForm").value = "iBorrow"
 }
+
 //je prête
 alertLoan = () => {
 	document.querySelector("#iLoanLi").classList.add("active")
 	document.querySelector("#iBorrowLi").classList.remove("active")
 	document.querySelector("#actionMain").innerHTML = "Vous prêtez : "
+	document.querySelector("#actionMainForm").value = "iLoan"
 }
