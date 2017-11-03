@@ -359,16 +359,36 @@ module.exports = function(app, passport) {
         action = req.flash('action')
         if(action.length === 0) action = "iBorrow" 
 
-        res.render('main', {
-            username : req.user.local.username , 
-                messagedangerwhat: req.flash('messagedangerwhat') , 
-                messagedangerwhom: req.flash('messagedangerwhom') ,
-                messagedangerwhen: req.flash('messagedangerwhen') ,
-                what : what ,
-                whom : whom ,
-                when : when ,
-                action : action
+        user = req.user
+        var myborrows
+        Loan.find({ 'borrower' : user.local.email }, function(err, loans) {
+            if(err) throw err
+            else 
+                {
+                    myborrows = loans
+                    var myloans
+                    Loan.find({ 'loaner' : user.local.email }, function(err, loans) {
+                        if(err) throw err
+                        else 
+                            {
+                                myloans = loans
+                                res.render('main', {
+                                    username : user.local.username , 
+                                        messagedangerwhat: req.flash('messagedangerwhat') , 
+                                        messagedangerwhom: req.flash('messagedangerwhom') ,
+                                        messagedangerwhen: req.flash('messagedangerwhen') ,
+                                        what : what ,
+                                        whom : whom ,
+                                        when : when ,
+                                        action : action ,
+                                        myborrows : myborrows ,
+                                        myloans : myloans
+                                })
+                            }
+                    })
+                }
         })
+        
     })
 
     //creates a new loan !!! 
