@@ -5,11 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.querySelector("#ILoanButton").addEventListener("click", alertLoan )
 
 })
-
+//j'emprunte
 alertBorrow = () => {
-	console.log("iBorrow")
+	document.querySelector("#iBorrowLi").classList.add("active")
+	document.querySelector("#iLoanLi").classList.remove("active")
+	document.querySelector("#actionMain").innerHTML = "Vous empruntez : "
 }
-
+//je prête
 alertLoan = () => {
-	console.log("iLoan")
+	document.querySelector("#iLoanLi").classList.add("active")
+	document.querySelector("#iBorrowLi").classList.remove("active")
+	document.querySelector("#actionMain").innerHTML = "Vous prêtez : "
 }
