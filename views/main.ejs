@@ -121,12 +121,22 @@
                     <table id="lendingsIBorrow" class="table table-striped">
                         <tbody id="lendingsIBorrowBody">
                         <!-- should be dynamical and not by ejs-->
+                        <% for( i = 0; i < myborrows.length ; i+=1) { %>
+                            <tr id="loan<%= myborrows[i]._id %>">
+                                <td><%= myborrows[i].what %> emprunté à <%= myborrows[i].loaner %> le <%=myborrows[i].when%></td>
+                            </tr>
+                        <% } %>
                         </tbody>
                     </table>
                     <h3 class="text-left">Mes Prêts <%= myloans.length %></h3>
                     <table id="lendingsILoan" class="table table-striped">
                         <tbody id="lendingsILoanBody">
                         <!-- should be dynamical and not by ejs-->
+                        <% for( i = 0; i < myloans.length ; i+=1) { %>
+                            <tr id="loan<%= myloans[i]._id %>">
+                                <td><%= myloans[i].what %> prêté à <%= myloans[i].borrower %> le <%=myloans[i].when%></td>
+                            </tr>
+                        <% } %>
                         </tbody>
                     </table>
                 </div>
