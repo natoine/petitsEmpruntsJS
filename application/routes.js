@@ -1,5 +1,7 @@
 // load up the user model
 const User            = require('../application/models/user')
+//load up the loan model
+const Loan = require('../application/models/loan')
 
 //to send emails
 const smtpTransport = require('../config/mailer')
@@ -398,6 +400,60 @@ module.exports = function(app, passport) {
         if(cancreateloan)
         {
             console.log("can create loan")
+            var newLoan = new Loan()
+            switch(action) 
+            {
+                case 'iBorrow':
+                    newLoan.borrower = user.local.email
+                    newLoan.loaner = whom
+                    newLoan.what = what
+                    newLoan.when = when
+                    newLoan.save(function(err){
+                        if (err) throw err
+                        else 
+                        {
+                            const mailOptions =
+                        {
+                            to : newLoan.borrower,
+                            subject : "petitsEmprunts nouvel emprunt",
+                            html : "Vous venez d'emprunter " + what + " à " + whom
+                        }
+                        smtpTransport.sendMail(mailOptions, function(error, response){
+                            if(error)
+                            {
+                                console.log(error)
+                            }
+                        })
+                        }
+                    })
+                    break ;
+                case 'iLoan' :
+                    newLoan.loaner = user.local.email
+                    newLoan.borrower = whom
+                    newLoan.what = what
+                    newLoan.when = when
+                    newLoan.save(function(err){
+                        if (err) throw err
+                        else 
+                        {
+                            const mailOptions =
+                        {
+                            to : newLoan.loaner,
+                            subject : "petitsEmprunts nouveau prêt",
+                            html : "Vous venez de prêter " + what + " à " + whom
+                        }
+                        smtpTransport.sendMail(mailOptions, function(error, response){
+                            if(error)
+                            {
+                                console.log(error)
+                            }
+                        })
+                        }
+                    })
+
+                    break ;
+            }
+
         }
         else
         {
