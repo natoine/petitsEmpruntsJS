@@ -688,6 +688,14 @@ module.exports = function(app, passport) {
         })
     })
 
+    app.get('/img/glyphicons-halflings-white.png', function(req, res) {
+        fs.readFile("resources/bootstrap/img/glyphicons-halflings-white.png", function(err, data) {
+            res.writeHead(200, {'Content-Type': 'image/png'})
+            res.write(data)
+            res.end()
+        })
+    })    
+
 // =============================================================================
 // MOMENT PICKADAY JS =============================================================
 // =============================================================================

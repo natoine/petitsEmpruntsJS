@@ -133,6 +133,7 @@
                         <% for( i = 0; i < myborrows.length ; i+=1) { %>
                             <tr id="loan<%= myborrows[i]._id %>">
                                 <td><%= myborrows[i].what %> emprunté à <%= myborrows[i].loaner %> le <%=myborrows[i].when%></td>
+                                <td><button class="btn btn-danger" id="deleteloan<%= myborrows[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
                             </tr>
                         <% } %>
                         </tbody>
@@ -145,6 +146,7 @@
                         <% for( i = 0; i < myloans.length ; i+=1) { %>
                             <tr id="loan<%= myloans[i]._id %>">
                                 <td><%= myloans[i].what %> prêté à <%= myloans[i].borrower %> le <%=myloans[i].when%></td>
+                                <td><button class="btn btn-danger" id="deleteloan<%= myloans[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
                             </tr>
                         <% } %>
                         </tbody>
