@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	deletebuttons = document.querySelectorAll(".btndelete")
 	for(deletebutton of deletebuttons ) 
 	{
-		deletebutton.addEventListener("click" , function(){alerteButton(deletebutton)})
+		deletebutton.addEventListener("click" , function(){alerteButton(this)})
 	}
 })
 //j'emprunte
@@ -27,5 +27,7 @@ changetoloan = () => {
 
 //je supprime un emprunt
 alerteButton = (deletebutton) => {
-	alert(deletebutton.id)
+	deletebuttonid = deletebutton.id
+	id = deletebuttonid.split("deleteloan")[1]
+	alert('id : ' + id )
 }
