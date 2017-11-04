@@ -29,5 +29,9 @@ changetoloan = () => {
 alerteButton = (deletebutton) => {
 	deletebuttonid = deletebutton.id
 	id = deletebuttonid.split("deleteloan")[1]
-	alert('id : ' + id )
+	fetch("/loan/" + id , {method : 'delete'}).then(response =>
+    	response.json().then(json => {
+      		return json;
+    	})
+  	)
 }

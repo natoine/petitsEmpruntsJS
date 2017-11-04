@@ -505,6 +505,12 @@ module.exports = function(app, passport) {
         res.redirect('/main')
     })
 
+    //delete a loan
+    app.delete("/loan/:loanid", isLoggedInAndActivated, function(req, res) {
+        console.log("try to suppress loan : " + req.params.loanid)
+    })
+
+
 // =====================================
     // PROFILE SECTION =====================
     // =====================================
