@@ -353,6 +353,10 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/main', isLoggedInAndActivated, function(req, res) {
+        
+        //get the ?friend= query tagid from request
+        friend = req.query.friend || "none"
+        
         what = req.flash('what')
         whom = req.flash('whom')
         when = req.flash('when')
@@ -360,22 +364,33 @@ module.exports = function(app, passport) {
         if(action.length === 0) action = "iBorrow" 
 
         user = req.user
+        borrowsQuery = { 'borrower' : user.local.email }
+        loansQuery = { 'loaner' : user.local.email }
+        if(friend !== "none")
+        {
+            borrowsQuery.loaner = friend
+            loansQuery.borrower = friend
+        }
+
+        friendList = new Set()
         //TODO
         //=================
         // we should not send borrows and loans in this request
         // but make an API with token and fetch them from browser
         var myborrows
-        Loan.find({ 'borrower' : user.local.email }, function(err, loans) {
+        Loan.find( borrowsQuery, function(err, loans) {
             if(err) throw err
             else 
                 {
                     myborrows = loans
+                    myborrows.map(loan => {if(!friendList.has(loan.loaner)) friendList.add(loan.loaner)})
                     var myloans
-                    Loan.find({ 'loaner' : user.local.email }, function(err, loans) {
+                    Loan.find(loansQuery, function(err, loans) {
                         if(err) throw err
                         else 
                             {
                                 myloans = loans
+                                myloans.map(loan => {if(!friendList.has(loan.borrower)) friendList.add(loan.borrower)})
                                 res.render('main', {
                                     username : user.local.username , 
                                         messagedangerwhat: req.flash('messagedangerwhat') , 
@@ -386,7 +401,8 @@ module.exports = function(app, passport) {
                                         when : when ,
                                         action : action ,
                                         myborrows : myborrows ,
-                                        myloans : myloans
+                                        myloans : myloans ,
+                                        friendList : friendList
                                 })
                             }
                     })
