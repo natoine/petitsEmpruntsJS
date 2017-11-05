@@ -3,6 +3,8 @@ const User            = require('../application/models/user')
 //load up the loan model
 const Loan = require('../application/models/loan')
 
+const mongo = require('mongodb')
+
 //to send emails
 const smtpTransport = require('../config/mailer')
 
@@ -452,13 +454,12 @@ module.exports = function(app, passport) {
                         if (err) throw err
                         else 
                         {
-                            const mailOptions =
-                        {
-                            to : newLoan.borrower,
-                            subject : "petitsEmprunts nouvel emprunt",
-                            html : "Vous venez d'emprunter " + what + " à " + whom
-                        }
-                        smtpTransport.sendMail(mailOptions, function(error, response){
+                            const mailOptions = {
+                                    to : newLoan.borrower,
+                                    subject : "petitsEmprunts nouvel emprunt",
+                                    html : "Vous venez d'emprunter " + what + " à " + whom
+                                }
+                            smtpTransport.sendMail(mailOptions, function(error, response){
                             if(error)
                             {
                                 console.log(error)
@@ -505,11 +506,37 @@ module.exports = function(app, passport) {
         res.redirect('/main')
     })
 
-    //delete a loan
-    app.delete("/loan/:loanid", isLoggedInAndActivated, function(req, res) {
-        console.log("try to suppress loan : " + req.params.loanid)
-    })
+    //cause HTML cannot call DELETE and cause fetch will not have the user in the request
+    app.post("/deleteloan/:loanid", isLoggedInAndActivated, function(req, res) {
+        console.log(req.user.local.username + " try to suppress loan : " + req.params.loanid)
+        oId = new mongo.ObjectID(req.params.loanid)
+        Loan.findOne({"_id" : oId}, function(err, loan) {
+            if(err) throw err
+            else {
+                if(loan.loaner === req.user.local.username || loan.borrower === req.user.local.username)
+                {
+                    Loan.remove({"_id" : oId}, function(err, loan) {
+                        if(err) 
+                            {
+                                console.log("unable to delete loan : " + req.params.loanid)
+                                throw err
+                            }
+                            else
+                            {
+                                console.log("delete loan : " + req.params.loanid)
+                                res.redirect('/main')
+                            }
 
+                    })
+                }
+                else
+                {
+                    console.log("not authorized to suppress this loan")
+                    res.redirect('/main')
+                }
+            }
+        })
+    })
 
 // =====================================
     // PROFILE SECTION =====================

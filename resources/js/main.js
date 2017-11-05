@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	deletebuttons = document.querySelectorAll(".btndelete")
 	for(deletebutton of deletebuttons ) 
 	{
-		deletebutton.addEventListener("click" , function(){alerteButton(this)})
+		deletebutton.addEventListener("click" , function(){postDeleteButton(this)})
 	}
 })
 //j'emprunte
@@ -25,13 +25,12 @@ changetoloan = () => {
 	document.querySelector("#actionMainForm").value = "iLoan"
 }
 
-//je supprime un emprunt
-alerteButton = (deletebutton) => {
+//je supprime un emprunt (j'aurai aimé faire un fetch DELETE ...)
+postDeleteButton = (deletebutton) => {
 	deletebuttonid = deletebutton.id
 	id = deletebuttonid.split("deleteloan")[1]
-	fetch("/loan/" + id , {method : 'delete'}).then(response =>
-    	response.json().then(json => {
-      		return json;
-    	})
-  	)
+	var form = document.createElement("form")
+	form.method = "POST"
+    form.action = "/deleteloan/" + id
+    form.submit()
 }
