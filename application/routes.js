@@ -7,6 +7,7 @@ const mongo = require('mongodb')
 
 //to send emails
 const smtpTransport = require('../config/mailer')
+const urlService = require('../config/usefulvars').urlService
 
 const TIMINGTOCHANGEPWD = 3600000
 
@@ -154,7 +155,7 @@ module.exports = function(app, passport) {
                                 subject : "petitsEmprunts pwd recovery ok",
                                 html : "you seem to have lost your pwd. "
                                  + "Click on the following link to change your password : " 
-                                 + "<a href=\"http://localhost:8080/pwdrecovery?token=" + user.local.pwdrecotoken
+                                 + "<a href=\"" + urlService + "/pwdrecovery?token=" + user.local.pwdrecotoken
                                  + "\">Password change</a>"
                             }
                             smtpTransport.sendMail(mailOptions, function(error, response){
