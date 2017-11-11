@@ -89,7 +89,7 @@ module.exports = function(passport)
                             subject : "petitsEmprunts account activation",
                             html : "Welcome on petitsEmprunts." 
                             + " Please click the link bellow to activate your account :" 
-                            + " <a href=\"" + urlService + "activateaccount?email=" 
+                            + " <a href=\"" + urlService + "/activateaccount?email=" 
                             + email + "&token=" + newUser.local.activationtoken 
                             +"\">Activate Account</a>"
                         }
