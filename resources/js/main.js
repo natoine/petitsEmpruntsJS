@@ -32,5 +32,7 @@ postDeleteButton = (deletebutton) => {
 	var form = document.createElement("form")
 	form.method = "POST"
     form.action = "/deleteloan/" + id
+    form.style.display = "none"
+    document.body.appendChild(form)
     form.submit()
 }
