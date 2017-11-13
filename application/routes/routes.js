@@ -1,13 +1,13 @@
 // load up the user model
-const User            = require('../application/models/user')
+const User            = require('../models/user')
 //load up the loan model
-const Loan = require('../application/models/loan')
+const Loan = require('../models/loan')
 
 const mongo = require('mongodb')
 
 //to send emails
-const smtpTransport = require('../config/mailer')
-const urlService = require('../config/usefulvars').urlService
+const smtpTransport = require('../../config/mailer')
+const urlService = require('../../config/usefulvars').urlService
 
 const TIMINGTOCHANGEPWD = 3600000
 
