@@ -30,13 +30,6 @@
                 <div class="navbar-header">
                     <ul class="nav navbar-nav">
                         <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
-                            <% if(action == "iLoan") {%>
-                            <li id="iBorrowLi" class=""><a href="#" id="IBorrowButton">J'emprunte</a></li>
-                            <li id="iLoanLi" class="active"><a href="#" id="ILoanButton">Je prête</a></li>
-                            <% } else {%> 
-                            <li id="iBorrowLi" class="active"><a href="#" id="IBorrowButton">J'emprunte</a></li>
-                            <li id="iLoanLi" class=""><a href="#" id="ILoanButton">Je prête</a></li>
-                            <%}%>
                     </ul>
                 </div>
                 <div class="navbar-right pull-right">
@@ -53,13 +46,7 @@
 <div class="container">
             <div class="row-fluid" id="mainForm">
                 <div class="span4 offset3">
-                <span id="helloUserMain">Bonjour <%= username%>,</span>
-                <%if(action == "iBorrow") { %>
-                <span id="actionMain">Vous empruntez : </span>
-                <% } else { %>
-                <span id="actionMain">Vous prêtez : </span>
-                <% } %>
-                    <form action="/newloan" method="post">
+                    <form id="mainform" action="/newloan" method="post">
                         <fieldset>
                         <label>Quoi ?</label>
                         <input type="text" placeholder="Quoi ?" id="fieldWhat" name="what" <% if(what.length > 0) { %>
@@ -98,12 +85,8 @@
                             }
                             %>
                         
-                            <%if(action == "iBorrow") { %>
-                            <input type="hidden" id="actionMainForm" value="iBorrow" name="action">
-                            <% } else { %>
-                            <input type="hidden" id="actionMainForm" value="iLoan" name="action">
-                            <% } %>
-                        <input type="submit" id="submitNewLoanButton" class="btn btn-primary btn-large btn-block" value="Nouvel Emprunt">
+                        <button id="submitILoanButton" class="btn btn-primary btn-large btn-block">Je prête</button>
+                        <button id="submitIBorrowButton" class="btn btn-primary btn-large btn-block" >J'emprunte</button>
                         </fieldset>
                     </form>
                 </div>

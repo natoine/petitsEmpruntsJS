@@ -1,29 +1,13 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-
-	document.querySelector("#IBorrowButton").addEventListener("click", changetoborrow )
-	document.querySelector("#ILoanButton").addEventListener("click", changetoloan )
 	deletebuttons = document.querySelectorAll(".btndelete")
 	for(deletebutton of deletebuttons ) 
 	{
 		deletebutton.addEventListener("click" , function(){postDeleteButton(this)})
 	}
+	document.querySelector("#submitILoanButton").addEventListener("click" , function(){postNewLoan("iLoan")} )
+	document.querySelector("#submitIBorrowButton").addEventListener("click" , function(){postNewLoan("iBorrow")} )
 })
-//j'emprunte
-changetoborrow = () => {
-	document.querySelector("#iBorrowLi").classList.add("active")
-	document.querySelector("#iLoanLi").classList.remove("active")
-	document.querySelector("#actionMain").innerHTML = "Vous empruntez : "
-	document.querySelector("#actionMainForm").value = "iBorrow"
-}
-
-//je prête
-changetoloan = () => {
-	document.querySelector("#iLoanLi").classList.add("active")
-	document.querySelector("#iBorrowLi").classList.remove("active")
-	document.querySelector("#actionMain").innerHTML = "Vous prêtez : "
-	document.querySelector("#actionMainForm").value = "iLoan"
-}
 
 //je supprime un emprunt (j'aurai aimé faire un fetch DELETE ...)
 postDeleteButton = (deletebutton) => {
@@ -35,4 +19,15 @@ postDeleteButton = (deletebutton) => {
     form.style.display = "none"
     document.body.appendChild(form)
     form.submit()
+}
+
+postNewLoan = (loanOrBorrow) => {
+	form = document.querySelector("#mainform")
+	inputAction = document.createElement("input")
+	inputAction.type = "hidden"
+	inputAction.id = "actionMainForm"
+	inputAction.name = "action"
+	inputAction.value = loanOrBorrow
+	form.appendChild(inputAction)
+	form.submit()
 }
