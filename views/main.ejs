@@ -133,6 +133,7 @@
                         <% for( i = 0; i < myborrows.length ; i+=1) { %>
                             <tr id="loan<%= myborrows[i]._id %>">
                                 <td><%= myborrows[i].what %> emprunté à <%= myborrows[i].loaner %> le <%=myborrows[i].when%></td>
+                                <td><%= myborrows[i].getDelay() %></td>
                                 <td><button class="btn btn-danger btndelete" id="deleteloan<%= myborrows[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
                             </tr>
                         <% } %>
@@ -146,6 +147,7 @@
                         <% for( i = 0; i < myloans.length ; i+=1) { %>
                             <tr id="loan<%= myloans[i]._id %>">
                                 <td><%= myloans[i].what %> prêté à <%= myloans[i].borrower %> le <%=myloans[i].when%></td>
+                                <td><%= myloans[i].getDelay() %></td>
                                 <td><button class="btn btn-danger btndelete" id="deleteloan<%= myloans[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
                             </tr>
                         <% } %>
@@ -165,7 +167,7 @@
         <script src="/pikaday.js"></script>
         <script>
             moment.locale("fr")
-            //var picker = new Pikaday({ field: document.getElementById('fieldWhen') });
+            //var picker = new Pikaday({ field: document.getElementById('fieldWhen') })
              var picker = new Pikaday({
                 field: document.getElementById('fieldWhen'),
                 format: 'D MMM YYYY',
@@ -176,7 +178,7 @@
                     weekdays      : ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
                     weekdaysShort : ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']
                     }
-                });
+                })
         </script>
 
         <script src="/main.js"></script>
