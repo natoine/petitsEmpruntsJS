@@ -6,8 +6,7 @@ const Loan = require('../models/loan')
 const mongo = require('mongodb')
 
 //to send emails
-const smtpTransport = require('../../config/mailer')
-const urlService = require('../../config/usefulvars').urlService
+const mailSender = require('../utils/mailSender')
 
 const TIMINGTOCHANGEPWD = 3600000
 
@@ -149,16 +148,12 @@ module.exports = function(app, passport) {
                         else
                         {
                             //sends an email to recover password
-                            const mailOptions =
-                            {
-                                to : email,
-                                subject : "petitsEmprunts pwd recovery ok",
-                                html : "you seem to have lost your pwd. "
-                                 + "Click on the following link to change your password : " 
-                                 + "<a href=\"" + urlService + "/pwdrecovery?token=" + user.local.pwdrecotoken
+                            var subject = "Récupération de votre mot de Passe petitsEmprunts"
+                            var html = "Cliquez sur le lien suivant pour changer votre Mot de Passe : " 
+                                 + "<a href=\"" + mailSender.urlService + "/pwdrecovery?token=" 
+                                 + user.local.pwdrecotoken
                                  + "\">Password change</a>"
-                            }
-                            smtpTransport.sendMail(mailOptions, function(error, response){
+                            mailSender.sendMail(email, subject, html, function(error, response){
                                 if(error)
                                 {
                                     console.log(error)
@@ -182,18 +177,17 @@ module.exports = function(app, passport) {
                 } 
                 else {
                     //sends an email to prevent a missuse of email
-                    const mailOptions =
-                    {
-                        to : email,
-                        subject : "petitsEmprunts pwd recovery notok",
-                        text : "someone thinks you use our service"
-                    }
-                    smtpTransport.sendMail(mailOptions, function(error, response){
-                        if(error)
-                        {
-                            console.log(error)
-                        }
-                    })
+                        var subject = "PetitsEmprunts tentative d'utilisation de votre mail"
+                        var html = "Quelqu'un essaye d'utiliser votre mail pour se connecter sur PetitsEmprunts mais vous n'êtes pas inscrits ... "
+                        + "vous pouvez découvrir Petits Emprunts ici : " 
+                        + "<a href=\"" + mailSender.urlService + "\" > Petits Emprunts </a>" 
+                        mailSender.sendMail(email, subject, html, function(error, response){
+                            if(error)
+                            {
+                                console.log(error)
+                            }
+                        })
+
                     //flash
                     req.flash('pwdrecoveryokMessage', 'An email has been sent')
                     res.render('pwdrecovery', 
@@ -454,18 +448,8 @@ module.exports = function(app, passport) {
                     newLoan.save(function(err){
                         if (err) throw err
                         else 
-                        {
-                            const mailOptions = {
-                                    to : newLoan.borrower,
-                                    subject : "petitsEmprunts nouvel emprunt",
-                                    html : "Vous venez d'emprunter " + what + " à " + whom
-                                }
-                            smtpTransport.sendMail(mailOptions, function(error, response){
-                            if(error)
-                            {
-                                console.log(error)
-                            }
-                        })
+                        {   
+                           console.log("nouvel emprunt")
                         }
                     })
                     break ;
@@ -478,21 +462,9 @@ module.exports = function(app, passport) {
                         if (err) throw err
                         else 
                         {
-                            const mailOptions =
-                        {
-                            to : newLoan.loaner,
-                            subject : "petitsEmprunts nouveau prêt",
-                            html : "Vous venez de prêter " + what + " à " + whom
-                        }
-                        smtpTransport.sendMail(mailOptions, function(error, response){
-                            if(error)
-                            {
-                                console.log(error)
-                            }
-                        })
+                            console.log("nouveau prêt")
                         }
                     })
-
                     break ;
             }
 

@@ -6,8 +6,7 @@ var FacebookStrategy = require('passport-facebook').Strategy
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
 //to send emails
-const smtpTransport = require('../../config/mailer')
-const urlService = require('../../config/usefulvars').urlService
+const mailSender = require('./mailSender')
 
 // load up the user model
 var User            = require('../models/user')
@@ -83,17 +82,14 @@ module.exports = function(passport)
                     else 
                     {
                         //sends an email to activate account
-                        const mailOptions =
-                        {
-                            to : email,
-                            subject : "petitsEmprunts account activation",
-                            html : "Welcome on petitsEmprunts." 
-                            + " Please click the link bellow to activate your account :" 
-                            + " <a href=\"" + urlService + "/activateaccount?email=" 
-                            + email + "&token=" + newUser.local.activationtoken 
+                        var subject = "Activation de compte PetitsEmprunts"
+                        var html = "Bienvenue sur Petits Emprunts." + 
+                            " Cliquez sur le lien ci-dessous pour activer votre compte : <a href=\""
+                            + mailSender.urlService 
+                            + "/activateaccount?email=" + email 
+                            + "&token=" + newUser.local.activationtoken 
                             +"\">Activate Account</a>"
-                        }
-                        smtpTransport.sendMail(mailOptions, function(error, response){
+                        mailSender.sendMail(email, subject, html, function(error, response){
                             if(error)
                             {
                                 console.log(error)
