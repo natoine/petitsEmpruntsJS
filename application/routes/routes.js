@@ -523,7 +523,32 @@ module.exports = function(app, passport) {
     
     //to change username
     app.post('/changeusername', isLoggedInAndActivated, function(req, res) {
-        console.log(req.body.username)
+        newusername = req.body.username.trim()
+        if( newusername == "" || req.user.local.username == newusername ) 
+        {
+                res.redirect('/user/' + req.user.local.username)
+        }
+        else 
+        {
+            User.findOne({"local.username" : newusername}, function(err, user) {
+                if(err) throw err
+                else 
+                {
+                    if(user)
+                    {
+                        req.flash("messageusername", "this username is already in use")
+                        res.redirect('/user/' + req.user.local.username)   
+                    }
+                    else
+                    {
+                        req.user.local.username = newusername
+                        req.user.save()
+                        res.redirect('/user/' + newusername)
+                    }
+                }
+            })
+
+        }
     })
 
     // =====================================
