@@ -481,7 +481,6 @@ module.exports = function(app, passport) {
 
     //cause HTML cannot call DELETE and cause fetch will not have the user in the request
     app.post("/deleteloan/:loanid", isLoggedInAndActivated, function(req, res) {
-        console.log(req.user.local.username + " try to suppress loan : " + req.params.loanid)
         oId = new mongo.ObjectID(req.params.loanid)
         Loan.findOne({"_id" : oId}, function(err, loan) {
             if(err) throw err
@@ -514,13 +513,17 @@ module.exports = function(app, passport) {
 // =====================================
     // PROFILE SECTION =====================
     // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
+    // TODO should test is username is req.user cause we will want to see page of other users
     app.get('/user/:username', isLoggedInAndActivated, function(req, res) {
         res.render('profile', {
             user : req.user, // get the user out of session and pass to template
             message : req.flash('messageusername')
         })
+    })
+    
+    //to change username
+    app.post('/changeusername', isLoggedInAndActivated, function(req, res) {
+        console.log(req.body.username)
     })
 
     // =====================================
