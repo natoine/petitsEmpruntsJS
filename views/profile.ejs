@@ -47,6 +47,10 @@
         <!-- CHANGE USERNAME -->
         <div class="col-sm-6">
             <div class="well">
+                <!-- show any messages that come back with username change form -->
+                <% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %></div>
+                <% } %>
                 <form action="/changeusername" method="post">
                     <div class="form-group">
                         <label>Username</label>
