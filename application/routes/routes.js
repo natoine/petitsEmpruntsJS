@@ -13,6 +13,8 @@ const TIMINGTOCHANGEPWD = 3600000
 //needed for filesystem
 const fs = require('fs')
 
+const security = require('../utils/securityMiddleware')
+
 // application/routes.js
 module.exports = function(app, passport) {
 
@@ -255,11 +257,11 @@ module.exports = function(app, passport) {
     // =====================================
 
 
-    app.get('/changepwd', isLoggedInAndActivated, function(req, res) {
+    app.get('/changepwd', security.isLoggedInAndActivated, function(req, res) {
         res.render('changepwd', {email: req.user.local.email, message: req.flash('changepwdMessage')})
     })
 
-    app.post('/changepwd', isLoggedInAndActivated, function(req, res){
+    app.post('/changepwd', security.isLoggedInAndActivated, function(req, res){
         const user = req.user
         if(!user.validPassword(req.body.currentpassword))
         {
@@ -349,7 +351,7 @@ module.exports = function(app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/main', isLoggedInAndActivated, function(req, res) {
+    app.get('/main', security.isLoggedInAndActivated, function(req, res) {
         
         //get the ?friend= query tagid from request
         friend = req.query.friend || "none"
@@ -409,7 +411,7 @@ module.exports = function(app, passport) {
     })
 
     //creates a new loan !!! 
-    app.post('/newloan', isLoggedInAndActivated, function(req, res) {
+    app.post('/newloan', security.isLoggedInAndActivated, function(req, res) {
         what = req.body.what.trim()
         whom = req.body.whom.trim()
         when = req.body.when.trim()
@@ -480,7 +482,7 @@ module.exports = function(app, passport) {
     })
 
     //cause HTML cannot call DELETE and cause fetch will not have the user in the request
-    app.post("/deleteloan/:loanid", isLoggedInAndActivated, function(req, res) {
+    app.post("/deleteloan/:loanid", security.isLoggedInAndActivated, function(req, res) {
         oId = new mongo.ObjectID(req.params.loanid)
         Loan.findOne({"_id" : oId}, function(err, loan) {
             if(err) throw err
@@ -514,7 +516,7 @@ module.exports = function(app, passport) {
     // PROFILE SECTION =====================
     // =====================================
     // TODO should test is username is req.user cause we will want to see page of other users
-    app.get('/user/:username', isLoggedInAndActivated, function(req, res) {
+    app.get('/user/:username', security.isLoggedInAndActivated, function(req, res) {
         res.render('profile', {
             user : req.user, // get the user out of session and pass to template
             message : req.flash('messageusername')
@@ -522,7 +524,7 @@ module.exports = function(app, passport) {
     })
     
     //to change username
-    app.post('/changeusername', isLoggedInAndActivated, function(req, res) {
+    app.post('/changeusername', security.isLoggedInAndActivated, function(req, res) {
         newusername = req.body.username.trim()
         if( newusername == "" || req.user.local.username == newusername ) 
         {
@@ -593,10 +595,10 @@ module.exports = function(app, passport) {
 // =============================================================================
 
     // locally --------------------------------
-        app.get('/connect/local', isLoggedInAndActivated, function(req, res) {
+        app.get('/connect/local', security.isLoggedInAndActivated, function(req, res) {
             res.render('connect-local', { message: req.flash('loginMessage') })
         })
-        app.post('/connect/local', isLoggedInAndActivated, passport.authenticate('local-signup', {
+        app.post('/connect/local', security.isLoggedInAndActivated, passport.authenticate('local-signup', {
             successRedirect : '/main', // redirect to the secure main section
             failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
@@ -605,10 +607,10 @@ module.exports = function(app, passport) {
     // facebook -------------------------------
 
         // send to facebook to do the authentication
-        app.get('/connect/facebook', isLoggedInAndActivated, passport.authorize('facebook', { scope : 'email' }))
+        app.get('/connect/facebook', security.isLoggedInAndActivated, passport.authorize('facebook', { scope : 'email' }))
 
         // handle the callback after facebook has authorized the user
-        app.get('/connect/facebook/callback', isLoggedInAndActivated,
+        app.get('/connect/facebook/callback', security.isLoggedInAndActivated,
             passport.authorize('facebook', {
                 successRedirect : '/main',
                 failureRedirect : '/'
@@ -617,10 +619,10 @@ module.exports = function(app, passport) {
     // twitter --------------------------------
 
         // send to twitter to do the authentication
-        app.get('/connect/twitter', isLoggedInAndActivated, passport.authorize('twitter', { scope : 'email' }))
+        app.get('/connect/twitter', security.isLoggedInAndActivated, passport.authorize('twitter', { scope : 'email' }))
 
         // handle the callback after twitter has authorized the user
-        app.get('/connect/twitter/callback', isLoggedInAndActivated,
+        app.get('/connect/twitter/callback', security.isLoggedInAndActivated,
             passport.authorize('twitter', {
                 successRedirect : '/main',
                 failureRedirect : '/'
@@ -629,10 +631,10 @@ module.exports = function(app, passport) {
     // google ---------------------------------
 
         // send to google to do the authentication
-        app.get('/connect/google', isLoggedInAndActivated, passport.authorize('google', { scope : ['profile', 'email'] }))
+        app.get('/connect/google', security.isLoggedInAndActivated, passport.authorize('google', { scope : ['profile', 'email'] }))
 
         // the callback after google has authorized the user
-        app.get('/connect/google/callback', isLoggedInAndActivated,
+        app.get('/connect/google/callback', security.isLoggedInAndActivated,
             passport.authorize('google', {
                 successRedirect : '/main',
                 failureRedirect : '/'
@@ -646,7 +648,7 @@ module.exports = function(app, passport) {
 // user account will stay active in case they want to reconnect in the future
 
     // local -----------------------------------
-    app.get('/unlink/local', isLoggedInAndActivated, function(req, res) {
+    app.get('/unlink/local', security.isLoggedInAndActivated, function(req, res) {
         var user            = req.user
         user.local.email    = undefined
         user.local.password = undefined
@@ -656,7 +658,7 @@ module.exports = function(app, passport) {
     })
 
     // facebook -------------------------------
-    app.get('/unlink/facebook', isLoggedInAndActivated, function(req, res) {
+    app.get('/unlink/facebook', security.isLoggedInAndActivated, function(req, res) {
         var user            = req.user
         user.facebook.token = undefined
         user.save(function(err) {
@@ -665,7 +667,7 @@ module.exports = function(app, passport) {
     })
 
     // twitter --------------------------------
-    app.get('/unlink/twitter', isLoggedInAndActivated, function(req, res) {
+    app.get('/unlink/twitter', security.isLoggedInAndActivated, function(req, res) {
         var user           = req.user
         user.twitter.token = undefined
         user.save(function(err) {
@@ -674,7 +676,7 @@ module.exports = function(app, passport) {
     })
 
     // google ---------------------------------
-    app.get('/unlink/google', isLoggedInAndActivated, function(req, res) {
+    app.get('/unlink/google', security.isLoggedInAndActivated, function(req, res) {
         var user          = req.user
         user.google.token = undefined
         user.save(function(err) {
@@ -759,28 +761,4 @@ module.exports = function(app, passport) {
         })
     })
 
-}
-
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated())
-        return next()
-
-    // if they aren't redirect them to the home page
-    res.redirect('/')
-}
-
-function isLoggedInAndActivated(req, res, next) {
-
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated() && req.user.isActivated())
-    {
-        if(req.user.local.email || req.user.facebook.token || req.user.twitter.token || req.user.google.token)
-        return next()
-    }
-
-    // if they aren't redirect them to the home page
-    res.redirect('/')
 }
