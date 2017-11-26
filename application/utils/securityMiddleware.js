@@ -1,3 +1,4 @@
+
 module.exports = {
 
     // route middleware to make sure a user is logged in
@@ -21,6 +22,16 @@ module.exports = {
         }
 
         // if they aren't redirect them to the home page
+        res.redirect('/')
+    },
+
+    isSuperAdmin: function(req, res, next) {
+        //if usermail is superadmin mail, carry on
+        if(req.isAuthenticated() && req.user.isActivated() &&
+            req.user.local.email == require('../../config/usefulvars').superadmin)
+        {
+            return next()
+        }
         res.redirect('/')
     }
 

@@ -41,6 +41,7 @@ require('./application/routes/mainroutes.js')(app, express)
 // load our routes and pass in our app and fully configured passport
 require('./application/routes/clientfiles.js')(app, express)
 require('./application/routes/pwd.js')(app, express)
+require('./application/routes/admin.js')(app, express)
 require('./application/routes/auth.js')(app, express, passport)
 
 // launch ======================================================================
