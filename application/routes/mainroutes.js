@@ -10,10 +10,13 @@ const security = require('../utils/securityMiddleware')
 // application/routes.js
 module.exports = function(app, express) {
 
+    // get an instance of the router for main routes
+    const mainRoutes = express.Router()
+
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
-    app.get('/', function(req, res) {
+    mainRoutes.get('/', function(req, res) {
         req.logout()
         res.render('index')// load the index.ejs file
     })
@@ -23,7 +26,7 @@ module.exports = function(app, express) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/main', security.isLoggedInAndActivated, function(req, res) {
+    mainRoutes.get('/main', security.isLoggedInAndActivated, function(req, res) {
         
         //get the ?friend= query tagid from request
         friend = req.query.friend || "none"
@@ -83,7 +86,7 @@ module.exports = function(app, express) {
     })
 
     //creates a new loan !!! 
-    app.post('/newloan', security.isLoggedInAndActivated, function(req, res) {
+    mainRoutes.post('/newloan', security.isLoggedInAndActivated, function(req, res) {
         what = req.body.what.trim()
         whom = req.body.whom.trim()
         when = req.body.when.trim()
@@ -154,7 +157,7 @@ module.exports = function(app, express) {
     })
 
     //cause HTML cannot call DELETE and cause fetch will not have the user in the request
-    app.post("/deleteloan/:loanid", security.isLoggedInAndActivated, function(req, res) {
+    mainRoutes.post("/deleteloan/:loanid", security.isLoggedInAndActivated, function(req, res) {
         oId = new mongo.ObjectID(req.params.loanid)
         Loan.findOne({"_id" : oId}, function(err, loan) {
             if(err) throw err
@@ -188,7 +191,7 @@ module.exports = function(app, express) {
     // PROFILE SECTION =====================
     // =====================================
     // TODO should test is username is req.user cause we will want to see page of other users
-    app.get('/user/:username', security.isLoggedInAndActivated, function(req, res) {
+    mainRoutes.get('/user/:username', security.isLoggedInAndActivated, function(req, res) {
         res.render('profile', {
             user : req.user, // get the user out of session and pass to template
             message : req.flash('messageusername')
@@ -196,7 +199,7 @@ module.exports = function(app, express) {
     })
     
     //to change username
-    app.post('/changeusername', security.isLoggedInAndActivated, function(req, res) {
+    mainRoutes.post('/changeusername', security.isLoggedInAndActivated, function(req, res) {
         newusername = req.body.username.trim()
         if( newusername == "" || req.user.local.username == newusername ) 
         {
@@ -224,5 +227,8 @@ module.exports = function(app, express) {
 
         }
     })
+
+    // apply the routes to our application
+    app.use('/', mainRoutes)
 
 }

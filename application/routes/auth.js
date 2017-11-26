@@ -5,7 +5,7 @@ const security = require('../utils/securityMiddleware')
 
 module.exports = function(app, express, passport) {
 
-	// get an instance of the router for clientfiles routes
+	// get an instance of the router for auth routes
 	const authRoutes = express.Router()
 
 	// =====================================

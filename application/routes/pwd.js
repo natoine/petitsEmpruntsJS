@@ -10,7 +10,7 @@ const security = require('../utils/securityMiddleware')
 
 module.exports = function(app, express) {
 
-	// get an instance of the router for clientfiles routes
+	// get an instance of the router for pwd routes
 	const pwdRoutes = express.Router()
 
 	// =====================================
@@ -244,6 +244,6 @@ module.exports = function(app, express) {
         }
     })
 
-	// apply the routes to our application with the prefix /rsc
+	// apply the routes to our application
 	app.use('/', pwdRoutes)
 }
