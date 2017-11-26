@@ -8,7 +8,7 @@ const mongo = require('mongodb')
 const security = require('../utils/securityMiddleware')
 
 // application/routes.js
-module.exports = function(app, passport) {
+module.exports = function(app, express) {
 
     // =====================================
     // HOME PAGE (with login links) ========
@@ -16,95 +16,6 @@ module.exports = function(app, passport) {
     app.get('/', function(req, res) {
         req.logout()
         res.render('index')// load the index.ejs file
-    })
-
-    // =====================================
-    // LOGIN ===============================
-    // =====================================
-    // show the login form
-    app.get('/login', function(req, res) {
-        // render the page and pass in any flash data if it exists
-        res.render('login', { message: req.flash('loginMessage') })
-    })
-
-    // process the login form
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/main', // redirect to the secure profile section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }))
-
-    // =====================================
-    // SIGNUP ==============================
-    // =====================================
-    // show the signup form
-    app.get('/signup', function(req, res) {
-        // render the page and pass in any flash data if it exists
-        res.render('signup', { message: req.flash('signupMessage') })
-    })
-
-    // process the signup form
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/signup', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }))
-
-    // =====================================
-    // ACTIVATE ACCOUNT ==============================
-    // =====================================
-    app.get('/activateaccount', function(req, res) {
-        const token = req.query.token
-        User.findOne({ 'local.activationtoken' : token }, function(err, user) 
-            {
-                // if there are any errors, return the error
-                if (err)
-                {
-                    console.log(err)
-                    req.flash('activateAccountDangerMessage', 'An error occured, try later')
-                    res.render('activateaccount', 
-                        { messagedanger: req.flash('activateAccountDangerMessage') , messageok: "" })
-                }
-                if(user)
-                {
-                    if(user.local.email.localeCompare(req.query.email)==0)
-                    {
-                        if(user.isActivated())
-                        {
-                            console.log("user already activated")
-                            res.redirect('/')
-                        }
-                        else
-                        {
-                            user.local.mailvalidated = true
-                            user.save(function(err) 
-                            {
-                                if (err) 
-                                {
-                                    console.log(err)
-                                    //flash
-                                    req.flash('activateAccountDangerMessage', 'An error occured, try later')
-                                    res.render('activateaccount', 
-                                        { messagedanger: req.flash('activateAccountDangerMessage') , 
-                                        messageok: "" })
-                                }
-                                else
-                                {
-                                    req.flash('activateAccountOkMessage', 'Account activated !')
-                                    res.render('activateaccount', 
-                                        { messagedanger: "" , messageok: req.flash('activateAccountOkMessage') })
-                                }
-                            })
-                        }    
-                    }
-                    else {
-                        res.redirect('/')
-                    }
-                }
-                else {
-                        res.redirect('/')
-                }
-            })
     })
 
     // =====================================
@@ -273,7 +184,7 @@ module.exports = function(app, passport) {
         })
     })
 
-// =====================================
+    // =====================================
     // PROFILE SECTION =====================
     // =====================================
     // TODO should test is username is req.user cause we will want to see page of other users
@@ -312,137 +223,6 @@ module.exports = function(app, passport) {
             })
 
         }
-    })
-
-    // =====================================
-    // FACEBOOK ROUTES =====================
-    // =====================================
-    // route for facebook authentication and login
-    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }))
-
-    // handle the callback after facebook has authenticated the user
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', {
-            successRedirect : '/main',
-            failureRedirect : '/'
-        }))
-
- // =====================================
-    // GOOGLE ROUTES =======================
-    // =====================================
-    // send to google to do the authentication
-    // profile gets us their basic information including their name
-    // email gets their emails
-    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }))
-
-    // the callback after google has authenticated the user
-    app.get('/auth/google/callback',
-            passport.authenticate('google', {
-                    successRedirect : '/main',
-                    failureRedirect : '/'
-            }))
-
-
-    // =====================================
-    // LOGOUT ==============================
-    // =====================================
-    app.get('/logout', function(req, res) { 
-        req.logout()
-        res.redirect('/')
-    })
-
-// =============================================================================
-// AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
-// =============================================================================
-
-    // locally --------------------------------
-        app.get('/connect/local', security.isLoggedInAndActivated, function(req, res) {
-            res.render('connect-local', { message: req.flash('loginMessage') })
-        })
-        app.post('/connect/local', security.isLoggedInAndActivated, passport.authenticate('local-signup', {
-            successRedirect : '/main', // redirect to the secure main section
-            failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }))
-
-    // facebook -------------------------------
-
-        // send to facebook to do the authentication
-        app.get('/connect/facebook', security.isLoggedInAndActivated, passport.authorize('facebook', { scope : 'email' }))
-
-        // handle the callback after facebook has authorized the user
-        app.get('/connect/facebook/callback', security.isLoggedInAndActivated,
-            passport.authorize('facebook', {
-                successRedirect : '/main',
-                failureRedirect : '/'
-            }))
-
-    // twitter --------------------------------
-
-        // send to twitter to do the authentication
-        app.get('/connect/twitter', security.isLoggedInAndActivated, passport.authorize('twitter', { scope : 'email' }))
-
-        // handle the callback after twitter has authorized the user
-        app.get('/connect/twitter/callback', security.isLoggedInAndActivated,
-            passport.authorize('twitter', {
-                successRedirect : '/main',
-                failureRedirect : '/'
-            }))
-
-    // google ---------------------------------
-
-        // send to google to do the authentication
-        app.get('/connect/google', security.isLoggedInAndActivated, passport.authorize('google', { scope : ['profile', 'email'] }))
-
-        // the callback after google has authorized the user
-        app.get('/connect/google/callback', security.isLoggedInAndActivated,
-            passport.authorize('google', {
-                successRedirect : '/main',
-                failureRedirect : '/'
-            }))
-
-        // =============================================================================
-// UNLINK ACCOUNTS =============================================================
-// =============================================================================
-// used to unlink accounts. for social accounts, just remove the token
-// for local account, remove email and password
-// user account will stay active in case they want to reconnect in the future
-
-    // local -----------------------------------
-    app.get('/unlink/local', security.isLoggedInAndActivated, function(req, res) {
-        var user            = req.user
-        user.local.email    = undefined
-        user.local.password = undefined
-        user.save(function(err) {
-            res.redirect('/main')
-        })
-    })
-
-    // facebook -------------------------------
-    app.get('/unlink/facebook', security.isLoggedInAndActivated, function(req, res) {
-        var user            = req.user
-        user.facebook.token = undefined
-        user.save(function(err) {
-            res.redirect('/main')
-        })
-    })
-
-    // twitter --------------------------------
-    app.get('/unlink/twitter', security.isLoggedInAndActivated, function(req, res) {
-        var user           = req.user
-        user.twitter.token = undefined
-        user.save(function(err) {
-           res.redirect('/main')
-        })
-    })
-
-    // google ---------------------------------
-    app.get('/unlink/google', security.isLoggedInAndActivated, function(req, res) {
-        var user          = req.user
-        user.google.token = undefined
-        user.save(function(err) {
-           res.redirect('/main')
-        })
     })
 
 }
