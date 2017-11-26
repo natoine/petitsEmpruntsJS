@@ -7,6 +7,7 @@ moment().format()
 
 // define the schema for our user model
 const loanSchema = mongoose.Schema({
+	creator		: {type : mongoose.Schema.Types.ObjectId, ref : 'User'}, 
 	loaner		: String, //idealy mail 
 	borrower	: String, //idealy mail 
 	what	: String,

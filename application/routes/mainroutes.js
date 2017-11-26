@@ -115,6 +115,7 @@ module.exports = function(app, express) {
         {
             console.log("can create loan")
             var newLoan = new Loan()
+            newLoan.creator = user
             switch(action) 
             {
                 case 'iBorrow':
