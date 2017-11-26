@@ -40,6 +40,7 @@ app.use(flash()) // use connect-flash for flash messages stored in session
 require('./application/routes/routes.js')(app, passport)
 // load our routes and pass in our app and fully configured passport
 require('./application/routes/clientfiles.js')(app, express)
+require('./application/routes/pwd.js')(app, express)
 
 // launch ======================================================================
 app.listen(port)
