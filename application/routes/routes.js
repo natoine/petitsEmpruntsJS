@@ -10,9 +10,6 @@ const mailSender = require('../utils/mailSender')
 
 const TIMINGTOCHANGEPWD = 3600000
 
-//needed for filesystem
-const fs = require('fs')
-
 const security = require('../utils/securityMiddleware')
 
 // application/routes.js
@@ -681,83 +678,6 @@ module.exports = function(app, passport) {
         user.google.token = undefined
         user.save(function(err) {
            res.redirect('/main')
-        })
-    })
-
-// =============================================================================
-// PETITSEMPRUNTS CLIENT JS =============================================================
-// =============================================================================
-
-    app.get('/main.js', function(req, res) {
-        fs.readFile("resources/js/main.js", function(err, data) {
-            res.writeHead(200, {'Content-Type': 'text/plain'})
-            res.write(data)
-            res.end()
-        })
-    })
-
-
-// =============================================================================
-// BOOTSTRAP CSS JS =============================================================
-// =============================================================================
-
-    app.get('/bootstrap.min.css', function(req, res) {
-        fs.readFile("resources/bootstrap/css/bootstrap.min.css", function(err, data) {
-            res.writeHead(200, {'Content-Type': 'text/css'})
-            res.write(data)
-            res.end()
-        })
-    })
-
-    app.get('/bootstrap-responsive.css', function(req, res) {
-        fs.readFile("resources/bootstrap/css/bootstrap-responsive.css", function(err, data) {
-            res.writeHead(200, {'Content-Type': 'text/css'})
-            res.write(data)
-            res.end()
-        })
-    })
-
-    app.get('/bootstrap.min.js', function(req, res) {
-        fs.readFile("resources/bootstrap/js/bootstrap.min.js", function(err, data) {
-            res.writeHead(200, {'Content-Type': 'text/plain'})
-            res.write(data)
-            res.end()
-        })
-    })
-
-    app.get('/img/glyphicons-halflings-white.png', function(req, res) {
-        fs.readFile("resources/bootstrap/img/glyphicons-halflings-white.png", function(err, data) {
-            res.writeHead(200, {'Content-Type': 'image/png'})
-            res.write(data)
-            res.end()
-        })
-    })    
-
-// =============================================================================
-// MOMENT PICKADAY JS =============================================================
-// =============================================================================
-
-    app.get('/moment.js', function(req, res) {
-        fs.readFile("resources/js/libs/moment.js", function(err, data) {
-            res.writeHead(200, {'Content-Type': 'text/plain'})
-            res.write(data)
-            res.end()
-        })
-    })
-
-    app.get('/pikaday.js', function(req, res) {
-        fs.readFile("resources/js/libs/pikaday/pikaday.js", function(err, data) {
-            res.writeHead(200, {'Content-Type': 'text/plain'})
-            res.write(data)
-            res.end()
-        })
-    })
-
-    app.get('/pikaday.css', function(req, res) {
-        fs.readFile("resources/js/libs/pikaday/css/pikaday.css", function(err, data) {
-            res.writeHead(200, {'Content-Type': 'text/css'})
-            res.write(data)
-            res.end()
         })
     })
 
