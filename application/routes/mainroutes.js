@@ -162,7 +162,8 @@ module.exports = function(app, express) {
         Loan.findOne({"_id" : oId}, function(err, loan) {
             if(err) throw err
             else {
-                if(loan.loaner === req.user.local.username || loan.borrower === req.user.local.username)
+                if(loan.loaner === req.user.local.username || loan.loaner === req.user.local.email
+                   || loan.borrower === req.user.local.username || loan.borrower === req.user.local.email)
                 {
                     Loan.remove({"_id" : oId}, function(err, loan) {
                         if(err) 
