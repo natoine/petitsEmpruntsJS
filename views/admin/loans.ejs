@@ -51,7 +51,11 @@
                 <table id="loansList" class="table table-striped">
                     <% for( i = 0; i < loans.length ; i+=1) { %>
                     <tr id="loan<%= loans[i]._id %>">
-                        
+                        <td>créé par : <%=loans[i].creator%></td>
+                        <td>depuis : <%=loans[i].when%></td>
+                        <td>prêteur : <%=loans[i].loaner%></td>
+                        <td>emprunteur : <%=loans[i].borrower%></td>
+                        <td>quoi ? : <%=loans[i].what%></td>
                     </tr>
                     <% } %>
                 </table>
