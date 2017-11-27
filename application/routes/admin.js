@@ -8,7 +8,19 @@ module.exports = function(app, express) {
     const adminRoutes = express.Router()
 
     adminRoutes.get('/admin', security.isSuperAdmin, function(req, res) {
-    	res.render('admin/users' , {username : req.user.local.username})
+    	User.find(
+    		{
+	    		
+    		},
+    		function(err, users) {
+    			if(err) throw err
+            	else 
+               	{
+               		res.render('admin/users' , 
+               			{username : req.user.local.username, users : users})
+               	}
+    		}
+    	)
     })
 
     // apply the routes to our application

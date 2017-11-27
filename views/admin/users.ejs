@@ -39,7 +39,35 @@
 <div class="container">
     
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span>Liste des utilisateurs</h1>
+        <h1><span class="fa fa-anchor"></span>Liste des <%=users.length%> utilisateurs</h1>
+    </div>
+
+    <div class="row">
+
+        <!-- USERS LIST -->
+        <div class="col-sm-6">
+            <div class="well">
+                <table id="usersList" class="table table-striped">
+                    <% for( i = 0; i < users.length ; i+=1) { %>
+                    <tr id="user<%= users[i]._id %>">
+                        <td><%=users[i].local.username%></td>
+                        <td>
+                            <%if(user.local.mailvalidated) {%>
+                                activated
+                            <%} else {%>
+                            not activated
+                            <% } %>
+                        </td>
+                        <td><%=users[i].local.email%></td>
+                        <td>fb : <%=users[i].facebook.email%></td>
+                        <td>fb : <%=users[i].facebook.name%></td>
+                        <td>gg : <%=users[i].google.email%></td>
+                        <td>gg : <%=users[i].google.name%></td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
+        </div>
     </div>
 
 </div>
