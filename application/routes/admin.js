@@ -8,9 +8,15 @@ module.exports = function(app, express) {
     const adminRoutes = express.Router()
 
     adminRoutes.get('/admin', security.isSuperAdmin, function(req, res) {
-    	User.find(
+    	User.find( {} ,
     		{
-	    		
+	    		"local.username" : true,
+	    		"local.email" : true,
+	    		"local.mailvalidated" : true,
+	    		"facebook.email" : true,
+	    		"facebook.name" : true,
+	    		"google.email" : true,
+	    		"google.name" : true
     		},
     		function(err, users) {
     			if(err) throw err
