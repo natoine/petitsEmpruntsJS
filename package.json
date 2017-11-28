@@ -1,6 +1,6 @@
 {
   "name": "petitsemprunts",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a simple app to borrow and lend belongings between friends",
   "main": "server.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/natoine/petitsEmpruntsJS.git"
   },
   "author": "natoine",
-  "license": "ISC",
+  "license": "",
   "bugs": {
     "url": "https://github.com/natoine/petitsEmpruntsJS/issues"
   },
