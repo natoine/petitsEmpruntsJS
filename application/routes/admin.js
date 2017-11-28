@@ -42,6 +42,8 @@ module.exports = function(app, express) {
     		})
     })
 
+    
+
     // apply the routes to our application
     app.use('/admin', adminRoutes)
 
