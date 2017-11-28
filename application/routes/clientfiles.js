@@ -18,6 +18,13 @@ module.exports = function(app, express) {
         })
     })
 
+    clientFilesRoutes.get('/admin.js', function(req, res) {
+        fs.readFile("resources/js/admin.js", function(err, data) {
+            res.writeHead(200, {'Content-Type': 'text/plain'})
+            res.write(data)
+            res.end()
+        })
+    })
 
 // =============================================================================
 // BOOTSTRAP CSS JS =============================================================

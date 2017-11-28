@@ -64,7 +64,9 @@
                         <td>fb : <%=users[i].facebook.name%></td>
                         <td>gg : <%=users[i].google.email%></td>
                         <td>gg : <%=users[i].google.name%></td>
-                        <td><button class="btn btn-danger btndelete" id="deleteuser<%= users[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
+                        <%if(users[i].local.username !== username) {%>
+                            <td><button class="btn btn-danger btndelete" id="deleteuser<%= users[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
+                        <%}%>
                     </tr>
                     <% } %>
                 </table>
@@ -77,6 +79,8 @@
 <!-- bootstrap -->
         <script src="https://code.jquery.com/jquery.js"></script>
         <script src="/bootstrap.min.js"></script>
+
+        <script src="/admin.js"></script>
 
 </body>
 </html>

@@ -4,6 +4,8 @@ const User            = require('../models/user')
 //load up the loan model
 const Loan = require('../models/loan')
 
+const mongo = require('mongodb')
+
 module.exports = function(app, express) {
 
     // get an instance of the router for main routes
@@ -42,7 +44,38 @@ module.exports = function(app, express) {
     		})
     })
 
-    
+    //cause HTML cannot call DELETE and cause fetch will not have the user in the request
+    adminRoutes.post('/deleteuser/:userid', security.isSuperAdmin, function(req, res) {
+      oId = new mongo.ObjectID(req.params.userid)
+      User.findOne({"_id" : oId}, function(err, user) {
+            if(err) throw err
+            else 
+            { 
+              //don't delete its own account
+              if(user._id.toString() !== req.user._id.toString())
+              {
+                User.remove({"_id" : oId}, function(err, user) {
+                        if(err) 
+                            {
+                                console.log("unable to delete user : " + req.params.userid)
+                                throw err
+                            }
+                            else
+                            {
+                                console.log("delete user : " + req.params.userid)
+                                res.redirect('/admin/users')
+                            }
+
+                    })
+              }
+              else 
+              {
+                console.log("SECURITY : cannot delete your own account !!!")
+                res.redirect('/admin/users')
+              }
+            }
+          })
+    })
 
     // apply the routes to our application
     app.use('/admin', adminRoutes)
