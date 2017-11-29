@@ -157,6 +157,7 @@ module.exports = function(app, express) {
         res.redirect('/main')
     })
 
+    //DELETE a LOAN
     //cause HTML cannot call DELETE and cause fetch will not have the user in the request
     mainRoutes.post("/deleteloan/:loanid", security.isLoggedInAndActivated, function(req, res) {
         oId = new mongo.ObjectID(req.params.loanid)
@@ -192,14 +193,40 @@ module.exports = function(app, express) {
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
-    // TODO should test is username is req.user cause we will want to see page of other users
+    // TODO should see some page of other users maybe ?
     mainRoutes.get('/user/:username', security.isLoggedInAndActivated, function(req, res) {
+        if(req.user.local.username !== req.params.username)
+        {
+            res.redirect('/user/' + req.user.local.username)
+        }
         res.render('profile', {
             user : req.user, // get the user out of session and pass to template
-            message : req.flash('messageusername')
+            message : req.flash('messageusername'),
+            messageDeleteUser : req.flash('messageDeleteUser')
         })
     })
     
+    //to delete Account
+    mainRoutes.post('/deleteaccount', security.isLoggedInAndActivated, function(req, res) {
+        // if the password is wrong
+        if (!req.user.validPassword(req.body.password))
+        {
+            req.flash("messageDeleteUser","Wrong Password")
+            res.redirect('/user/' + req.user.local.username)
+        }
+        else
+        {
+            req.user.remove('' , function(err, user) {
+                if(err) throw err
+                else
+                {
+                    console.log("delete user : " + req.user.local.username)
+                    res.redirect('/')
+                }
+            })
+        }
+    })
+
     //to change username
     mainRoutes.post('/changeusername', security.isLoggedInAndActivated, function(req, res) {
         newusername = req.body.username.trim()

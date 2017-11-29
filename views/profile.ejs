@@ -47,7 +47,7 @@
         <!-- CHANGE USERNAME -->
         <div class="col-sm-6">
             <div class="well">
-                <!-- show any messages that come back with username change form -->
+                <!-- show any messages that comes back with username change form -->
                 <% if (message.length > 0) { %>
                 <div class="alert alert-danger"><%= message %></div>
                 <% } %>
@@ -57,6 +57,23 @@
                         <input type="text" class="form-control" name="username" value="<%=user.local.username%>">
                     </div>
                     <button type="submit" class="btn btn-warning btn-lg">Change username</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- DELETE ACCOUNT -->
+        <div class="col-sm-6">
+            <div class="well">
+                <!-- show any messages that comes back with delete user form -->
+                <% if (messageDeleteUser.length > 0) { %>
+                <div class="alert alert-danger"><%= messageDeleteUser %></div>
+                <% } %>
+                <form action="/deleteaccount" method="post">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-warning btn-lg">Supprimer mon compte</button>
                 </form>
             </div>
         </div>
