@@ -76,7 +76,8 @@ module.exports = function(app, express) {
                                         action : action ,
                                         myborrows : myborrows ,
                                         myloans : myloans ,
-                                        friendList : friendList
+                                        friendList : friendList,
+                                        isadmin : user.isSuperAdmin()
                                 })
                             }
                     })

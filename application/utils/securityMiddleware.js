@@ -26,13 +26,8 @@ module.exports = {
     },
 
     isSuperAdmin: function(req, res, next) {
-        //if usermail is superadmin mail, carry on
-        if(req.isAuthenticated() && req.user.isActivated() &&
-            req.user.local.email == require('../../config/usefulvars').superadmin)
-        {
-            return next()
-        }
-        res.redirect('/')
+        if(req.isAuthenticated() && req.user.isSuperAdmin()) return next()
+        else res.redirect('/')
     }
 
 }
