@@ -36,6 +36,9 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="/user/<%= username%>" id="profile"><%= username%></a></li>
+                            <%if(isadmin){%>
+                            <li><a href="/admin/users">admin</a></li>
+                            <%}%>
                             <li><a href="/">Déconnexion</a></li>
                         </ul>
                     </div>
