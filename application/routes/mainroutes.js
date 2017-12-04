@@ -191,6 +191,11 @@ module.exports = function(app, express) {
         })
     })
 
+    //REMIND A LOAN
+    mainRoutes.get('/remind/:loanid', security.isLoggedInAndActivated, function(req, res) {
+        
+    })
+
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
