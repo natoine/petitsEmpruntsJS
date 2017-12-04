@@ -197,7 +197,7 @@ module.exports = function(app, express) {
         oId = new mongo.ObjectID(req.params.loanid)
         Loan.findOne({"_id" : oId}, function(err, loan) {
             if(err) throw err
-            else 
+            if(loan)
             {
                 loaner = loan.loaner
                 borrower = loan.borrower
@@ -210,7 +210,16 @@ module.exports = function(app, express) {
                 {
                     console.log("you re the borrower")
                 }
-                else res.redirect('/main')
+                else 
+                {
+                    console.log("this loan doesn't concern you")
+                    res.redirect('/main')
+                }
+            }
+            else 
+            {
+                console.log("this loan doesn't exist")
+                res.redirect('/main')
             }
         })
     })
