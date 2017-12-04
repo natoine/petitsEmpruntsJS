@@ -194,6 +194,25 @@ module.exports = function(app, express) {
     //REMIND A LOAN
     mainRoutes.get('/remind/:loanid', security.isLoggedInAndActivated, function(req, res) {
         console.log("remind loan : " + req.params.loanid)
+        oId = new mongo.ObjectID(req.params.loanid)
+        Loan.findOne({"_id" : oId}, function(err, loan) {
+            if(err) throw err
+            else 
+            {
+                loaner = loan.loaner
+                borrower = loan.borrower
+                user = req.user
+                if(loaner === user.local.username || loaner === user.local.email)
+                {
+                    console.log("you re the loaner")
+                }
+                else if(borrower === user.local.username || borrower === user.local.email)
+                {
+                    console.log("you re the borrower")
+                }
+                else res.redirect('/main')
+            }
+        })
     })
 
     // =====================================
