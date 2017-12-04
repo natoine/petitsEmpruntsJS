@@ -164,7 +164,8 @@ module.exports = function(app, express) {
         oId = new mongo.ObjectID(req.params.loanid)
         Loan.findOne({"_id" : oId}, function(err, loan) {
             if(err) throw err
-            else {
+            if(loan) 
+            {
                 if(loan.loaner === req.user.local.username || loan.loaner === req.user.local.email
                    || loan.borrower === req.user.local.username || loan.borrower === req.user.local.email)
                 {
@@ -188,6 +189,11 @@ module.exports = function(app, express) {
                     res.redirect('/main')
                 }
             }
+            else
+            {
+                console.log("this loan doesn't exist")
+                res.redirect('/main')
+            } 
         })
     })
 
@@ -205,10 +211,12 @@ module.exports = function(app, express) {
                 if(loaner === user.local.username || loaner === user.local.email)
                 {
                     console.log("you re the loaner")
+                    res.render('reminder' , {username : user.local.username})
                 }
                 else if(borrower === user.local.username || borrower === user.local.email)
                 {
                     console.log("you re the borrower")
+                    res.render('reminder' , {username : user.local.username})
                 }
                 else 
                 {
