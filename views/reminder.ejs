@@ -37,6 +37,20 @@
     </nav>
 
 <div class="container">
+    <div class="row-fluid" id="mainForm">
+        <div class="span4 offset3">
+            <form id="remindform" action="/newreminder" method="post">
+                <fieldset>
+                    <label>A : </label>
+                    <input type="text" placeholder="l'autre à qui tu écris" id="inputotherusername" name="otherusername">
+                    <label>Mail : </label>
+                    <input type="text" placeholder="le mail de à qui tu écris" id="inputothermail" name="inputothermail">
+                    <label>Le message :</label>
+                    <textarea name="inputremindermsg" id="inputremindermsg">le message de rappel</textarea>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- bootstrap -->
