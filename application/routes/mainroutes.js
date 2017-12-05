@@ -211,12 +211,18 @@ module.exports = function(app, express) {
                 if(loaner === user.local.username || loaner === user.local.email)
                 {
                     console.log("you re the loaner")
-                    res.render('reminder' , {username : user.local.username})
+                    res.render('reminder' , {
+                        username : user.local.username,
+                        otherusername : borrower
+                    })
                 }
                 else if(borrower === user.local.username || borrower === user.local.email)
                 {
                     console.log("you re the borrower")
-                    res.render('reminder' , {username : user.local.username})
+                    res.render('reminder' , {
+                        username : user.local.username,
+                        otherusername : loaner
+                    })
                 }
                 else 
                 {
