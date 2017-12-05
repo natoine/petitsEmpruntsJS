@@ -7,6 +7,8 @@ const mongo = require('mongodb')
 
 const security = require('../utils/securityMiddleware')
 
+const mailSender = require('../utils/mailSender')
+
 // application/routes.js
 module.exports = function(app, express) {
 
@@ -208,20 +210,33 @@ module.exports = function(app, express) {
                 loaner = loan.loaner
                 borrower = loan.borrower
                 user = req.user
+                othermail = "mail"
                 if(loaner === user.local.username || loaner === user.local.email)
                 {
+                    mailcontent = "Bonjour " + borrower + ", " + user.local.username 
+                        + " (" + user.local.email + ") utilise petitsEmprunts"
+                        + " pour vous rappeler de lui rendre " + loan.what + ", emprunté depuis le " + loan.when  
+                    if(mailSender.validateMail(borrower)) othermail = borrower
                     console.log("you re the loaner")
                     res.render('reminder' , {
                         username : user.local.username,
-                        otherusername : borrower
+                        otherusername : borrower,
+                        othermail : othermail,
+                        mailcontent : mailcontent
                     })
                 }
                 else if(borrower === user.local.username || borrower === user.local.email)
                 {
+                    mailcontent = "Bonjour " + loaner + ", " + user.local.username 
+                        + " (" + user.local.email + ") utilise petitsEmprunts"
+                        + " pour vous rappeler qu'il/elle a toujours " + loan.what + ", emprunté depuis le " + loan.when
+                    if(mailSender.validateMail(loaner)) othermail = loaner
                     console.log("you re the borrower")
                     res.render('reminder' , {
                         username : user.local.username,
-                        otherusername : loaner
+                        otherusername : loaner,
+                        othermail : othermail,
+                        mailcontent : mailcontent
                     })
                 }
                 else 

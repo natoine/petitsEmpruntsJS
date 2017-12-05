@@ -14,4 +14,11 @@ MailSender.sendMail = (emailto , subject, html, functionErrorResponse) => {
     MailSender.smtpTransport.sendMail(mailOptions, functionErrorResponse)
 }
 
+//check to see if email is correctly spelled
+MailSender.validateMail = (email) => {
+    console.log("mail : " + email)
+	const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    return email.match(mailformat)
+}
+
 module.exports = MailSender

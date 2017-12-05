@@ -51,8 +51,9 @@ module.exports = function(passport)
     function(req, email, password, done) {
 
         //check to see if email is correctly spelled
-        const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-        if(!email.match(mailformat)) {
+        console.log("passport mail signup: " + email)
+        if(!mailSender.validateMail(email))
+        {
             return done(null, false, req.flash('signupMessage', 'That email is not correctly spelled'))
         }
         // find a user whose email is the same as the forms email
@@ -118,8 +119,8 @@ module.exports = function(passport)
     function(req, email, password, done) { // callback with email and password from our form
 
         //check to see if email is correctly spelled
-        const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-        if(!email.match(mailformat)) {
+        if(!mailSender.validateMail(email))
+        {
             return done(null, false, req.flash('loginMessage', 'That email is not correctly spelled'))
         }
 
