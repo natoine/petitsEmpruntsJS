@@ -201,12 +201,15 @@ module.exports = function(app, express) {
 
     //REMIND A LOAN
     mainRoutes.get('/remind/:loanid', security.isLoggedInAndActivated, function(req, res) {
-        console.log("remind loan : " + req.params.loanid)
         oId = new mongo.ObjectID(req.params.loanid)
         Loan.findOne({"_id" : oId}, function(err, loan) {
             if(err) throw err
             if(loan)
             {
+                messageWho = req.flash("messageWho") || ""
+                messageMail = req.flash("messageMail") || "" 
+                messageContent = req.flash("messageContent") || "" 
+
                 loaner = loan.loaner
                 borrower = loan.borrower
                 user = req.user
@@ -222,7 +225,10 @@ module.exports = function(app, express) {
                         username : user.local.username,
                         otherusername : borrower,
                         othermail : othermail,
-                        mailcontent : mailcontent
+                        mailcontent : mailcontent,
+                        messageWho : messageWho,
+                        messageMail : messageMail,
+                        messageContent : messageContent
                     })
                 }
                 else if(borrower === user.local.username || borrower === user.local.email)
@@ -236,7 +242,10 @@ module.exports = function(app, express) {
                         username : user.local.username,
                         otherusername : loaner,
                         othermail : othermail,
-                        mailcontent : mailcontent
+                        mailcontent : mailcontent,
+                        messageWho : messageWho,
+                        messageMail : messageMail,
+                        messageContent : messageContent
                     })
                 }
                 else 
