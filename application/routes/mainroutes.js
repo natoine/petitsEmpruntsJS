@@ -262,6 +262,10 @@ module.exports = function(app, express) {
         })
     })
 
+    mainRoutes.post("/newreminder", security.isLoggedInAndActivated, function(req, res) {  
+
+    })
+
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
