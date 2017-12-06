@@ -3,6 +3,9 @@ const User            = require('../models/user')
 //load up the loan model
 const Loan = require('../models/loan')
 
+const moment = require('moment')
+moment().format()
+
 const mongo = require('mongodb')
 
 const security = require('../utils/securityMiddleware')
@@ -284,8 +287,27 @@ module.exports = function(app, express) {
             }
             else
             {
-                //send email
+                //send email and update loan to have a date of last reminder
                 console.log("might send email")
+                subject = "petitsEmprunts : rappel d'emprunt de " + req.user.local.username
+                html = msg + "<br> <a href=\""+ mailSender.urlService + "\">Découvrez PetitsEmprunts</a>"
+                mailSender.sendMail(mail, subject, html, function(error, resp){
+                    if(error) console.log(error)
+                    else
+                    {
+                        //update loan to add date of last reminder
+                        oId = new mongo.ObjectID(req.params.loanid)
+                        Loan.findOne({"_id" : oId}, function(err, loan) {
+                            if(err) throw err
+                            if(loan)
+                            {
+                                moment.locale('fr')
+                                loan.lastreminder = moment()
+                                loan.save()
+                            }
+                        })
+                    }
+                })
                 res.redirect('/main')
             }
         }

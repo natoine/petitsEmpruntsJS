@@ -67,8 +67,8 @@ module.exports = function(app, express) {
 
         const email = req.body.email
         //check to see if email is correctly spelled
-        const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-        if(!email.match(mailformat)) {
+        if(!mailSender.validateMail(email))
+        {
             req.flash('pwdrecoveryMessage', 'That email is not correctly spelled')
             res.render('pwdrecovery', { messagedanger: req.flash('pwdrecoveryMessage') , messageok: ""})
         }
