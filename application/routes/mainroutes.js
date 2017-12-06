@@ -206,14 +206,13 @@ module.exports = function(app, express) {
             if(err) throw err
             if(loan)
             {
-                messageWho = req.flash("messageWho") || ""
                 messageMail = req.flash("messageMail") || "" 
                 messageContent = req.flash("messageContent") || "" 
 
                 loaner = loan.loaner
                 borrower = loan.borrower
                 user = req.user
-                othermail = "mail"
+                othermail = ""
                 if(loaner === user.local.username || loaner === user.local.email)
                 {
                     mailcontent = "Bonjour " + borrower + ", " + user.local.username 
@@ -226,7 +225,6 @@ module.exports = function(app, express) {
                         otherusername : borrower,
                         othermail : othermail,
                         mailcontent : mailcontent,
-                        messageWho : messageWho,
                         messageMail : messageMail,
                         messageContent : messageContent
                     })
@@ -243,7 +241,6 @@ module.exports = function(app, express) {
                         otherusername : loaner,
                         othermail : othermail,
                         mailcontent : mailcontent,
-                        messageWho : messageWho,
                         messageMail : messageMail,
                         messageContent : messageContent
                     })
