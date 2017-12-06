@@ -208,19 +208,22 @@ module.exports = function(app, express) {
             {
                 messageMail = req.flash("messageMail") || "" 
                 messageContent = req.flash("messageContent") || "" 
+                mailcontent = req.flash('mailcontent') || ""
 
                 loaner = loan.loaner
                 borrower = loan.borrower
                 user = req.user
-                othermail = ""
+                othermail = req.flash('othermail') || ""
                 if(loaner === user.local.username || loaner === user.local.email)
                 {
-                    mailcontent = "Bonjour " + borrower + ", " + user.local.username 
-                        + " (" + user.local.email + ") utilise petitsEmprunts"
-                        + " pour vous rappeler de lui rendre " + loan.what + ", emprunté depuis le " + loan.when  
-                    if(mailSender.validateMail(borrower)) othermail = borrower
+                    if(!mailcontent.length > 0)
+                        mailcontent = "Bonjour " + borrower + ", " + user.local.username 
+                            + " (" + user.local.email + ") utilise petitsEmprunts"
+                            + " pour vous rappeler de lui rendre " + loan.what + ", emprunté depuis le " + loan.when  
+                    if((!othermail.length > 0) && mailSender.validateMail(borrower)) othermail = borrower
                     console.log("you re the loaner")
                     res.render('reminder' , {
+                        loanid : req.params.loanid,
                         username : user.local.username,
                         otherusername : borrower,
                         othermail : othermail,
@@ -231,12 +234,14 @@ module.exports = function(app, express) {
                 }
                 else if(borrower === user.local.username || borrower === user.local.email)
                 {
-                    mailcontent = "Bonjour " + loaner + ", " + user.local.username 
-                        + " (" + user.local.email + ") utilise petitsEmprunts"
-                        + " pour vous rappeler qu'il/elle a toujours " + loan.what + ", emprunté depuis le " + loan.when
-                    if(mailSender.validateMail(loaner)) othermail = loaner
+                    if(!mailcontent.length > 0)
+                        mailcontent = "Bonjour " + loaner + ", " + user.local.username 
+                            + " (" + user.local.email + ") utilise petitsEmprunts"
+                            + " pour vous rappeler qu'il/elle a toujours votre " + loan.what + ", emprunté depuis le " + loan.when
+                    if((!othermail.length > 0) && mailSender.validateMail(loaner)) othermail = loaner
                     console.log("you re the borrower")
                     res.render('reminder' , {
+                        loanid : req.params.loanid,
                         username : user.local.username,
                         otherusername : loaner,
                         othermail : othermail,
@@ -259,8 +264,31 @@ module.exports = function(app, express) {
         })
     })
 
-    mainRoutes.post("/newreminder", security.isLoggedInAndActivated, function(req, res) {  
-
+    mainRoutes.post("/newreminder/:loanid", security.isLoggedInAndActivated, function(req, res) {  
+        mail = req.body.inputothermail
+        msg = req.body.inputremindermsg
+        if(!mailSender.validateMail(mail))
+        {
+            req.flash('messageMail' , 'not a valid email')
+            if(msg.length > 0) req.flash('mailcontent' , msg)
+            else req.flash('messageContent' , 'not a valid message' )
+            res.redirect("/remind/" + req.params.loanid)
+        }
+        else
+        {
+            if(!msg.length > 0)
+            {
+                req.flash('messageContent' , 'not a valid message' )
+                req.flash('othermail' , mail)
+                res.redirect("/remind/" + req.params.loanid)
+            }
+            else
+            {
+                //send email
+                console.log("might send email")
+                res.redirect('/main')
+            }
+        }
     })
 
     // =====================================

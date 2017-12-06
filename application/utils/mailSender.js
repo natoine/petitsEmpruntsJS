@@ -16,8 +16,7 @@ MailSender.sendMail = (emailto , subject, html, functionErrorResponse) => {
 
 //check to see if email is correctly spelled
 MailSender.validateMail = (email) => {
-    console.log("mail : " + email)
-	const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     return email.match(mailformat)
 }
 
