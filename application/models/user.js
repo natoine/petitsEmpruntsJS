@@ -57,6 +57,17 @@ userSchema.methods.isActivated = function() {
     return this.local.mailvalidated
 }
 
+//checking if user is superAdmin
+userSchema.methods.isSuperAdmin = function() {
+    if(this.isActivated() &&
+            this.local.email == require('../../config/usefulvars').superadmin)
+        {
+            return true
+        }
+    return false
+}
+
+
 // create the model for users and expose it to our app
 const configDB = require('../../config/database.js')
 const db = mongoose.createConnection(configDB.url)

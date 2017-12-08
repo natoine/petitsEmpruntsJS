@@ -1,0 +1,75 @@
+<!-- views/reminder.ejs -->
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Petits Emprunts entre amis</title>
+    <meta descr="Suivez vos emprunts entre amis.">
+    
+    <!-- bootstrap -->
+    <link href="/bootstrap.min.css" rel="stylesheet" media="screen">
+    <!-- responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/bootstrap-responsive.css" rel="stylesheet">
+   
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+            <div class="container-fluid">
+
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+
+                <div class="navbar-right pull-right">
+                    <div class="nav-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/user/<%= username%>" id="profile"><%= username%></a></li>
+                            <li><a href="/main">mes emprunts</a></li>
+                            <li><a href="/">Déconnexion</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </nav>
+
+<div class="container">
+    <div class="row-fluid" id="mainForm">
+        <div class="offset3">
+            <form id="remindform" action="/newreminder/<%=loanid%>" method="post">
+                <div class="form-group">
+                    <fieldset>
+                        <label>A : <%=otherusername%></label>
+                        <label>Mail : </label>
+                        <input type="text" placeholder="le mail de à qui tu écris" id="inputothermail" name="inputothermail" class="form-control"" 
+                            <% if(othermail.length > 0)
+                            { %>
+                                value="<%=othermail%>"
+                            <%}%>
+                            >
+                        <% if (messageMail.length > 0) { %>
+                            <div class="alert alert-danger" id="dangerMail"><%= messageMail %></div>
+                        <% } %>
+                
+                        <label>Le message :</label>
+                        <textarea name="inputremindermsg" class="form-control" rows="3" id="inputremindermsg"><%=mailcontent%></textarea>
+                        <% if (messageContent.length > 0) { %>
+                            <div class="alert alert-danger" id="dangerContent"><%= messageContent %></div>
+                        <% } %>
+                    </fieldset>
+                    <button type="submit" id="submitReminderButton" class="btn btn-primary btn-large">Envoi du rappel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- bootstrap -->
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <script src="/bootstrap.min.js"></script>
+
+</body>
+</html>

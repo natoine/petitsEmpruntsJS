@@ -36,6 +36,9 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="/user/<%= username%>" id="profile"><%= username%></a></li>
+                            <%if(isadmin){%>
+                            <li><a href="/admin/users">admin</a></li>
+                            <%}%>
                             <li><a href="/">Déconnexion</a></li>
                         </ul>
                     </div>
@@ -120,6 +123,7 @@
                             <tr id="loan<%= myborrows[i]._id %>">
                                 <td><%= myborrows[i].what %> emprunté à <%= myborrows[i].loaner %> le <%=myborrows[i].when%></td>
                                 <td><%= myborrows[i].getDelay() %></td>
+                                <td><button class="btn btnpoke" id="poke<%= myborrows[i]._id %>" onclick="location.href='/remind/<%=myborrows[i]._id%>'">Relancer</button></td>
                                 <td><button class="btn btn-danger btndelete" id="deleteloan<%= myborrows[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
                             </tr>
                         <% } %>
@@ -134,6 +138,7 @@
                             <tr id="loan<%= myloans[i]._id %>">
                                 <td><%= myloans[i].what %> prêté à <%= myloans[i].borrower %> le <%=myloans[i].when%></td>
                                 <td><%= myloans[i].getDelay() %></td>
+                                <td><button class="btn btnpoke" id="poke<%= myloans[i]._id %>" onclick="location.href='/remind/<%=myloans[i]._id%>'">Relancer</button></td>
                                 <td><button class="btn btn-danger btndelete" id="deleteloan<%= myloans[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
                             </tr>
                         <% } %>
@@ -168,7 +173,6 @@
         </script>
 
         <script src="/main.js"></script>
-
 
 </body>
 </html>

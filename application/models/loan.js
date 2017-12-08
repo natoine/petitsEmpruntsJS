@@ -11,7 +11,8 @@ const loanSchema = mongoose.Schema({
 	loaner		: String, //idealy mail 
 	borrower	: String, //idealy mail 
 	what	: String,
-	when	: String
+	when	: String,
+	lastreminder : String
 
 })
 
