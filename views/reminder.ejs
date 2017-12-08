@@ -38,29 +38,30 @@
 
 <div class="container">
     <div class="row-fluid" id="mainForm">
-        <div class="span4 offset3">
+        <div class="offset3">
             <form id="remindform" action="/newreminder/<%=loanid%>" method="post">
-                <fieldset>
-                    <label>A : <%=otherusername%></label>
-                    
-                    <% if (messageMail.length > 0) { %>
-                        <div class="alert alert-danger" id="dangerMail"><%= messageMail %></div>
-                    <% } %>
-                    <label>Mail : </label>
-                    <input type="text" placeholder="le mail de à qui tu écris" id="inputothermail" name="inputothermail" 
-                        <% if(othermail.length > 0)
-                        { %>
-                            value="<%=othermail%>"
-                        <%}%>
-                        >
+                <div class="form-group">
+                    <fieldset>
+                        <label>A : <%=otherusername%></label>
+                        <% if (messageMail.length > 0) { %>
+                            <div class="alert alert-danger" id="dangerMail"><%= messageMail %></div>
+                        <% } %>
+                        <label>Mail : </label>
+                        <input type="text" placeholder="le mail de à qui tu écris" id="inputothermail" name="inputothermail" class="form-control"" 
+                            <% if(othermail.length > 0)
+                            { %>
+                                value="<%=othermail%>"
+                            <%}%>
+                            >
 
-                    <% if (messageContent.length > 0) { %>
-                        <div class="alert alert-danger" id="dangerContent"><%= messageContent %></div>
-                    <% } %>
-                    <label>Le message :</label>
-                    <textarea name="inputremindermsg" id="inputremindermsg"><%=mailcontent%></textarea>
-                </fieldset>
-                <button type="submit" id="submitReminderButton" class="btn btn-primary btn-large">Envoi du rappel</button>
+                        <% if (messageContent.length > 0) { %>
+                            <div class="alert alert-danger" id="dangerContent"><%= messageContent %></div>
+                        <% } %>
+                        <label>Le message :</label>
+                        <textarea name="inputremindermsg" class="form-control" rows="3" id="inputremindermsg"><%=mailcontent%></textarea>
+                    </fieldset>
+                    <button type="submit" id="submitReminderButton" class="btn btn-primary btn-large">Envoi du rappel</button>
+                </div>
             </form>
         </div>
     </div>
