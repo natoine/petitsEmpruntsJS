@@ -26,6 +26,14 @@ module.exports = function(app, express) {
         })
     })
 
+    clientFilesRoutes.get('/adminuserloans.js', function(req, res) {
+        fs.readFile("resources/js/adminuserloans.js", function(err, data) {
+            res.writeHead(200, {'Content-Type': 'text/plain'})
+            res.write(data)
+            res.end()
+        })
+    })
+
 // =============================================================================
 // BOOTSTRAP CSS JS =============================================================
 // =============================================================================

@@ -66,7 +66,13 @@
                         <td>gg : <%=users[i].google.name%></td>
                         <%if(users[i].local.username !== username) {%>
                             <td><button class="btn btn-danger btndelete" id="deleteuser<%= users[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
+                        <%}
+                        else
+                        {
+                        %>
+                        <td></td>
                         <%}%>
+                        <td><a href="/admin/loans/<%= users[i]._id %>">emprunts</a></td>
                     </tr>
                     <% } %>
                 </table>
