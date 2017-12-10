@@ -29,6 +29,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="/user/<%= username%>" id="profile"><%= username%></a></li>
                             <li><a href="/main">mes emprunts</a></li>
+                            <li><a href="/admin/users">utilisateurs</a></li>
                             <li><a href="/admin/loans">emprunts</a></li>
                             <li><a href="/">Déconnexion</a></li>
                         </ul>
@@ -40,44 +41,12 @@
 <div class="container">
     
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span>Liste des <%=users.length%> utilisateurs</h1>
+        <h1><span class="fa fa-anchor"></span>Les emprunts de : <%=user.local.username%></h1>
     </div>
 
     <div class="row">
 
-        <!-- USERS LIST -->
-        <div class="col-sm-6">
-            <div class="well">
-                <table id="usersList" class="table table-striped">
-                    <% for( i = 0; i < users.length ; i+=1) { %>
-                    <tr id="user<%= users[i]._id %>">
-                        <td><%=users[i].local.username%></td>
-                        <td>
-                            <%if(user.local.mailvalidated) {%>
-                                activated
-                            <%} else {%>
-                            not activated
-                            <% } %>
-                        </td>
-                        <td><%=users[i].local.email%></td>
-                        <td>fb : <%=users[i].facebook.email%></td>
-                        <td>fb : <%=users[i].facebook.name%></td>
-                        <td>gg : <%=users[i].google.email%></td>
-                        <td>gg : <%=users[i].google.name%></td>
-                        <%if(users[i].local.username !== username) {%>
-                            <td><button class="btn btn-danger btndelete" id="deleteuser<%= users[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
-                        <%}
-                        else
-                        {
-                        %>
-                        <td></td>
-                        <%}%>
-                        <td><a href="/admin/loans/<%= users[i]._id %>">emprunts</a></td>
-                    </tr>
-                    <% } %>
-                </table>
-            </div>
-        </div>
+
     </div>
 
 </div>

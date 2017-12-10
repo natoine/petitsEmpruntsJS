@@ -44,6 +44,33 @@ module.exports = function(app, express) {
     		})
     })
 
+    adminRoutes.get('/loans/:userid', security.isSuperAdmin, function(req, res) {
+      oId = new mongo.ObjectID(req.params.userid)
+      User.findOne({"_id" : oId}, function(err, user) {
+            if(err) throw err
+            else 
+            {
+              var hisborrows 
+              Loan.find( { 'borrower' : user.local.email }, function(err, loans) {
+                if(err) throw err
+                else 
+                {
+                  hisborrows = loans
+                  var hisloans
+                  Loan.find( { 'loaner' : user.local.email }, function(err, loans) {
+                    if(err) throw err
+                    else 
+                    {
+                      hisloans = loans
+                      res.render('admin/userloans' , {username : req.user.local.username, borrows : hisborrows , loans : hisloans , user: user})
+                    }
+                  })
+                }
+              })
+            }
+          })
+    })
+
     //cause HTML cannot call DELETE and cause fetch will not have the user in the request
     adminRoutes.post('/deleteuser/:userid', security.isSuperAdmin, function(req, res) {
       oId = new mongo.ObjectID(req.params.userid)
