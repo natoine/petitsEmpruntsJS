@@ -111,6 +111,48 @@ module.exports = function(app, express) {
         })
     })
 
+    adminRoutes.post('/activateuser/:userid', security.isSuperAdmin, function(req, res) {
+      oId = new mongo.ObjectID(req.params.userid)
+      User.findOne({"_id" : oId}, function(err, user) {
+            if(err) throw err
+            else 
+            {
+              if(user.isActivated()) console.log("pb already activated ...")
+              else
+              {
+                console.log("activate user")
+                //activate user
+                user.local.mailvalidated = true
+                user.save(function(err) {
+                  if(err) throw err
+                })
+              }
+            }
+            res.redirect('/admin/users')
+          })
+    })
+
+    adminRoutes.post('/deactivateuser/:userid', security.isSuperAdmin, function(req, res) {
+      oId = new mongo.ObjectID(req.params.userid)
+      User.findOne({"_id" : oId}, function(err, user) {
+            if(err) throw err
+            else 
+            {
+              if(user.isActivated())
+              {
+                console.log("deactivate user")
+                //deactivate user
+                user.local.mailvalidated = false
+                user.save(function(err) {
+                  if(err) throw err
+                })
+              } 
+              else console.log("pb already deactivated ...")
+            }
+            res.redirect('/admin/users')
+          })
+    })
+
     //cause HTML cannot call DELETE and cause fetch will not have the user in the request
     adminRoutes.post('/deleteuser/:userid', security.isSuperAdmin, function(req, res) {
       oId = new mongo.ObjectID(req.params.userid)
