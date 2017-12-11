@@ -53,10 +53,14 @@
                     <tr id="user<%= users[i]._id %>">
                         <td><%=users[i].local.username%></td>
                         <td>
-                            <%if(user.local.mailvalidated) {%>
-                                activated
+                            <%if(users[i].isActivated()) {%>
+                                <form action="/admin/deactivateuser/<%=users[i]._id%>" method="post">
+                                    <button type="submit" class="btn btn-success" title="will deactivate user">activated</button>
+                                </form>
                             <%} else {%>
-                            not activated
+                            <form action="/admin/activateuser/<%=users[i]._id%>" method="post">
+                                    <button type="submit" class="btn btn-danger" title="will activate user">not activated</button>
+                                </form>
                             <% } %>
                         </td>
                         <td><%=users[i].local.email%></td>
