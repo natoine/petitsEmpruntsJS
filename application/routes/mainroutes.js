@@ -122,13 +122,13 @@ module.exports = function(app, express) {
             console.log("can create loan")
             var newLoan = new Loan()
             newLoan.creator = user
+            newLoan.what = what
+            newLoan.when = when
             switch(action) 
             {
                 case 'iBorrow':
                     newLoan.borrower = user.local.email
                     newLoan.loaner = whom
-                    newLoan.what = what
-                    newLoan.when = when
                     newLoan.save(function(err){
                         if (err) throw err
                         else 
@@ -140,8 +140,6 @@ module.exports = function(app, express) {
                 case 'iLoan' :
                     newLoan.loaner = user.local.email
                     newLoan.borrower = whom
-                    newLoan.what = what
-                    newLoan.when = when
                     newLoan.save(function(err){
                         if (err) throw err
                         else 
