@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const moment = require('moment')
 moment().format()
 
-// define the schema for our user model
+// define the schema for our loan model
 const loanSchema = mongoose.Schema({
 	creator		: {type : mongoose.Schema.Types.ObjectId, ref : 'User'}, 
 	loaner		: String, //idealy mail 
