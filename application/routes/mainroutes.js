@@ -252,41 +252,91 @@ module.exports = function(app, express) {
                 borrower = loan.borrower
                 user = req.user
                 othermail = req.flash('othermail') || ""
+                //user is the loaner
                 if(loaner === user.local.username || loaner === user.local.email)
                 {
                     if(!mailcontent.length > 0)
                         mailcontent = "Bonjour " + borrower + ", " + user.local.username 
                             + " (" + user.local.email + ") utilise petitsEmprunts"
                             + " pour vous rappeler de lui rendre " + loan.what + ", emprunté depuis le " + loan.when  
-                    if((!othermail.length > 0) && mailSender.validateMail(borrower)) othermail = borrower
-                    console.log("you re the loaner")
-                    res.render('reminder' , {
-                        loanid : req.params.loanid,
-                        username : user.local.username,
-                        otherusername : borrower,
-                        othermail : othermail,
-                        mailcontent : mailcontent,
-                        messageMail : messageMail,
-                        messageContent : messageContent
-                    })
+                    
+                    FriendList.findOne({'creator' : user, 'friendname' : borrower} , 
+                        function(err, friend) {
+                            if(err) throw err
+                            else 
+                            {
+                                if(othermail.length > 0 
+                                    && mailSender.validateMail(othermail) 
+                                    && (friend.friendmail.length == null ) )
+                                {
+                                    friend.friendmail = othermail
+                                    friend.save(function(err)
+                                    {
+                                        if (err) throw err
+                                    })
+                                }
+                                else
+                                {
+                                    if(friend.friendmail != null && friend.friendmail.length > 0) othermail = friend.friendmail
+                                }
+                                res.render('reminder' , {
+                                    loanid : req.params.loanid,
+                                    username : user.local.username,
+                                    otherusername : borrower,
+                                    othermail : othermail,
+                                    mailcontent : mailcontent,
+                                    messageMail : messageMail,
+                                    messageContent : messageContent
+                                })
+                            }
+                        })
+
+                    /*if((!othermail.length > 0) && mailSender.validateMail(borrower)) 
+                    {
+                        othermail = borrower
+                    }*/                    
                 }
+                //user is the borrower
                 else if(borrower === user.local.username || borrower === user.local.email)
                 {
                     if(!mailcontent.length > 0)
                         mailcontent = "Bonjour " + loaner + ", " + user.local.username 
                             + " (" + user.local.email + ") utilise petitsEmprunts"
                             + " pour vous rappeler qu'il/elle a toujours votre " + loan.what + ", emprunté depuis le " + loan.when
-                    if((!othermail.length > 0) && mailSender.validateMail(loaner)) othermail = loaner
-                    console.log("you re the borrower")
-                    res.render('reminder' , {
-                        loanid : req.params.loanid,
-                        username : user.local.username,
-                        otherusername : loaner,
-                        othermail : othermail,
-                        mailcontent : mailcontent,
-                        messageMail : messageMail,
-                        messageContent : messageContent
-                    })
+                    
+                    
+                    FriendList.findOne({'creator' : user, 'friendname' : loaner} , 
+                        function(err, friend) {
+                            if(err) throw err
+                            else 
+                            {
+                                if(othermail.length > 0 
+                                    && mailSender.validateMail(othermail) 
+                                    && (friend.friendmail == null ) )
+                                {
+                                    friend.friendmail = othermail
+                                    friend.save(function(err)
+                                    {
+                                        if (err) throw err
+                                    })
+                                }
+                                else
+                                {
+                                    if(friend.friendmail != null && friend.friendmail.length > 0) othermail = friend.friendmail
+                                }
+                            }
+                            res.render('reminder' , {
+                                loanid : req.params.loanid,
+                                username : user.local.username,
+                                otherusername : loaner,
+                                othermail : othermail,
+                                mailcontent : mailcontent,
+                                messageMail : messageMail,
+                                messageContent : messageContent
+                            })
+                        })
+                    /*if((!othermail.length > 0) && mailSender.validateMail(loaner)) 
+                        othermail = loaner*/
                 }
                 else 
                 {
@@ -322,8 +372,11 @@ module.exports = function(app, express) {
             }
             else
             {
-                //send email and update loan to have a date of last reminder
+                
                 console.log("might send email")
+                //update friend with email
+
+                //send email and update loan to have a date of last reminder
                 subject = "petitsEmprunts : rappel d'emprunt de " + req.user.local.username
                 html = msg + "<br> <a href=\""+ mailSender.urlService + "\">Découvrez PetitsEmprunts</a>"
                 mailSender.sendMail(mail, subject, html, function(error, resp){
