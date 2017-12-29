@@ -115,7 +115,20 @@
 
                 <div class="span9">
                     <h3 class="text-left">Mes Emprunts :</h3>
-                    <h4>(<%= myborrows.length %> en cours )</h4>
+                    <%if (reqfriend=="none") 
+                    {
+                    %>
+                        <h4>(<%= myborrows.length %> en cours )
+                        </h4>                        
+                    <%}
+                    else
+                    {
+                        %>
+                        <h4>(<%= myborrows.length %> en cours avec <%=reqfriend%> )
+                        </h4>
+                        <%
+                    }%>
+
                     <table id="lendingsIBorrow" class="table table-striped">
                         <tbody id="lendingsIBorrowBody">
                         <!-- should be dynamical and not by ejs-->
@@ -130,7 +143,19 @@
                         </tbody>
                     </table>
                     <h3 class="text-left">Mes Prêts :</h3>
-                    <h4>(<%= myloans.length %> en cours )</h4>
+                    <%if (reqfriend=="none") 
+                    {
+                    %>
+                        <h4>(<%= myloans.length %> en cours )
+                        </h4>                        
+                    <%}
+                    else
+                    {
+                        %>
+                        <h4>(<%= myloans.length %> en cours avec <%=reqfriend%> )
+                        </h4>
+                        <%
+                    }%>
                     <table id="lendingsILoan" class="table table-striped">
                         <tbody id="lendingsILoanBody">
                         <!-- should be dynamical and not by ejs-->
