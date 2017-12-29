@@ -266,7 +266,7 @@ module.exports = function(app, express) {
                             else 
                             {
                                 if(othermail.length > 0 
-                                    && mailSender.validateMail(othermail) 
+                                    && mailSender.validateMail(""+othermail) 
                                     && (friend.friendmail.length == null ) )
                                 {
                                     friend.friendmail = othermail
@@ -291,10 +291,6 @@ module.exports = function(app, express) {
                             }
                         })
 
-                    /*if((!othermail.length > 0) && mailSender.validateMail(borrower)) 
-                    {
-                        othermail = borrower
-                    }*/                    
                 }
                 //user is the borrower
                 else if(borrower === user.local.username || borrower === user.local.email)
@@ -307,11 +303,12 @@ module.exports = function(app, express) {
                     
                     FriendList.findOne({'creator' : user, 'friendname' : loaner} , 
                         function(err, friend) {
+                            console.log("friend : " + friend.friendname)
                             if(err) throw err
                             else 
                             {
                                 if(othermail.length > 0 
-                                    && mailSender.validateMail(othermail) 
+                                    && mailSender.validateMail(""+othermail) 
                                     && (friend.friendmail == null ) )
                                 {
                                     friend.friendmail = othermail
@@ -335,8 +332,6 @@ module.exports = function(app, express) {
                                 messageContent : messageContent
                             })
                         })
-                    /*if((!othermail.length > 0) && mailSender.validateMail(loaner)) 
-                        othermail = loaner*/
                 }
                 else 
                 {
@@ -392,6 +387,19 @@ module.exports = function(app, express) {
                                 moment.locale('fr')
                                 loan.lastreminder = moment()
                                 loan.save()
+                                //find if user is loaner or borrower and update FriendList data
+                                var dbrequest 
+                                if(loan.loaner == req.user.local.username) 
+                                    dbrequest = {creator : req.user, friendname : loan.borrower}
+                                else dbrequest = {creator : req.user, friendname : loan.loaner}
+                                FriendList.findOne(dbrequest, function(err, friend) {
+                                    if(err) throw err
+                                    else
+                                    {
+                                        friend.friendmail = mail
+                                        friend.save()
+                                    }   
+                                })
                             }
                         })
                     }
