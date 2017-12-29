@@ -73,7 +73,18 @@ module.exports = function(app, express) {
                     {
                         myborrows = loans
                         myborrows.map(loan => {
-                            if(!friendList.has(loan.loaner)) friendList.add(loan.loaner)
+                            if(!friendList.has(loan.loaner)) 
+                                {
+                                    friendList.add(loan.loaner)
+                                    var updateFL = new FriendList()
+                                    updateFL.creator = user
+                                    updateFL.friendname = loan.loaner
+                                    if(mailSender.validateMail(loan.loaner)) updateFL.friendmail = loan.loaner
+                                    updateFL.save(function(err)
+                                    {
+                                        if (err) throw err
+                                    })
+                                }
                         })
                         console.log("new friendlist size after myborrows: " + friendList.size)
                         var myloans
@@ -83,7 +94,18 @@ module.exports = function(app, express) {
                             {
                                 myloans = loans
                                 myloans.map(loan => {
-                                    if(!friendList.has(loan.borrower)) friendList.add(loan.borrower)
+                                    if(!friendList.has(loan.borrower)) 
+                                    {
+                                        friendList.add(loan.borrower)
+                                        var updateFL = new FriendList()
+                                        updateFL.creator = user
+                                        updateFL.friendname = loan.borrower
+                                        if(mailSender.validateMail(loan.borrower)) updateFL.friendmail = loan.borrower
+                                        updateFL.save(function(err)
+                                        {
+                                            if (err) throw err
+                                        })
+                                    }
                                 })
                                 console.log("new friendlist size after myloans: " + friendList.size)
                                 res.render('main', {
