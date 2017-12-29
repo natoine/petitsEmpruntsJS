@@ -2,6 +2,8 @@
 const User            = require('../models/user')
 //load up the loan model
 const Loan = require('../models/loan')
+//load up the friendlist model
+const FriendList = require('../models/friendlist')
 
 const moment = require('moment')
 moment().format()
@@ -51,25 +53,39 @@ module.exports = function(app, express) {
             loansQuery.borrower = friend
         }
 
-        friendList = new Set()
-        //TODO
-        //=================
-        // we should not send borrows and loans in this request
-        // but make an API with token and fetch them from browser
-        var myborrows
-        Loan.find( borrowsQuery, function(err, loans) {
+        FriendList.find( {'creator' : user} , function(err, friendListDB) {
             if(err) throw err
             else 
-                {
-                    myborrows = loans
-                    myborrows.map(loan => {if(!friendList.has(loan.loaner)) friendList.add(loan.loaner)})
-                    var myloans
-                    Loan.find(loansQuery, function(err, loans) {
-                        if(err) throw err
-                        else 
+            {
+                console.log("vous avez " + friendListDB.length + " amis")
+                friendList = new Set()
+                friendListDB.map(friend => {
+                    if(!friendList.has(friend.friendname)) friendList.add(friend.friendname)
+                })
+                console.log("new friendlist size after DB: " + friendList.size)
+                //=================
+                // we should not send borrows and loans in this request
+                // but make an API with token and fetch them from browser
+                var myborrows
+                Loan.find( borrowsQuery, function(err, loans) {
+                    if(err) throw err
+                    else 
+                    {
+                        myborrows = loans
+                        myborrows.map(loan => {
+                            if(!friendList.has(loan.loaner)) friendList.add(loan.loaner)
+                        })
+                        console.log("new friendlist size after myborrows: " + friendList.size)
+                        var myloans
+                        Loan.find(loansQuery, function(err, loans) {
+                            if(err) throw err
+                            else 
                             {
                                 myloans = loans
-                                myloans.map(loan => {if(!friendList.has(loan.borrower)) friendList.add(loan.borrower)})
+                                myloans.map(loan => {
+                                    if(!friendList.has(loan.borrower)) friendList.add(loan.borrower)
+                                })
+                                console.log("new friendlist size after myloans: " + friendList.size)
                                 res.render('main', {
                                     username : user.local.username , 
                                         messagedangerwhat: req.flash('messagedangerwhat') , 
@@ -85,9 +101,12 @@ module.exports = function(app, express) {
                                         isadmin : user.isSuperAdmin()
                                 })
                             }
-                    })
-                }
+                        })
+                    }
+                })
+            }
         })
+        
         
     })
 
