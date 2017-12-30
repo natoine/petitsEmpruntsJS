@@ -25,7 +25,10 @@ module.exports = function(app, express) {
     // =====================================
     mainRoutes.get('/', function(req, res) {
         req.logout()
-        res.render('index')// load the index.ejs file
+        res.render('index', 
+            {   message: req.flash('loginMessage'),
+                googleSignupMessage: req.flash('googleSignupMessage'),
+                fbSignupMessage: req.flash('fbSignupMessage') })// load the index.ejs file
     })
 
     // =====================================

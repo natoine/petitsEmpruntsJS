@@ -10,17 +10,11 @@ module.exports = function(app, express, passport) {
 
 	// =====================================
     // LOGIN ===============================
-    // =====================================
-    // show the login form
-    authRoutes.get('/login', function(req, res) {
-        // render the page and pass in any flash data if it exists
-        res.render('login', { message: req.flash('loginMessage') })
-    })
-
+    // =====================================   
     // process the login form
     authRoutes.post('/login', passport.authenticate('local-login', {
         successRedirect : '/main', // redirect to the secure profile section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
+        failureRedirect : '/', // redirect back to the index page if there is an error
         failureFlash : true // allow flash messages
     }))
 
