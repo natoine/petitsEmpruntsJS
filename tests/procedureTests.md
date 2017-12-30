@@ -42,14 +42,17 @@ Procédure de test de Petits Emprunts
 		*** ne pas remplir le premier champ (Quoi ?) -> message d'erreur : Précisez ce qui est emprunté
 		***  ne pas remplir le deuxième champ (A qui ? - mail ) -> message d'erreur : Précisez avec qui se passe l'emprunt
 		*** ne pas remplir le troisième champ (Quand ?) -> message d'erreur : Précisez quand l'emprunt a lieu
-	** saisir de vraies valeurs, cliquer sur j'emprunte : -> dans Mes amis devrait apparaître le nom saisi dans "A qui", dans la liste Mes Emprunts devrait apparaître l'emprunt.
+	** saisir de vraies valeurs, cliquer sur j'emprunte : -> dans Mes amis devrait apparaître le nom saisi dans "A qui", dans la liste Mes Emprunts devrait apparaître l'emprunt. Dans la base de données, création d'un élément FriendList, s'il n'existait pas avant.
 * tester un prêt
-	** saisir de vraies valeurs, cliquer sur je prête : -> dans Mes amis devrait apparaître le nom saisi dans "A qui", dans la liste Mes Prêts devrait apparaître l'emprunt. 
+	** saisir de vraies valeurs, cliquer sur je prête : -> dans Mes amis devrait apparaître le nom saisi dans "A qui", dans la liste Mes Prêts devrait apparaître l'emprunt. Dans la base de données, création d'un élément FriendList, s'il n'existait pas avant.
 * tester de supprimer un emprunt
 	** cliquer sur le bouton de suppression -> message : emprunt supprimé. Constater que l'emprunt n'est plus listé et a bien disparu de la bdd.
 * tester de relancer quelqu'un
 	** cliquer sur le bouton relancer d'un emprunt. -> /remind formulaire de relance
 	** tester le formulaire de relance
+		*** tester le message d'erreur pour mail non valide. Remplir le champ mail avec un mail non valide ou rien-> message d'erreur : ce n'est pas un email valide
+		*** tester le message d'erreur pour un message non valide, c'est à dire un message vide -> message d'erreur : ce n'est pas un message valide.
+		*** envoyer un message valide à une bonne adresse -> retour page principale /main avec message success : message de relance envoyé. A l'adresse mail renseignée, réception d'un mail de relance contenant le message saisi. En base de données, l'élément FriendList renseigne désormais le mail de l'ami à qui on a envoyé le mail. Si on revient sur relance pour ce même ami, on a directement le mail renseigné dans le formulaire de relance.
 
 ----- admin features -----
 

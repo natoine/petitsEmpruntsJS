@@ -55,6 +55,11 @@
             <form id="remindform" action="/newreminder/<%=loanid%>" method="post">
                 <div class="form-group">
                     <fieldset>
+
+                        <% if (messageMail.length > 0) { %>
+                            <div class="alert alert-danger" id="dangerMail"><%= messageMail %></div>
+                        <% } %>
+
                         <label>mail de <%=otherusername%>: </label>
                         <input type="text" placeholder="mail de <%=otherusername%>" id="inputothermail" name="inputothermail" class="form-control"" 
                             <% if(othermail.length > 0)
@@ -62,17 +67,15 @@
                                 value="<%=othermail%>"
                             <%}%>
                             >
-                        <% if (messageMail.length > 0) { %>
-                            <div class="alert alert-danger" id="dangerMail"><%= messageMail %></div>
-                        <% } %>
                 
-                        <label>Le message :</label>
-                        <textarea name="inputremindermsg" class="form-control" rows="3" id="inputremindermsg"><%=mailcontent%></textarea>
                         <% if (messageContent.length > 0) { %>
                             <div class="alert alert-danger" id="dangerContent"><%= messageContent %></div>
                         <% } %>
+
+                        <textarea name="inputremindermsg" rows="5" id="inputremindermsg" class="input-xlarge"><%=mailcontent%></textarea>
+                        
                     </fieldset>
-                    <button type="submit" id="submitReminderButton" class="btn btn-primary btn-large">Envoi du rappel</button>
+                    <button type="submit" id="submitReminderButton" class="btn btn-info">Envoi du rappel</button>
                 </div>
             </form>
         </div>

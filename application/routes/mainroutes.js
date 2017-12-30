@@ -370,16 +370,16 @@ module.exports = function(app, express) {
         msg = req.body.inputremindermsg
         if(!mailSender.validateMail(mail))
         {
-            req.flash('messageMail' , 'not a valid email')
+            req.flash('messageMail' , 'ce n\'est pas un email valide')
             if(msg.length > 0) req.flash('mailcontent' , msg)
-            else req.flash('messageContent' , 'not a valid message' )
+            else req.flash('messageContent' , 'ce n\'est pas un message valide' )
             res.redirect("/remind/" + req.params.loanid)
         }
         else
         {
             if(!msg.length > 0)
             {
-                req.flash('messageContent' , 'not a valid message' )
+                req.flash('messageContent' , 'ce n\'est pas un message valide' )
                 req.flash('othermail' , mail)
                 res.redirect("/remind/" + req.params.loanid)
             }
