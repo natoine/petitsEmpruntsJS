@@ -109,6 +109,8 @@ module.exports = function(app, express) {
                                 })
                                 res.render('main', {
                                     username : user.local.username , 
+                                        messagesuccessmain : req.flash('messagesuccessmain') , 
+                                        messagedangermain : req.flash('messagedangermain') ,
                                         messagedangerwhat: req.flash('messagedangerwhat') , 
                                         messagedangerwhom: req.flash('messagedangerwhom') ,
                                         messagedangerwhen: req.flash('messagedangerwhen') ,
@@ -128,8 +130,6 @@ module.exports = function(app, express) {
                 })
             }
         })
-        
-        
     })
 
     //creates a new loan !!! 
@@ -140,27 +140,24 @@ module.exports = function(app, express) {
         action = req.body.action
         user = req.user
         cancreateloan = true
+        messagesuccessmain = ""
         if(!what) 
         {
-                console.log("what is empty")
                 cancreateloan = false
                 req.flash('messagedangerwhat', 'Précisez ce qui est emprunté')
         }
         if(!whom) 
         {
-                console.log("whom is empty")
                 cancreateloan = false
                 req.flash('messagedangerwhom', 'Précisez avec qui se passe l\'emprunt')
         }
         if(!when) 
         {
-                console.log("when is empty")
                 cancreateloan = false
                 req.flash('messagedangerwhen', 'Précisez quand l\'emprunt a lieu')
         }
         if(cancreateloan)
         {
-            console.log("can create loan")
             var newLoan = new Loan()
             newLoan.creator = user
             newLoan.what = what
@@ -171,10 +168,19 @@ module.exports = function(app, express) {
                     newLoan.borrower = user.local.email
                     newLoan.loaner = whom
                     newLoan.save(function(err){
-                        if (err) throw err
+                        if (err) 
+                            {
+                                throw err
+                                req.flash('messagedangermain', 'unable to create borrow. Try later')
+                                req.flash('action', action)
+                                res.redirect('/main')
+                            }
                         else 
                         {   
-                           console.log("nouvel emprunt")
+                            console.log("nouvel emprunt créé")
+                            req.flash('messagesuccessmain', 'nouvel emprunt créé')
+                            req.flash('action', action)
+                            res.redirect('/main')
                         }
                     })
                     break ;
@@ -182,10 +188,18 @@ module.exports = function(app, express) {
                     newLoan.loaner = user.local.email
                     newLoan.borrower = whom
                     newLoan.save(function(err){
-                        if (err) throw err
+                        if (err) 
+                            {
+                                throw err
+                                req.flash('messagedangermain', 'unable to create loan. Try later')
+                                req.flash('action', action)
+                                res.redirect('/main')
+                            }
                         else 
                         {
-                            console.log("nouveau prêt")
+                            req.flash('messagesuccessmain', 'nouveau prêt créé')
+                            req.flash('action', action)
+                            res.redirect('/main')
                         }
                     })
                     break ;
@@ -197,9 +211,9 @@ module.exports = function(app, express) {
             req.flash('what', what)
             req.flash('when', when)
             req.flash('whom', whom)
+            req.flash('action', action)
+            res.redirect('/main')
         }
-        req.flash('action', action)
-        res.redirect('/main')
     })
 
     //DELETE a LOAN
@@ -216,12 +230,13 @@ module.exports = function(app, express) {
                     Loan.remove({"_id" : oId}, function(err, loan) {
                         if(err) 
                             {
-                                console.log("unable to delete loan : " + req.params.loanid)
+                                req.flash('messagedangermain', 'pas possible de supprimer l\'emprunt. Essayez plus tard.')
                                 throw err
+                                res.redirect('/main')
                             }
                             else
                             {
-                                console.log("delete loan : " + req.params.loanid)
+                                req.flash('messagesuccessmain', 'emprunt supprimé')
                                 res.redirect('/main')
                             }
 
@@ -229,13 +244,13 @@ module.exports = function(app, express) {
                 }
                 else
                 {
-                    console.log("not authorized to suppress this loan")
+                    req.flash('messagedangermain', 'pas authorisé à supprimer l\'emprunt.')
                     res.redirect('/main')
                 }
             }
             else
             {
-                console.log("this loan doesn't exist")
+                req.flash('messagedangermain', 'cet emprunt n\'existe pas.')
                 res.redirect('/main')
             } 
         })
@@ -307,7 +322,6 @@ module.exports = function(app, express) {
                     
                     FriendList.findOne({'creator' : user, 'friendname' : loaner} , 
                         function(err, friend) {
-                            console.log("friend : " + friend.friendname)
                             if(err) throw err
                             else 
                             {
@@ -339,13 +353,13 @@ module.exports = function(app, express) {
                 }
                 else 
                 {
-                    console.log("this loan doesn't concern you")
+                    req.flash('messagedangermain', 'cet emprunt ne vous concerne pas')
                     res.redirect('/main')
                 }
             }
             else 
             {
-                console.log("this loan doesn't exist")
+                req.flash('messagedangermain', 'cet emprunt n\'existe pas')                   
                 res.redirect('/main')
             }
         })
@@ -372,16 +386,19 @@ module.exports = function(app, express) {
             else
             {
                 
-                console.log("might send email")
-                //update friend with email
-
                 //send email and update loan to have a date of last reminder
                 subject = "petitsEmprunts : rappel d'emprunt de " + req.user.local.username
                 html = msg + "<br> <a href=\""+ mailSender.urlService + "\">Découvrez PetitsEmprunts</a>"
                 mailSender.sendMail(mail, subject, html, function(error, resp){
-                    if(error) console.log(error)
+                    if(error)
+                    {
+                        console.log(error)
+                        req.flash('messagedangermain', 'impossible d\'envoyer un message. Essayez plus tard.')
+                        res.redirect('/main')
+                    } 
                     else
                     {
+                        req.flash('messagesuccessmain', 'message de relance envoyé')
                         //update loan to add date of last reminder
                         oId = new mongo.ObjectID(req.params.loanid)
                         Loan.findOne({"_id" : oId}, function(err, loan) {
@@ -406,9 +423,9 @@ module.exports = function(app, express) {
                                 })
                             }
                         })
+                        res.redirect('/main')
                     }
                 })
-                res.redirect('/main')
             }
         }
     })

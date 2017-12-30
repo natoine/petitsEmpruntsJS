@@ -34,6 +34,19 @@ Procédure de test de Petits Emprunts
 			**** dans le mail reçu cliquer sur le lien : Password change
 			**** dans la page /pwdrecovery saisir un nouveau mot de passe -> retour sur index et message succès : pwd changed. Try to login
 			**** se connecter avec le nouveau mot de passe. 
-			
------ 
+	
+----- main features ------
 
+* tester un emprunt
+	** tester les messages d'erreur :
+		*** ne pas remplir le premier champ (Quoi ?) -> message d'erreur : Précisez ce qui est emprunté
+		***  ne pas remplir le deuxième champ (A qui ? - mail ) -> message d'erreur : Précisez avec qui se passe l'emprunt
+		*** ne pas remplir le troisième champ (Quand ?) -> message d'erreur : Précisez quand l'emprunt a lieu
+	** saisir de vraies valeurs, cliquer sur j'emprunte : -> dans Mes amis devrait apparaître le nom saisi dans "A qui", dans la liste Mes Emprunts devrait apparaître l'emprunt.
+* tester un prêt
+	** saisir de vraies valeurs, cliquer sur je prête : -> dans Mes amis devrait apparaître le nom saisi dans "A qui", dans la liste Mes Prêts devrait apparaître l'emprunt. 
+
+----- admin features -----
+
+* se connecter avec le compte antoineseilles@gmail.com
+* cliquer sur le lien admin dans la nav-bar
