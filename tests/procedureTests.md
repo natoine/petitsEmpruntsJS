@@ -45,6 +45,11 @@ Procédure de test de Petits Emprunts
 	** saisir de vraies valeurs, cliquer sur j'emprunte : -> dans Mes amis devrait apparaître le nom saisi dans "A qui", dans la liste Mes Emprunts devrait apparaître l'emprunt.
 * tester un prêt
 	** saisir de vraies valeurs, cliquer sur je prête : -> dans Mes amis devrait apparaître le nom saisi dans "A qui", dans la liste Mes Prêts devrait apparaître l'emprunt. 
+* tester de supprimer un emprunt
+	** cliquer sur le bouton de suppression -> message : emprunt supprimé. Constater que l'emprunt n'est plus listé et a bien disparu de la bdd.
+* tester de relancer quelqu'un
+	** cliquer sur le bouton relancer d'un emprunt. -> /remind formulaire de relance
+	** tester le formulaire de relance
 
 ----- admin features -----
 

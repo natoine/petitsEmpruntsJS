@@ -24,6 +24,12 @@
                     <span class="icon-bar"></span>
                 </a>
 
+                <div class="navbar-header">
+                    <ul class="nav navbar-nav">
+                        <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
+                    </ul>
+                </div>
+
                 <div class="navbar-right pull-right">
                     <div class="nav-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
@@ -36,15 +42,21 @@
             </div>
     </nav>
 
-<div class="container">
-    <div class="row-fluid" id="mainForm">
-        <div class="offset3">
+<div class="container hero-unit" id="reminder">
+    <div class="row-fluid">
+        <div class="span12">
+            <h2 class="text-center">Donnez des nouvelles à <%=otherusername%></h2>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span4 offset4 text-center">
+            <hr>
             <form id="remindform" action="/newreminder/<%=loanid%>" method="post">
                 <div class="form-group">
                     <fieldset>
-                        <label>A : <%=otherusername%></label>
-                        <label>Mail : </label>
-                        <input type="text" placeholder="le mail de à qui tu écris" id="inputothermail" name="inputothermail" class="form-control"" 
+                        <label>mail de <%=otherusername%>: </label>
+                        <input type="text" placeholder="mail de <%=otherusername%>" id="inputothermail" name="inputothermail" class="form-control"" 
                             <% if(othermail.length > 0)
                             { %>
                                 value="<%=othermail%>"
