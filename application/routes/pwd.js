@@ -202,11 +202,7 @@ module.exports = function(app, express) {
                                 else
                                 {
                                     req.flash('pwdChangedMessage', 'pwd changed. Try to login.')
-                                    res.render('index', 
-                                        {   message: req.flash('loginMessage'),
-                                            googleSignupMessage: req.flash('googleSignupMessage'),
-                                            fbSignupMessage: req.flash('fbSignupMessage'),
-                                            pwdChangedMessage : req.flash('pwdChangedMessage') })
+                                    res.redirect("/")
                                 }
                             })
                         }
