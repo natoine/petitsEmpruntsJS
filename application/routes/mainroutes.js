@@ -28,7 +28,8 @@ module.exports = function(app, express) {
         res.render('index', 
             {   message: req.flash('loginMessage'),
                 googleSignupMessage: req.flash('googleSignupMessage'),
-                fbSignupMessage: req.flash('fbSignupMessage') })// load the index.ejs file
+                fbSignupMessage: req.flash('fbSignupMessage'),
+                pwdChangedMessage : req.flash('pwdChangedMessage') })// load the index.ejs file
     })
 
     // =====================================

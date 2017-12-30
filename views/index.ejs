@@ -35,6 +35,8 @@
                 <div class="row-fluid">
                     <div class="span4 offset4">
 
+                        <hr>
+
                         <% if (googleSignupMessage.length > 0) { %>
                             <div class="alert alert-danger"><%= googleSignupMessage %></div>
                         <% } %>
@@ -54,6 +56,9 @@
                         <!-- show any messages that come back with authentication -->
                         <% if (message.length > 0) { %>
                             <div class="alert alert-danger"><%= message %></div>
+                        <% } %>
+                        <% if (pwdChangedMessage.length > 0) { %>
+                            <div class="alert alert-success"><%= pwdChangedMessage %></div>
                         <% } %>
 
                         <form action="/login" method="post">

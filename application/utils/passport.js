@@ -52,6 +52,7 @@ module.exports = function(passport)
 
         //check to see if email is correctly spelled
         console.log("passport mail signup: " + email)
+        console.log("passport pwd signup : " + password)
         if(!mailSender.validateMail(email))
         {
             return done(null, false, req.flash('signupMessage', 'That email is not correctly spelled'))
@@ -98,7 +99,7 @@ module.exports = function(passport)
                         })
                     }
                     return done(null, newUser, 
-                                    req.flash('signupMessage', 'We have sent you an activation email'))
+                                    req.flash('signupMessageSuccess', 'We have sent you an activation email'))
                 })
             }
         })

@@ -24,7 +24,9 @@ module.exports = function(app, express, passport) {
     // show the signup form
     authRoutes.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('signup', { message: req.flash('signupMessage') })
+        res.render('signup', 
+            {   message: req.flash('signupMessage'),
+                messageSuccess: req.flash('signupMessageSuccess') })
     })
 
     // process the signup form
