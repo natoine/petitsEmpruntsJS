@@ -10,17 +10,11 @@ module.exports = function(app, express, passport) {
 
 	// =====================================
     // LOGIN ===============================
-    // =====================================
-    // show the login form
-    authRoutes.get('/login', function(req, res) {
-        // render the page and pass in any flash data if it exists
-        res.render('login', { message: req.flash('loginMessage') })
-    })
-
+    // =====================================   
     // process the login form
     authRoutes.post('/login', passport.authenticate('local-login', {
         successRedirect : '/main', // redirect to the secure profile section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
+        failureRedirect : '/', // redirect back to the index page if there is an error
         failureFlash : true // allow flash messages
     }))
 
@@ -30,7 +24,9 @@ module.exports = function(app, express, passport) {
     // show the signup form
     authRoutes.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('signup', { message: req.flash('signupMessage') })
+        res.render('signup', 
+            {   message: req.flash('signupMessage'),
+                messageSuccess: req.flash('signupMessageSuccess') })
     })
 
     // process the signup form

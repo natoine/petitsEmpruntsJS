@@ -14,26 +14,42 @@
    
 </head>
 <body>
-<div class="container">
 
-<div class="col-sm-6 col-sm-offset-3">
+<nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <ul class="nav navbar-nav">
+                        <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
+                    </ul>
+                </div>
+            </div>
+</nav>
 
-    <h1><span class="fa fa-sign-in"></span> Activate your Account</h1>
+<div class="container hero-unit">
+    <div class="row-fluid">
 
-    <!-- show any messages that come back with changepwd -->
-    <% if (messagedanger.length > 0) { %>
-        <div class="alert alert-danger"><%= messagedanger %></div>
-    <% } %>
+        <div class="span12">
+            <h1 class="text-center">Bienvenue sur petits Emprunts, compte activé</h1>
+        </div>
 
-    <% if (messageok.length > 0) { %>
-        <div class="alert alert-success"><%= messageok %></div>
-    <% } %>
+        <div class="span4 offset4">
+            <hr>
+            <!-- show any messages that come back with changepwd -->
+            <% if (messagedanger.length > 0) { %>
+                <div class="alert alert-danger"><%= messagedanger %></div>
+            <% } %>
 
-    <hr>
+            <% if (messageok.length > 0) { %>
+                <div class="alert alert-success"><%= messageok %></div>
+            <% } %>
 
-    <p><a href="/">home</a></p>
+            <hr>
 
-</div>
+            <p><small><a href="/">home</a></small></p>
+
+        </div>
+
+    </div>
 
 </div>
 

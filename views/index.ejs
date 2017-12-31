@@ -25,21 +25,55 @@
             </div>
 </nav>
 
-<div class="container">
+<div class="container hero-unit">
                 <div class="row-fluid">
                     <div class="span12">
-                        <h1 class="text-center">Connectez vous à petits emprunts entre amis</h1>
+                        <h1 class="text-center">Connectez-vous</h1>
                     </div>
                 </div>
 
                 <div class="row-fluid">
-                    <div class="span4 offset4">
-                        <p>Login or Register with:</p>
+                    <div class="span4 offset4 text-center">
 
-                        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Local Login</a>
-                        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Local Signup</a>
-                        <a href="/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
-                        <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google+</a>
+                        <hr>
+
+                        <% if (googleSignupMessage.length > 0) { %>
+                            <div class="alert alert-danger"><%= googleSignupMessage %></div>
+                        <% } %>
+                        <% if (fbSignupMessage.length > 0) { %>
+                            <div class="alert alert-danger"><%= fbSignupMessage %></div>
+                        <% } %>
+
+                        <table>
+                            <tr>
+                                <td><a href="/auth/google" class="btn btn-danger">Connexion avec Google+</a></td>
+                                <td><a href="/auth/facebook" class="btn btn-primary">Connexion avec Facebook</a></td>
+                            </tr>
+                        </table>
+                    
+                    <hr>
+                    
+                        <!-- show any messages that come back with authentication -->
+                        <% if (message.length > 0) { %>
+                            <div class="alert alert-danger"><%= message %></div>
+                        <% } %>
+                        <% if (pwdChangedMessage.length > 0) { %>
+                            <div class="alert alert-success"><%= pwdChangedMessage %></div>
+                        <% } %>
+
+                        <form action="/login" method="post">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="email" placeholder="Adresse email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="password" placeholder="mot de passe">
+                            </div>
+                            <button type="submit" class="btn btn-info btn-lg">Me connecter</button>
+                        </form>
+                    <hr>
+                    <p><small><a href="/signup">Besoin de créer un compte ?</a></small></p>
+                    <p><small><a href="/pwdrecovery">Mot de passe perdu ?</a></small></p>
+
                     </div>
                 </div>
 

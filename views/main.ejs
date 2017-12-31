@@ -46,28 +46,47 @@
             </div>
     </nav>
 
-<div class="container">
-            <div class="row-fluid" id="mainForm">
-                <div class="span4 offset3">
+<div class="container hero-unit" id="mainAction">
+
+            <div class="row-fluid">
+                <div class="span12">
+                    <% if(messagesuccessmain.length > 0 ) { %>
+                        <div class="alert alert-success" id="messagesuccessmain">
+                            <%= messagesuccessmain %>
+                        </div>
+                    <%
+                    }
+                    %>
+
+                    <% if(messagedangermain.length > 0 ) { %>
+                        <div class="alert alert-danger" id="messagedangermain">
+                            <%= messagedangermain %>
+                        </div>
+                    <%
+                    }
+                    %>
+
+                    <h2 class="text-center">Petit Emprunt :</h2>
+                </div>
+            </div>
+
+            <div class="row-fluid">
+                <div class="span4 offset4 text-center">
+                    <hr>
                     <form id="mainform" action="/newloan" method="post">
                         <fieldset>
-                        <label>Quoi ?</label>
-                        <input type="text" placeholder="Quoi ?" id="fieldWhat" name="what" <% if(what.length > 0) { %>
-                        value=<%= what %>
-                        <% } %>
-                        >
-                            <% if(messagedangerwhat.length > 0 ) { %>
+                        <% if(messagedangerwhat.length > 0 ) { %>
                             <div class="alert alert-danger" id="dangerWhat">
                             <%= messagedangerwhat %>
                             </div>
                             <%
                             }
                             %>
-                        <label>A Qui ?</label>
-                        <input type="text" placeholder="A Qui ? - mail" id="fieldWho" name="whom" <% if(whom.length > 0) { %>
-                        value=<%= whom %>
+                        <input type="text" placeholder="Quoi ?" id="fieldWhat" name="what" <% if(what.length > 0) { %>
+                        value=<%= what %>
                         <% } %>
                         >
+                            
                             <% if(messagedangerwhom.length > 0) { %>
                             <div class="alert alert-danger" id="dangerWho">
                             <%= messagedangerwhom %>
@@ -75,9 +94,8 @@
                             <%
                             }
                             %>
-                        <label>Quand ?</label>
-                        <input type="text" placeholder="Quand ?" id="fieldWhen" name="when" <% if(when.length > 0) { %>
-                        value=<%= when %>
+                        <input type="text" placeholder="A Qui ? - mail" id="fieldWho" name="whom" <% if(whom.length > 0) { %>
+                        value=<%= whom %>
                         <% } %>
                         >
                             <% if(messagedangerwhen.length > 0) { %>
@@ -87,22 +105,27 @@
                             <%
                             }
                             %>
+                        <input type="text" placeholder="Quand ?" id="fieldWhen" name="when" <% if(when.length > 0) { %>
+                        value=<%= when %>
+                        <% } %>
+                        >
+                            
                         </fieldset>
-                        <div class="span4">
-                            <button id="submitILoanButton" class="btn btn-primary btn-large">Je prête</button>
-                        </div>
-                        <div class="span4">
-                            <button id="submitIBorrowButton" class="btn btn-primary btn-large">J'emprunte</button>
-                        </div>
+                        <button id="submitIBorrowButton" class="btn btn-info"><big>J'emprunte</big></button>
+
+                        <button id="submitILoanButton" class="btn btn-info"><big>Je prête</big></button>
                     </form>
                 </div>
-             </div>
+            </div>
 
+</div>
+
+<div class="container hero-unit">
             <div class="row-fluid" id="activity">
 
-                <div class="span3">
-                    <h3 class="text-left">Mes amis</h3>
-                    <ul id="friends">
+                <div class="span2">
+                    <h4 class="text-left">Mes amis</h4>
+                    <ul id="friends" class="unstyled">
                         <!-- should be dynamical and not by ejs-->
                         <% if(friendList.size > 0) { %>
                         <li><a href="/main">Tous</a></li>
@@ -113,33 +136,61 @@
                     </ul>
                 </div>
 
-                <div class="span9">
-                    <h3 class="text-left">Mes Emprunts :</h3>
-                    <h4>(<%= myborrows.length %> en cours )</h4>
+                <div class="span8">
+                    <h3 class="text-left">Mes Emprunts : <small>
+                    <%if (reqfriend=="none") 
+                    {
+                    %>
+                        (<%= myborrows.length %> en cours ) </small>
+                        </h3>                        
+                    <%}
+                    else
+                    {
+                        %>
+                        (<%= myborrows.length %> en cours avec <%=reqfriend%> )</small>
+                        </h3>
+                        <%
+                    }%>
+
                     <table id="lendingsIBorrow" class="table table-striped">
                         <tbody id="lendingsIBorrowBody">
                         <!-- should be dynamical and not by ejs-->
                         <% for( i = 0; i < myborrows.length ; i+=1) { %>
                             <tr id="loan<%= myborrows[i]._id %>">
-                                <td><%= myborrows[i].what %> emprunté à <%= myborrows[i].loaner %> le <%=myborrows[i].when%></td>
-                                <td><%= myborrows[i].getDelay() %></td>
-                                <td><button class="btn btnpoke" id="poke<%= myborrows[i]._id %>" onclick="location.href='/remind/<%=myborrows[i]._id%>'">Relancer</button></td>
-                                <td><button class="btn btn-danger btndelete" id="deleteloan<%= myborrows[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
+                                <td><%= myborrows[i].what %> <small>emprunté à <%= myborrows[i].loaner %> le <%=myborrows[i].when%></small></td>
+                                <td><small><%= myborrows[i].getDelay() %></small></td>
+                                <td><button class="btn btnpoke" id="poke<%= myborrows[i]._id %>" onclick="location.href='/remind/<%=myborrows[i]._id%>'" title="envoyer un mail de relance">Relancer</button></td>
+                                <td><button class="btn btn-danger btndelete" id="deleteloan<%= myborrows[i]._id %>" title="supprimer l'emprunt"><i class="icon-remove icon-white"></i></button></td>
                             </tr>
                         <% } %>
                         </tbody>
                     </table>
-                    <h3 class="text-left">Mes Prêts :</h3>
-                    <h4>(<%= myloans.length %> en cours )</h4>
+
+                    <hr>
+
+                    <h3 class="text-left">Mes Prêts : <small>
+                    <%if (reqfriend=="none") 
+                    {
+                    %>
+                        (<%= myloans.length %> en cours )</small>
+                        </h3>                        
+                    <%}
+                    else
+                    {
+                        %>
+                        (<%= myloans.length %> en cours avec <%=reqfriend%> )</small>
+                        </h3>
+                        <%
+                    }%>
                     <table id="lendingsILoan" class="table table-striped">
                         <tbody id="lendingsILoanBody">
                         <!-- should be dynamical and not by ejs-->
                         <% for( i = 0; i < myloans.length ; i+=1) { %>
                             <tr id="loan<%= myloans[i]._id %>">
-                                <td><%= myloans[i].what %> prêté à <%= myloans[i].borrower %> le <%=myloans[i].when%></td>
-                                <td><%= myloans[i].getDelay() %></td>
-                                <td><button class="btn btnpoke" id="poke<%= myloans[i]._id %>" onclick="location.href='/remind/<%=myloans[i]._id%>'">Relancer</button></td>
-                                <td><button class="btn btn-danger btndelete" id="deleteloan<%= myloans[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
+                                <td><%= myloans[i].what %> <small>prêté à <%= myloans[i].borrower %> le <%=myloans[i].when%></small></td>
+                                <td><small><%= myloans[i].getDelay() %></small></td>
+                                <td><button class="btn btnpoke" id="poke<%= myloans[i]._id %>" onclick="location.href='/remind/<%=myloans[i]._id%>'" title="envoyer un mail de relance">Relancer</button></td>
+                                <td><button class="btn btn-danger btndelete" id="deleteloan<%= myloans[i]._id %>" title="supprimer l'emprunt"><i class="icon-remove icon-white"></i></button></td>
                             </tr>
                         <% } %>
                         </tbody>

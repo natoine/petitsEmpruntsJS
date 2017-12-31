@@ -52,6 +52,7 @@ module.exports = function(passport)
 
         //check to see if email is correctly spelled
         console.log("passport mail signup: " + email)
+        console.log("passport pwd signup : " + password)
         if(!mailSender.validateMail(email))
         {
             return done(null, false, req.flash('signupMessage', 'That email is not correctly spelled'))
@@ -98,7 +99,7 @@ module.exports = function(passport)
                         })
                     }
                     return done(null, newUser, 
-                                    req.flash('signupMessage', 'We have sent you an activation email'))
+                                    req.flash('signupMessageSuccess', 'We have sent you an activation email'))
                 })
             }
         })
@@ -174,7 +175,10 @@ module.exports = function(passport)
                 // if there is an error, stop everything and return that
                 // ie an error connecting to the database
                 if (err)
+                {
+                    req.flash('fbSignupMessage', 'pb with db try later')
                     return done(err)
+                }
 
                 // if the user is found, then log them in
                 if (user) {
@@ -209,11 +213,13 @@ module.exports = function(passport)
                             if(err)
                             {
                                 console.log(err)
+                                req.flash('fbSignupMessage', 'pb with db try later')
                                 return done(err)
                             }
                             if(user)
                             {
                                 console.log("fb strat : user email already exists by local strat")
+                                req.flash('fbSignupMessage', 'user email already exists by local strat')
                                 return done(err)
                                 //TODO makes the user log by local strat and merge fb local accounts
                             } 
@@ -245,6 +251,7 @@ module.exports = function(passport)
                     else
                     {
                         console.log("User id : " + profile.id + " facebook should authorize one mail public")
+                        req.flash('fbSignupMessage', 'should fill your email in facebook profile')
                         return done(err)   
                     }
                 }
@@ -328,6 +335,7 @@ module.exports = function(passport)
                         }
                         if(user)
                         {
+                            req.flash('googleSignupMessage', 'user email already exists by local strat')
                             console.log("google strat : user email already exists by local strat")
                             return done(err)
                             //TODO makes the user log by local strat and merge google local accounts

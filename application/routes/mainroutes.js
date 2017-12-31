@@ -2,6 +2,8 @@
 const User            = require('../models/user')
 //load up the loan model
 const Loan = require('../models/loan')
+//load up the friendlist model
+const FriendList = require('../models/friendlist')
 
 const moment = require('moment')
 moment().format()
@@ -23,7 +25,11 @@ module.exports = function(app, express) {
     // =====================================
     mainRoutes.get('/', function(req, res) {
         req.logout()
-        res.render('index')// load the index.ejs file
+        res.render('index', 
+            {   message: req.flash('loginMessage'),
+                googleSignupMessage: req.flash('googleSignupMessage'),
+                fbSignupMessage: req.flash('fbSignupMessage'),
+                pwdChangedMessage : req.flash('pwdChangedMessage') })// load the index.ejs file
     })
 
     // =====================================
@@ -34,7 +40,7 @@ module.exports = function(app, express) {
     mainRoutes.get('/main', security.isLoggedInAndActivated, function(req, res) {
         
         //get the ?friend= query tagid from request
-        friend = req.query.friend || "none"
+        reqfriend = req.query.friend || "none"
         
         what = req.flash('what')
         whom = req.flash('whom')
@@ -45,33 +51,66 @@ module.exports = function(app, express) {
         user = req.user
         borrowsQuery = { 'borrower' : user.local.email }
         loansQuery = { 'loaner' : user.local.email }
-        if(friend !== "none")
+        if(reqfriend !== "none")
         {
-            borrowsQuery.loaner = friend
-            loansQuery.borrower = friend
+            borrowsQuery.loaner = reqfriend
+            loansQuery.borrower = reqfriend
         }
-
-        friendList = new Set()
-        //TODO
-        //=================
-        // we should not send borrows and loans in this request
-        // but make an API with token and fetch them from browser
-        var myborrows
-        Loan.find( borrowsQuery, function(err, loans) {
+        FriendList.find( {'creator' : user} , function(err, friendListDB) {
             if(err) throw err
             else 
-                {
-                    myborrows = loans
-                    myborrows.map(loan => {if(!friendList.has(loan.loaner)) friendList.add(loan.loaner)})
-                    var myloans
-                    Loan.find(loansQuery, function(err, loans) {
-                        if(err) throw err
-                        else 
+            {
+                friendList = new Set()
+                friendListDB.map(friend => {
+                    if(!friendList.has(friend.friendname)) friendList.add(friend.friendname)
+                })
+                //=================
+                // we should not send borrows and loans in this request
+                // but make an API with token and fetch them from browser
+                var myborrows
+                Loan.find( borrowsQuery, function(err, loans) {
+                    if(err) throw err
+                    else 
+                    {
+                        myborrows = loans
+                        myborrows.map(loan => {
+                            if(!friendList.has(loan.loaner)) 
+                                {
+                                    friendList.add(loan.loaner)
+                                    var updateFL = new FriendList()
+                                    updateFL.creator = user
+                                    updateFL.friendname = loan.loaner
+                                    if(mailSender.validateMail(loan.loaner)) updateFL.friendmail = loan.loaner
+                                    updateFL.save(function(err)
+                                    {
+                                        if (err) throw err
+                                    })
+                                }
+                        })
+                        var myloans
+                        Loan.find(loansQuery, function(err, loans) {
+                            if(err) throw err
+                            else 
                             {
                                 myloans = loans
-                                myloans.map(loan => {if(!friendList.has(loan.borrower)) friendList.add(loan.borrower)})
+                                myloans.map(loan => {
+                                    if(!friendList.has(loan.borrower)) 
+                                    {
+                                        friendList.add(loan.borrower)
+                                        var updateFL = new FriendList()
+                                        updateFL.creator = user
+                                        updateFL.friendname = loan.borrower
+                                        if(mailSender.validateMail(loan.borrower)) updateFL.friendmail = loan.borrower
+                                        updateFL.save(function(err)
+                                        {
+                                            if (err) throw err
+                                        })
+                                    }
+                                })
                                 res.render('main', {
                                     username : user.local.username , 
+                                        messagesuccessmain : req.flash('messagesuccessmain') , 
+                                        messagedangermain : req.flash('messagedangermain') ,
                                         messagedangerwhat: req.flash('messagedangerwhat') , 
                                         messagedangerwhom: req.flash('messagedangerwhom') ,
                                         messagedangerwhen: req.flash('messagedangerwhen') ,
@@ -82,13 +121,15 @@ module.exports = function(app, express) {
                                         myborrows : myborrows ,
                                         myloans : myloans ,
                                         friendList : friendList,
+                                        reqfriend : reqfriend,
                                         isadmin : user.isSuperAdmin()
                                 })
                             }
-                    })
-                }
+                        })
+                    }
+                })
+            }
         })
-        
     })
 
     //creates a new loan !!! 
@@ -99,54 +140,66 @@ module.exports = function(app, express) {
         action = req.body.action
         user = req.user
         cancreateloan = true
+        messagesuccessmain = ""
         if(!what) 
         {
-                console.log("what is empty")
                 cancreateloan = false
                 req.flash('messagedangerwhat', 'Précisez ce qui est emprunté')
         }
         if(!whom) 
         {
-                console.log("whom is empty")
                 cancreateloan = false
                 req.flash('messagedangerwhom', 'Précisez avec qui se passe l\'emprunt')
         }
         if(!when) 
         {
-                console.log("when is empty")
                 cancreateloan = false
                 req.flash('messagedangerwhen', 'Précisez quand l\'emprunt a lieu')
         }
         if(cancreateloan)
         {
-            console.log("can create loan")
             var newLoan = new Loan()
             newLoan.creator = user
+            newLoan.what = what
+            newLoan.when = when
             switch(action) 
             {
                 case 'iBorrow':
                     newLoan.borrower = user.local.email
                     newLoan.loaner = whom
-                    newLoan.what = what
-                    newLoan.when = when
                     newLoan.save(function(err){
-                        if (err) throw err
+                        if (err) 
+                            {
+                                throw err
+                                req.flash('messagedangermain', 'unable to create borrow. Try later')
+                                req.flash('action', action)
+                                res.redirect('/main')
+                            }
                         else 
                         {   
-                           console.log("nouvel emprunt")
+                            console.log("nouvel emprunt créé")
+                            req.flash('messagesuccessmain', 'nouvel emprunt créé')
+                            req.flash('action', action)
+                            res.redirect('/main')
                         }
                     })
                     break ;
                 case 'iLoan' :
                     newLoan.loaner = user.local.email
                     newLoan.borrower = whom
-                    newLoan.what = what
-                    newLoan.when = when
                     newLoan.save(function(err){
-                        if (err) throw err
+                        if (err) 
+                            {
+                                throw err
+                                req.flash('messagedangermain', 'unable to create loan. Try later')
+                                req.flash('action', action)
+                                res.redirect('/main')
+                            }
                         else 
                         {
-                            console.log("nouveau prêt")
+                            req.flash('messagesuccessmain', 'nouveau prêt créé')
+                            req.flash('action', action)
+                            res.redirect('/main')
                         }
                     })
                     break ;
@@ -158,9 +211,9 @@ module.exports = function(app, express) {
             req.flash('what', what)
             req.flash('when', when)
             req.flash('whom', whom)
+            req.flash('action', action)
+            res.redirect('/main')
         }
-        req.flash('action', action)
-        res.redirect('/main')
     })
 
     //DELETE a LOAN
@@ -177,12 +230,13 @@ module.exports = function(app, express) {
                     Loan.remove({"_id" : oId}, function(err, loan) {
                         if(err) 
                             {
-                                console.log("unable to delete loan : " + req.params.loanid)
+                                req.flash('messagedangermain', 'pas possible de supprimer l\'emprunt. Essayez plus tard.')
                                 throw err
+                                res.redirect('/main')
                             }
                             else
                             {
-                                console.log("delete loan : " + req.params.loanid)
+                                req.flash('messagesuccessmain', 'emprunt supprimé')
                                 res.redirect('/main')
                             }
 
@@ -190,13 +244,13 @@ module.exports = function(app, express) {
                 }
                 else
                 {
-                    console.log("not authorized to suppress this loan")
+                    req.flash('messagedangermain', 'pas authorisé à supprimer l\'emprunt.')
                     res.redirect('/main')
                 }
             }
             else
             {
-                console.log("this loan doesn't exist")
+                req.flash('messagedangermain', 'cet emprunt n\'existe pas.')
                 res.redirect('/main')
             } 
         })
@@ -217,51 +271,95 @@ module.exports = function(app, express) {
                 borrower = loan.borrower
                 user = req.user
                 othermail = req.flash('othermail') || ""
+                //user is the loaner
                 if(loaner === user.local.username || loaner === user.local.email)
                 {
                     if(!mailcontent.length > 0)
                         mailcontent = "Bonjour " + borrower + ", " + user.local.username 
                             + " (" + user.local.email + ") utilise petitsEmprunts"
                             + " pour vous rappeler de lui rendre " + loan.what + ", emprunté depuis le " + loan.when  
-                    if((!othermail.length > 0) && mailSender.validateMail(borrower)) othermail = borrower
-                    console.log("you re the loaner")
-                    res.render('reminder' , {
-                        loanid : req.params.loanid,
-                        username : user.local.username,
-                        otherusername : borrower,
-                        othermail : othermail,
-                        mailcontent : mailcontent,
-                        messageMail : messageMail,
-                        messageContent : messageContent
-                    })
+                    
+                    FriendList.findOne({'creator' : user, 'friendname' : borrower} , 
+                        function(err, friend) {
+                            if(err) throw err
+                            else 
+                            {
+                                if(othermail.length > 0 
+                                    && mailSender.validateMail(""+othermail) 
+                                    && (friend.friendmail.length == null ) )
+                                {
+                                    friend.friendmail = othermail
+                                    friend.save(function(err)
+                                    {
+                                        if (err) throw err
+                                    })
+                                }
+                                else
+                                {
+                                    if(friend.friendmail != null && friend.friendmail.length > 0) othermail = friend.friendmail
+                                }
+                                res.render('reminder' , {
+                                    loanid : req.params.loanid,
+                                    username : user.local.username,
+                                    otherusername : borrower,
+                                    othermail : othermail,
+                                    mailcontent : mailcontent,
+                                    messageMail : messageMail,
+                                    messageContent : messageContent
+                                })
+                            }
+                        })
+
                 }
+                //user is the borrower
                 else if(borrower === user.local.username || borrower === user.local.email)
                 {
                     if(!mailcontent.length > 0)
                         mailcontent = "Bonjour " + loaner + ", " + user.local.username 
                             + " (" + user.local.email + ") utilise petitsEmprunts"
                             + " pour vous rappeler qu'il/elle a toujours votre " + loan.what + ", emprunté depuis le " + loan.when
-                    if((!othermail.length > 0) && mailSender.validateMail(loaner)) othermail = loaner
-                    console.log("you re the borrower")
-                    res.render('reminder' , {
-                        loanid : req.params.loanid,
-                        username : user.local.username,
-                        otherusername : loaner,
-                        othermail : othermail,
-                        mailcontent : mailcontent,
-                        messageMail : messageMail,
-                        messageContent : messageContent
-                    })
+                    
+                    
+                    FriendList.findOne({'creator' : user, 'friendname' : loaner} , 
+                        function(err, friend) {
+                            if(err) throw err
+                            else 
+                            {
+                                if(othermail.length > 0 
+                                    && mailSender.validateMail(""+othermail) 
+                                    && (friend.friendmail == null ) )
+                                {
+                                    friend.friendmail = othermail
+                                    friend.save(function(err)
+                                    {
+                                        if (err) throw err
+                                    })
+                                }
+                                else
+                                {
+                                    if(friend.friendmail != null && friend.friendmail.length > 0) othermail = friend.friendmail
+                                }
+                            }
+                            res.render('reminder' , {
+                                loanid : req.params.loanid,
+                                username : user.local.username,
+                                otherusername : loaner,
+                                othermail : othermail,
+                                mailcontent : mailcontent,
+                                messageMail : messageMail,
+                                messageContent : messageContent
+                            })
+                        })
                 }
                 else 
                 {
-                    console.log("this loan doesn't concern you")
+                    req.flash('messagedangermain', 'cet emprunt ne vous concerne pas')
                     res.redirect('/main')
                 }
             }
             else 
             {
-                console.log("this loan doesn't exist")
+                req.flash('messagedangermain', 'cet emprunt n\'existe pas')                   
                 res.redirect('/main')
             }
         })
@@ -272,29 +370,35 @@ module.exports = function(app, express) {
         msg = req.body.inputremindermsg
         if(!mailSender.validateMail(mail))
         {
-            req.flash('messageMail' , 'not a valid email')
+            req.flash('messageMail' , 'ce n\'est pas un email valide')
             if(msg.length > 0) req.flash('mailcontent' , msg)
-            else req.flash('messageContent' , 'not a valid message' )
+            else req.flash('messageContent' , 'ce n\'est pas un message valide' )
             res.redirect("/remind/" + req.params.loanid)
         }
         else
         {
             if(!msg.length > 0)
             {
-                req.flash('messageContent' , 'not a valid message' )
+                req.flash('messageContent' , 'ce n\'est pas un message valide' )
                 req.flash('othermail' , mail)
                 res.redirect("/remind/" + req.params.loanid)
             }
             else
             {
+                
                 //send email and update loan to have a date of last reminder
-                console.log("might send email")
                 subject = "petitsEmprunts : rappel d'emprunt de " + req.user.local.username
                 html = msg + "<br> <a href=\""+ mailSender.urlService + "\">Découvrez PetitsEmprunts</a>"
                 mailSender.sendMail(mail, subject, html, function(error, resp){
-                    if(error) console.log(error)
+                    if(error)
+                    {
+                        console.log(error)
+                        req.flash('messagedangermain', 'impossible d\'envoyer un message. Essayez plus tard.')
+                        res.redirect('/main')
+                    } 
                     else
                     {
+                        req.flash('messagesuccessmain', 'message de relance envoyé')
                         //update loan to add date of last reminder
                         oId = new mongo.ObjectID(req.params.loanid)
                         Loan.findOne({"_id" : oId}, function(err, loan) {
@@ -304,11 +408,24 @@ module.exports = function(app, express) {
                                 moment.locale('fr')
                                 loan.lastreminder = moment()
                                 loan.save()
+                                //find if user is loaner or borrower and update FriendList data
+                                var dbrequest 
+                                if(loan.loaner == req.user.local.username) 
+                                    dbrequest = {creator : req.user, friendname : loan.borrower}
+                                else dbrequest = {creator : req.user, friendname : loan.loaner}
+                                FriendList.findOne(dbrequest, function(err, friend) {
+                                    if(err) throw err
+                                    else
+                                    {
+                                        friend.friendmail = mail
+                                        friend.save()
+                                    }   
+                                })
                             }
                         })
+                        res.redirect('/main')
                     }
                 })
-                res.redirect('/main')
             }
         }
     })

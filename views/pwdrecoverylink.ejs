@@ -22,11 +22,16 @@
             </div>
 </nav>
 
-<div class="container">
+<div class="container hero-unit">
 
-    <div class="col-sm-6 col-sm-offset-3">
+    <div class="row-fluid">
+        <div class="span12">
+            <h1 class="text-center">Changer le mot de passe</h1>
+        </div>
+    </div>
 
-        <h1><span class="fa fa-sign-in"></span> Change your Password <%= email %></h1>
+    <div class="span4 offset4">
+        <hr>
 
         <!-- show any messages that come back with pwdrecoverylinks -->
         <% if (message.length > 0) { %>
@@ -36,18 +41,17 @@
         <!-- PWD CHANGE FORM -->
         <form action="/pwdchangerecovery" method="post">
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control" name="password">
+                <input type="password" class="form-control" name="password" placeholder="nouveau mot de passe">
                 <input type="hidden" name="email" value="<%= email %>">
                 <input type="hidden" name="token" value="<%= token %>">
             </div>
 
-            <button type="submit" class="btn btn-warning btn-lg">Change Password</button>
+            <button type="submit" class="btn btn-info btn-lg">Changer le mot de passe</button>
         </form>
 
         <hr>
 
-        <p><a href="/">home</a></p>
+        <p><small><a href="/">home</a></small></p>
 
     </div>
 
