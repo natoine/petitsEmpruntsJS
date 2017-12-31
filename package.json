@@ -1,6 +1,6 @@
 {
   "name": "petitsemprunts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "a simple app to borrow and lend belongings between friends",
   "main": "server.js",
   "scripts": {
