@@ -24,7 +24,7 @@ module.exports = function(app, express) {
     // HOME PAGE (with login links) ========
     // =====================================
     mainRoutes.get('/', function(req, res) {
-        req.logout()
+        if(req.isAuthenticated() && req.user.isActivated()) res.redirect('/main')
         res.render('index', 
             {   message: req.flash('loginMessage'),
                 googleSignupMessage: req.flash('googleSignupMessage'),
