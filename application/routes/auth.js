@@ -13,10 +13,41 @@ module.exports = function(app, express, passport) {
     // =====================================   
     // process the login form
     authRoutes.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/main', // redirect to the secure profile section
         failureRedirect : '/', // redirect back to the index page if there is an error
         failureFlash : true // allow flash messages
-    }))
+    }),
+    function(req, res, next){
+        if(req.body.rememberme == "yes") 
+        {
+            user = req.user
+            //generates rememberme token
+            tokenrem = user.generatesRememberMeToken()
+            user.local.remembermetoken = tokenrem
+            user.save(function(err) 
+            {
+                if (err) 
+                {
+                    console.log("unable to save rememberme token - error : " + err)
+                    res.redirect('/main')
+                }
+                else 
+                {
+                    //stores rememberme token in cookie with user email
+                    res.clearCookie('useremail')
+                    res.clearCookie('remembermetoken')
+                    res.cookie("useremail", user.local.email)
+                    res.cookie("remembermetoken", user.local.remembermetoken, {maxAge: 604800000})//7 days
+                    res.redirect('/main')
+                }
+            })
+        }
+        else 
+        {
+            res.clearCookie('useremail')
+            res.clearCookie('remembermetoken')
+            res.redirect('/main')
+        }
+    })
 
     // =====================================
     // SIGNUP ==============================
@@ -127,6 +158,8 @@ module.exports = function(app, express, passport) {
     // LOGOUT ==============================
     // =====================================
     authRoutes.get('/logout', function(req, res) { 
+        res.clearCookie('remembermetoken')
+        res.clearCookie('useremail')
         req.logout()
         res.redirect('/')
     })
