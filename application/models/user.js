@@ -13,7 +13,8 @@ const userSchema = mongoose.Schema({
         mailvalidated: Boolean, 
         activationtoken: String,
         timepwdreco  : Number,
-        pwdrecotoken : String
+        pwdrecotoken : String,
+        remembermetoken : String
     },
     facebook         : {
         id           : String,
@@ -67,6 +68,11 @@ userSchema.methods.isSuperAdmin = function() {
     return false
 }
 
+//generates a token for rememberme
+userSchema.methods.generatesRememberMeToken = function() {
+    const now = new Date().getTime()
+    return bcrypt.hashSync(this.local.email + now, bcrypt.genSaltSync(8), null)
+}
 
 // create the model for users and expose it to our app
 const configDB = require('../../config/database.js')
