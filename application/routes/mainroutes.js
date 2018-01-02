@@ -23,7 +23,7 @@ module.exports = function(app, express) {
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
-    mainRoutes.get('/', function(req, res) {
+    mainRoutes.get('/', security.rememberme, function(req, res) {
         if(req.isAuthenticated() && req.user.isActivated()) res.redirect('/main')
         res.render('index', 
             {   message: req.flash('loginMessage'),
@@ -37,7 +37,7 @@ module.exports = function(app, express) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    mainRoutes.get('/main', security.isLoggedInAndActivated, function(req, res) {
+    mainRoutes.get('/main', security.rememberme, security.isLoggedInAndActivated, function(req, res) {
         
         //get the ?friend= query tagid from request
         reqfriend = req.query.friend || "none"
@@ -434,7 +434,7 @@ module.exports = function(app, express) {
     // PROFILE SECTION =====================
     // =====================================
     // TODO should see some page of other users maybe ?
-    mainRoutes.get('/user/:username', security.isLoggedInAndActivated, function(req, res) {
+    mainRoutes.get('/user/:username', security.rememberme, security.isLoggedInAndActivated, function(req, res) {
         if(req.user.local.username !== req.params.username)
         {
             res.redirect('/user/' + req.user.local.username)
