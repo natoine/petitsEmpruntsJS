@@ -41,7 +41,12 @@ module.exports = {
                     })
                     //return next(req, res)
                 }
-                else return next()
+                else
+                {
+                    res.clearCookie('remembermetoken')
+                    res.clearCookie('useremail')
+                    return next()
+                }
             })
         }
         else return next()
