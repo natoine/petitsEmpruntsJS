@@ -20,23 +20,30 @@ module.exports = {
             User.findOne({'local.email' : req.cookies.useremail, 'local.remembermetoken' : req.cookies.remembermetoken}, function(err, user){
                 if(user) 
                 {
-                    req.session.passport = {}
-                    req.session.passport.user = user._id
-                    res.clearCookie('remembermetoken')
-                    res.clearCookie('useremail')
-                    tokenrem = user.generatesRememberMeToken()
-                    user.local.remembermetoken = tokenrem
-                    user.save(function(err){
-                        if(err) 
+                    //req.session.passport = {}
+                    //req.session.passport.user = user._id
+                    req.login(user, function(err){
+                        res.clearCookie('remembermetoken')
+                        res.clearCookie('useremail')    
+                        if(err) return next()
+                        else 
                         {
-                            console.log("unable to save rememberme token - error : " + err)
-                            return next()
-                        }
-                        else
-                        {
-                            res.cookie("useremail", user.local.email)
-                            res.cookie("remembermetoken", user.local.remembermetoken, {maxAge: 604800000})//7 days
-                            return next()
+                            console.log("login isAuthenticated ? " + req.isAuthenticated())
+                            tokenrem = user.generatesRememberMeToken()
+                            user.local.remembermetoken = tokenrem
+                            user.save(function(err){
+                                if(err) 
+                                {
+                                    console.log("unable to save rememberme token - error : " + err)
+                                    return next()
+                                }
+                                else
+                                {
+                                    res.cookie("useremail", user.local.email)
+                                    res.cookie("remembermetoken", user.local.remembermetoken, {maxAge: 604800000})//7 days
+                                    return next()
+                                }
+                            })
                         }
                     })
                     //return next(req, res)
