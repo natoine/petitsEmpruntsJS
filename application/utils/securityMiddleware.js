@@ -4,7 +4,6 @@ module.exports = {
 
     // route middleware to make sure a user is logged in
     isLoggedIn: function(req, res, next) {
-
         // if user is authenticated in the session, carry on 
         if (req.isAuthenticated())
             return next()
@@ -18,17 +17,15 @@ module.exports = {
         if(req.cookies.useremail && req.cookies.remembermetoken)
         {
             User.findOne({'local.email' : req.cookies.useremail, 'local.remembermetoken' : req.cookies.remembermetoken}, function(err, user){
+                res.clearCookie('remembermetoken')
+                res.clearCookie('useremail')    
                 if(user) 
                 {
-                    //req.session.passport = {}
-                    //req.session.passport.user = user._id
-                    req.login(user, function(err){
-                        res.clearCookie('remembermetoken')
-                        res.clearCookie('useremail')    
+                    req.login(user, function(err)
+                    {
                         if(err) return next()
                         else 
                         {
-                            console.log("login isAuthenticated ? " + req.isAuthenticated())
                             tokenrem = user.generatesRememberMeToken()
                             user.local.remembermetoken = tokenrem
                             user.save(function(err){
@@ -46,21 +43,14 @@ module.exports = {
                             })
                         }
                     })
-                    //return next(req, res)
                 }
-                else
-                {
-                    res.clearCookie('remembermetoken')
-                    res.clearCookie('useremail')
-                    return next()
-                }
+                else return next()
             })
         }
         else return next()
     },
 
     isLoggedInAndActivated: function(req, res, next) {
-
         // if user is authenticated in the session, carry on 
         if (req.isAuthenticated() && req.user.isActivated())
         {
