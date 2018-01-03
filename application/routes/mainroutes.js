@@ -27,6 +27,7 @@ module.exports = function(app, express) {
         if(req.isAuthenticated() && req.user.isActivated()) res.redirect('/main')
         else res.render('index', 
             {   message: req.flash('loginMessage'),
+                messagedeleteusersuccess: req.flash('messagedeleteusersuccess'),
                 googleSignupMessage: req.flash('googleSignupMessage'),
                 fbSignupMessage: req.flash('fbSignupMessage'),
                 pwdChangedMessage : req.flash('pwdChangedMessage') })// load the index.ejs file
@@ -441,8 +442,9 @@ module.exports = function(app, express) {
         }
         res.render('profile', {
             user : req.user, // get the user out of session and pass to template
-            message : req.flash('messageusername'),
-            messageDeleteUser : req.flash('messageDeleteUser')
+            messageusernamesuccess : req.flash('messageusernamesuccess'),
+            messageusernamefail : req.flash('messageusernamefail'),
+            messagedeleteuserfail : req.flash('messagedeleteuserfail')
         })
     })
     
@@ -451,15 +453,21 @@ module.exports = function(app, express) {
         // if the password is wrong
         if (!req.user.validPassword(req.body.password))
         {
-            req.flash("messageDeleteUser","Wrong Password")
+            req.flash("messagedeleteuserfail","Ce n'est pas le bon mot de passe")
             res.redirect('/user/' + req.user.local.username)
         }
         else
         {
             req.user.remove('' , function(err, user) {
-                if(err) throw err
+                if(err) 
+                {
+                    console.log("unable to suppress user : " + user.local.username + "ERROR : " + err)
+                    req.flash("messagedeleteuserfail","unable to suppress user. Try later.")
+                    res.redirect('/user/' + req.user.local.username)
+                }
                 else
                 {
+                    req.flash("messagedeleteusersuccess","Compte supprimé")
                     console.log("delete user : " + req.user.local.username)
                     res.redirect('/')
                 }
@@ -482,11 +490,12 @@ module.exports = function(app, express) {
                 {
                     if(user)
                     {
-                        req.flash("messageusername", "this username is already in use")
+                        req.flash("messageusernamefail", "ce nom d'utilisateur est déjà utilisé")
                         res.redirect('/user/' + req.user.local.username)   
                     }
                     else
                     {
+                        req.flash("messageusernamesuccess", "nom d'utilisateur changé")
                         req.user.local.username = newusername
                         req.user.save()
                         res.redirect('/user/' + newusername)

@@ -54,6 +54,23 @@ Procédure de test de Petits Emprunts
 		*** tester le message d'erreur pour un message non valide, c'est à dire un message vide -> message d'erreur : ce n'est pas un message valide.
 		*** envoyer un message valide à une bonne adresse -> retour page principale /main avec message success : message de relance envoyé. A l'adresse mail renseignée, réception d'un mail de relance contenant le message saisi. En base de données, l'élément FriendList renseigne désormais le mail de l'ami à qui on a envoyé le mail. Si on revient sur relance pour ce même ami, on a directement le mail renseigné dans le formulaire de relance.
 
+----- MonProfil features -----
+* tester que l'on accède à son profil. Sur la page main, en haut à droite si je clique sur mon pseudo j'arrive sur une page : http://localhost:8080/user/[monpseudo]
+* tester de changer de nom d'utilisateur.
+	** remplir le formulaire avec un nouveau nom d'utilisateur et valider
+		*** s'il est déjà pris -> message d'erreur 
+		*** sinon -> Message succès "nom d'utilisateur changé" et désormais que ce soit sur le lien de profil ou dans la case du nom d'utilisateur, il y a le nouveau nom utilisateur
+* tester de supprimer son compte.
+	** saisir son mot de passe et cliquer sur "supprimer mon compte"
+		*** si mauvais mot de passe -> message d'erreur "Ce n'est pas le bon mot de passe"
+		*** si bon mot de passe -> redirigé vers / avec message de succès : "Compte supprimé". Le compte n'est plus présent en base de données.
+* associer mon compte facebook.
+	** cliquer sur "connect facebook" -> vous êtes redirigés sur vos emprunts et si vous cliquez sur votre pseudo en haut à droite, vous retrouvez votre page de profil avec dans la section facebook des informations sur votre compte fb.
+	** cliquez sur "unlink" -> vous êtes redirigés sur vos emprunts et si vous cliquez sur votre pseudo en haut à droite, vous retrouvez votre page de profil avec dans la section facebook aucunes informations
+* associer mon compte google
+	** cliquer sur "connect Google" -> vous êtes redirigés sur vos emprunts et si vous cliquez sur votre pseudo en haut à droite, vous retrouvez votre page de profil avec dans la section Google des informations sur votre compte google.
+	** cliquez sur "unlink" -> vous êtes redirigés sur vos emprunts et si vous cliquez sur votre pseudo en haut à droite, vous retrouvez votre page de profil avec dans la section Google aucunes informations
+
 ----- admin features -----
 
 * se connecter avec le compte antoineseilles@gmail.com
