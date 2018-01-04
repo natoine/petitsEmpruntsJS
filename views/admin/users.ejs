@@ -39,8 +39,8 @@
 
 <div class="container hero-unit">
     
-    <div class="page-header text-center">
-        <h3><span class="fa fa-anchor"></span>Liste des <%=users.length%> utilisateurs</h3>
+    <div class="span12">
+        <h3 class="text-center">Liste des <%=users.length%> utilisateurs</h3>
 
         <% if(messagesuccessadmin.length > 0 ) { %>
             <div class="alert alert-success" id="messagesuccessadmin">
@@ -62,7 +62,7 @@
     <div class="row-fluid" id="users">
     
         <!-- USERS LIST -->
-        <div class="col-sm-6">
+        <div>
             <div class="well">
                 <table id="usersList" class="table table-striped">
                     <% for( i = 0; i < users.length ; i+=1) { %>

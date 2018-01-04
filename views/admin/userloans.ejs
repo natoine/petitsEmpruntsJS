@@ -40,8 +40,8 @@
 
 <div class="container hero-unit">
     
-    <div class="page-header text-center">
-        <h3><span class="fa fa-anchor"></span>Les emprunts de : <span id="username"><%=user.local.username%></span></h3>
+    <div class="span12">
+        <h3 class="text-center">Les emprunts de : <span id="username"><%=user.local.username%></span></h3>
 
         <% if(messagesuccessadmin.length > 0 ) { %>
             <div class="alert alert-success" id="messagesuccessadmin">
@@ -61,37 +61,35 @@
     </div>
 
     <div class="row-fluid" id="users">
-        <div>
-                    <h3 class="text-left">Ses Emprunts :</h3>
-                    <h4>(<%= borrows.length %> en cours )</h4>
-                    <table id="lendingsHeBorrow" class="table table-striped">
-                        <tbody id="lendingsHeBorrowBody">
-                        <!-- should be dynamical and not by ejs-->
-                        <% for( i = 0; i < borrows.length ; i+=1) { %>
-                            <tr id="loan<%= borrows[i]._id %>">
-                                <td><%= borrows[i].what %> emprunté à <%= borrows[i].loaner %> le <%=borrows[i].when%></td>
-                                <td><%= borrows[i].getDelay() %></td>
-                                <td>dernière relance : <%= borrows[i].lastreminder %></td>
-                                <td><button class="btn btn-danger btndelete" id="deleteloan<%= borrows[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
-                            </tr>
-                        <% } %>
-                        </tbody>
-                    </table>
-                    <h3 class="text-left">Ses Prêts :</h3>
-                    <h4>(<%= loans.length %> en cours )</h4>
-                    <table id="lendingsHeLoan" class="table table-striped">
-                        <tbody id="lendingsHeLoanBody">
-                        <!-- should be dynamical and not by ejs-->
-                        <% for( i = 0; i < loans.length ; i+=1) { %>
-                            <tr id="loan<%= loans[i]._id %>">
-                                <td><%= loans[i].what %> prêté à <%= loans[i].borrower %> le <%= loans[i].when %></td>
-                                <td><%= loans[i].getDelay() %></td>
-                                <td>dernière relance : <%= loans[i].lastreminder %></td>
-                                <td><button class="btn btn-danger btndelete" id="deleteloan<%= loans[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
-                            </tr>
-                        <% } %>
-                        </tbody>
-                    </table>
+        <div class="well">
+            <h3 class="text-left">Ses Emprunts :<small>(<%= borrows.length %> en cours )</small></h3>
+            <table id="lendingsHeBorrow" class="table table-striped">
+                <tbody id="lendingsHeBorrowBody">
+                    <!-- should be dynamical and not by ejs-->
+                    <% for( i = 0; i < borrows.length ; i+=1) { %>
+                        <tr id="loan<%= borrows[i]._id %>">
+                            <td><%= borrows[i].what %> emprunté à <%= borrows[i].loaner %> le <%=borrows[i].when%></td>
+                            <td><%= borrows[i].getDelay() %></td>
+                            <td>dernière relance : <%= borrows[i].lastreminder %></td>
+                            <td><button class="btn btn-danger btndelete" id="deleteloan<%= borrows[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <h3 class="text-left">Ses Prêts :<small>(<%= loans.length %> en cours )</small></h3>
+            <table id="lendingsHeLoan" class="table table-striped">
+                <tbody id="lendingsHeLoanBody">
+                <!-- should be dynamical and not by ejs-->
+                <% for( i = 0; i < loans.length ; i+=1) { %>
+                    <tr id="loan<%= loans[i]._id %>">
+                        <td><%= loans[i].what %> prêté à <%= loans[i].borrower %> le <%= loans[i].when %></td>
+                        <td><%= loans[i].getDelay() %></td>
+                        <td>dernière relance : <%= loans[i].lastreminder %></td>
+                        <td><button class="btn btn-danger btndelete" id="deleteloan<%= loans[i]._id %>"><i class="icon-remove icon-white"></i></button></td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
         </div>
 
     </div>
