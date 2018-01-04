@@ -276,10 +276,10 @@ module.exports = function(app, express) {
                 if(loaner === user.local.username || loaner === user.local.email)
                 {
                     if(!mailcontent.length > 0)
-                        mailcontent = "Bonjour " + borrower + ", " + user.local.username 
-                            + " (" + user.local.email + ") utilise petitsEmprunts"
-                            + " pour vous rappeler de lui rendre " + loan.what + ", emprunté depuis le " + loan.when  
-                    
+                        mailcontent = `Bonjour ${borrower}, ${user.local.username} (${user.local.email})`
+                            + ` utilise petitsEmprunts pour vous rappeler de lui rendre`
+                            + ` ${loan.what}, emprunté depuis le ${loan.when}`
+                        
                     FriendList.findOne({'creator' : user, 'friendname' : borrower} , 
                         function(err, friend) {
                             if(err) throw err
@@ -316,10 +316,9 @@ module.exports = function(app, express) {
                 else if(borrower === user.local.username || borrower === user.local.email)
                 {
                     if(!mailcontent.length > 0)
-                        mailcontent = "Bonjour " + loaner + ", " + user.local.username 
-                            + " (" + user.local.email + ") utilise petitsEmprunts"
-                            + " pour vous rappeler qu'il/elle a toujours votre " + loan.what + ", emprunté depuis le " + loan.when
-                    
+                        mailcontent = `Bonjour ${loaner}, ${user.local.username}(${user.local.email})`
+                            + ` utilise petitsEmprunts pour vous rappeler qu'il/elle a toujours votre`
+                            + ` ${loan.what}, emprunté depuis le ${loan.when}`
                     
                     FriendList.findOne({'creator' : user, 'friendname' : loaner} , 
                         function(err, friend) {
@@ -374,7 +373,7 @@ module.exports = function(app, express) {
             req.flash('messageMail' , 'ce n\'est pas un email valide')
             if(msg.length > 0) req.flash('mailcontent' , msg)
             else req.flash('messageContent' , 'ce n\'est pas un message valide' )
-            res.redirect("/remind/" + req.params.loanid)
+            res.redirect(`/remind/${req.params.loanid}`)
         }
         else
         {
@@ -382,14 +381,14 @@ module.exports = function(app, express) {
             {
                 req.flash('messageContent' , 'ce n\'est pas un message valide' )
                 req.flash('othermail' , mail)
-                res.redirect("/remind/" + req.params.loanid)
+                res.redirect(`/remind/${req.params.loanid}`)
             }
             else
             {
                 
                 //send email and update loan to have a date of last reminder
-                subject = "petitsEmprunts : rappel d'emprunt de " + req.user.local.username
-                html = msg + "<br> <a href=\""+ mailSender.urlService + "\">Découvrez PetitsEmprunts</a>"
+                subject = `petitsEmprunts : rappel d'emprunt de ${req.user.local.username}`
+                html = msg + `<br> <a href="${mailSender.urlService}">Découvrez PetitsEmprunts</a>`
                 mailSender.sendMail(mail, subject, html, function(error, resp){
                     if(error)
                     {
@@ -438,7 +437,7 @@ module.exports = function(app, express) {
     mainRoutes.get('/user/:username', security.rememberme, security.isLoggedInAndActivated, function(req, res) {
         if(req.user.local.username !== req.params.username)
         {
-            res.redirect('/user/' + req.user.local.username)
+            res.redirect(`/user/${req.user.local.username}`)
         }
         res.render('profile', {
             user : req.user, // get the user out of session and pass to template
@@ -454,7 +453,7 @@ module.exports = function(app, express) {
         if (!req.user.validPassword(req.body.password))
         {
             req.flash("messagedeleteuserfail","Ce n'est pas le bon mot de passe")
-            res.redirect('/user/' + req.user.local.username)
+            res.redirect(`/user/${req.user.local.username}`)
         }
         else
         {
@@ -480,7 +479,7 @@ module.exports = function(app, express) {
         newusername = req.body.username.trim()
         if( newusername == "" || req.user.local.username == newusername ) 
         {
-                res.redirect('/user/' + req.user.local.username)
+                res.redirect(`/user/${req.user.local.username}`)
         }
         else 
         {
@@ -491,14 +490,14 @@ module.exports = function(app, express) {
                     if(user)
                     {
                         req.flash("messageusernamefail", "ce nom d'utilisateur est déjà utilisé")
-                        res.redirect('/user/' + req.user.local.username)   
+                        res.redirect(`/user/${req.user.local.username}`)   
                     }
                     else
                     {
                         req.flash("messageusernamesuccess", "nom d'utilisateur changé")
                         req.user.local.username = newusername
                         req.user.save()
-                        res.redirect('/user/' + newusername)
+                        res.redirect(`/user/${newusername}`)
                     }
                 }
             })

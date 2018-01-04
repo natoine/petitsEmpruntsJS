@@ -85,12 +85,10 @@ module.exports = function(passport)
                     {
                         //sends an email to activate account
                         var subject = "Activation de compte PetitsEmprunts"
-                        var html = "Bienvenue sur Petits Emprunts." + 
-                            " Cliquez sur le lien ci-dessous pour activer votre compte : <a href=\""
-                            + mailSender.urlService 
-                            + "/activateaccount?email=" + email 
-                            + "&token=" + newUser.local.activationtoken 
-                            +"\">Activate Account</a>"
+                        var html = `Bienvenue sur Petits Emprunts. ` 
+                            + `Cliquez sur le lien ci-dessous pour activer votre compte : <a href="`
+                            + `${mailSender.urlService}/activateaccount?email=${email}` 
+                            + `&token=${newUser.local.activationtoken}">Activate Account</a>`
                         mailSender.sendMail(email, subject, html, function(error, response){
                             if(error)
                             {

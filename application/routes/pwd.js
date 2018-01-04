@@ -106,10 +106,9 @@ module.exports = function(app, express) {
                         {
                             //sends an email to recover password
                             var subject = "Récupération de votre mot de Passe petitsEmprunts"
-                            var html = "Cliquez sur le lien suivant pour changer votre Mot de Passe : " 
-                                 + "<a href=\"" + mailSender.urlService + "/pwdrecovery?token=" 
-                                 + user.local.pwdrecotoken
-                                 + "\">Password change</a>"
+                            var html = `Cliquez sur le lien suivant pour changer votre Mot de Passe : ` 
+                                 + `<a href="${mailSender.urlService}/pwdrecovery?token=${user.local.pwdrecotoken}`
+                                 + `">Password change</a>`
                             mailSender.sendMail(email, subject, html, function(error, response){
                                 if(error)
                                 {
@@ -135,9 +134,9 @@ module.exports = function(app, express) {
                 else {
                     //sends an email to prevent a missuse of email
                         var subject = "PetitsEmprunts tentative d'utilisation de votre mail"
-                        var html = "Quelqu'un essaye d'utiliser votre mail pour se connecter sur PetitsEmprunts mais vous n'êtes pas inscrits ... "
-                        + "vous pouvez découvrir Petits Emprunts ici : " 
-                        + "<a href=\"" + mailSender.urlService + "\" > Petits Emprunts </a>" 
+                        var html = `Quelqu'un essaye d'utiliser votre mail pour se connecter sur PetitsEmprunts mais vous n'êtes pas inscrit ... `
+                        + `vous pouvez découvrir Petits Emprunts ici : ` 
+                        + `<a href="${mailSender.urlService}">Petits Emprunts</a>` 
                         mailSender.sendMail(email, subject, html, function(error, response){
                             if(error)
                             {
