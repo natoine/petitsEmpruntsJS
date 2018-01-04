@@ -23,24 +23,42 @@ module.exports = function(app, express) {
 	    		"google.name" : true
     		},
     		function(err, users) {
-    			if(err) throw err
-            	else 
-               	{
-               		res.render('admin/users' , 
-               			{username : req.user.local.username, users : users})
-               	}
+    			if(err) 
+          {
+            console.log("admin ERROR : " + err)
+            throw err
+          }
+          else 
+          {
+            res.render('admin/users' , 
+              {
+                username : req.user.local.username, 
+                users : users,
+                messagesuccessadmin : req.flash("messagesuccessadmin"),
+                messagedangeradmin : req.flash("messagedangeradmin")
+              })
+          }
     		}
     	)
     })
 
     adminRoutes.get('/loans', security.isSuperAdmin, function(req, res) {
     	Loan.find( {} , {} , function(err, loans) {
-    			if(err) throw err
-            	else 
-               	{
-               		res.render('admin/loans' , 
-               			{username : req.user.local.username, loans : loans})
-               	}
+    			if(err)
+          {
+            console.log("admin ERROR : " + err)
+            throw err
+          }
+          else 
+          {
+            res.render('admin/loans' , 
+              {
+                username : req.user.local.username, 
+                loans : loans,
+                messagesuccessadmin : req.flash("messagesuccessadmin"),
+                messagedangeradmin : req.flash("messagedangeradmin")
+              })
+          }
     		})
     })
 
@@ -66,7 +84,9 @@ module.exports = function(app, express) {
                         { username : req.user.local.username, 
                           borrows : hisborrows , 
                           loans : hisloans , 
-                          user: user
+                          user: user, 
+                          messagesuccessadmin : req.flash("messagesuccessadmin"),
+                          messagedangeradmin : req.flash("messagedangeradmin")
                         })
                     }
                   })
@@ -89,19 +109,23 @@ module.exports = function(app, express) {
                   if(err) 
                   {
                       console.log("unable to delete loan : " + req.params.loanid)
-                      throw err
+                      req.flash("messagedangeradmin","an error occured, unable to delete loan")
+                      console.lof("admin deleteloan ERROR : " + err)
+                      res.redirect('/admin/loans/' + user._id)
                   }
                   else
                   {
-                    console.log("delete loan : " + req.params.loanid)
+                    //verify user still exists
                     User.findOne({"local.username" : username}, function(err, user) {
                       if(err) 
                       {
-                        throw err
+                        req.flash("messagedangeradmin","an error occured, during deletion of the loan")
+                        console.lof("admin deleteloan ERROR2 : " + err)
                         res.redirect('/main')
                       }
                       else
                       {
+                        req.flash("messagesuccessadmin", "loan deleted")
                         res.redirect('/admin/loans/' + user._id)
                       }
                     })
@@ -157,33 +181,38 @@ module.exports = function(app, express) {
     adminRoutes.post('/deleteuser/:userid', security.isSuperAdmin, function(req, res) {
       oId = new mongo.ObjectID(req.params.userid)
       User.findOne({"_id" : oId}, function(err, user) {
-            if(err) throw err
-            else 
-            { 
-              //don't delete its own account
-              if(user._id.toString() !== req.user._id.toString())
+        if(err) 
+        {
+          console.log("admin deleteuser ERROR : "+ err)
+          req.flash("messagedangeradmin", "unable to delete user try later")
+          res.redirect('/admin/users')
+        }
+        else 
+        { 
+          //don't delete its own account
+          if(user._id.toString() !== req.user._id.toString())
+          {
+            User.remove({"_id" : oId}, function(err, user) {
+              if(err) 
               {
-                User.remove({"_id" : oId}, function(err, user) {
-                        if(err) 
-                            {
-                                console.log("unable to delete user : " + req.params.userid)
-                                throw err
-                            }
-                            else
-                            {
-                                console.log("delete user : " + req.params.userid)
-                                res.redirect('/admin/users')
-                            }
-
-                    })
-              }
-              else 
-              {
-                console.log("SECURITY : cannot delete your own account !!!")
+                console.log("admin deleteuser ERROR2 : "+ err)
+                req.flash("messagedangeradmin", "unable to delete user try later")
                 res.redirect('/admin/users')
               }
-            }
-          })
+              else
+              {
+                req.flash("messagesuccessadmin","user deleted")
+                res.redirect('/admin/users')
+              }
+            })
+          }
+          else 
+          {
+            req.flash("messagedangeradmin", "cannot delete your own account")
+            res.redirect('/admin/users')
+          }
+        }
+      })
     })
 
     // apply the routes to our application

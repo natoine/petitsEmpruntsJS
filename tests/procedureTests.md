@@ -75,3 +75,11 @@ Procédure de test de Petits Emprunts
 
 * se connecter avec le compte antoineseilles@gmail.com
 * cliquer sur le lien admin dans la nav-bar
+** à partir de là, vous êtes sur la page d'admin qui présente la liste des utilisateurs avec pour chacun un bouton pour désactiver / activer, un lien "emprunts" pour accéder à leurs emprunts, un bouton pour supprimer l'utilisateur.
+	*** tester la suppression d'un emprunt
+		**** sur leurs emprunts vous arrivez à la liste des emprunts d'un utilisateur et vous pouvez les supprimer. Si la suppression se passe bien -> message succès "loan deleted" Sinon -> message erreur : "an error occured, unable to delete loan"
+	*** tester l'activation / désactivation
+	*** tester la suppression d'un utilisateur
+** dans la navbar il y a un lien pour revenir sur votre compte ( votre pseudo), "vos emprunts" et toujours "Daconnexion".
+
+

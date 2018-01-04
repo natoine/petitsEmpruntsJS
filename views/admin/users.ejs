@@ -41,6 +41,22 @@
     
     <div class="page-header text-center">
         <h3><span class="fa fa-anchor"></span>Liste des <%=users.length%> utilisateurs</h3>
+
+        <% if(messagesuccessadmin.length > 0 ) { %>
+            <div class="alert alert-success" id="messagesuccessadmin">
+                <%= messagesuccessadmin %>
+            </div>
+        <%
+        }
+        %>
+
+        <% if(messagedangeradmin.length > 0 ) { %>
+            <div class="alert alert-danger" id="messagedangeradmin">
+                <%= messagedangeradmin %>
+            </div>
+        <%
+        }
+        %>
     </div>
 
     <div class="row-fluid" id="users">
