@@ -24,6 +24,12 @@
                     <span class="icon-bar"></span>
                 </a>
 
+                <div class="navbar-header">
+                    <ul class="nav navbar-nav">
+                        <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
+                    </ul>
+                </div>
+
                 <div class="navbar-right pull-right">
                     <div class="nav-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
@@ -38,8 +44,8 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span>Profile Page of <%=user.local.username%></h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <h1><span class="fa fa-anchor"></span>Page de profil de : <%=user.local.username%></h1>
+        <a href="/logout" class="btn btn-default btn-sm">Me déconnecter</a>
     </div>
 
     <div class="row">
@@ -47,16 +53,20 @@
         <!-- CHANGE USERNAME -->
         <div class="col-sm-6">
             <div class="well">
+                <h3>Changer votre nom d'utilisateur :</h3>
                 <!-- show any messages that comes back with username change form -->
-                <% if (message.length > 0) { %>
-                <div class="alert alert-danger"><%= message %></div>
+                <% if (messageusernamefail.length > 0) { %>
+                <div class="alert alert-danger"><%= messageusernamefail %></div>
+                <% } %>
+                <% if (messageusernamesuccess.length > 0) { %>
+                <div class="alert alert-success"><%= messageusernamesuccess %></div>
                 <% } %>
                 <form action="/changeusername" method="post">
                     <div class="form-group">
-                        <label>Username</label>
+                        <label>Nom d'utilisateur :</label>
                         <input type="text" class="form-control" name="username" value="<%=user.local.username%>">
                     </div>
-                    <button type="submit" class="btn btn-warning btn-lg">Change username</button>
+                    <button type="submit" class="btn btn-warning btn-lg">Changer de nom utilisateur</button>
                 </form>
             </div>
         </div>
@@ -64,16 +74,17 @@
         <!-- DELETE ACCOUNT -->
         <div class="col-sm-6">
             <div class="well">
+                <h3>Supprimer votre compte :</h3>
                 <!-- show any messages that comes back with delete user form -->
-                <% if (messageDeleteUser.length > 0) { %>
-                <div class="alert alert-danger"><%= messageDeleteUser %></div>
+                <% if (messagedeleteuserfail.length > 0) { %>
+                <div class="alert alert-danger"><%= messagedeleteuserfail %></div>
                 <% } %>
                 <form action="/deleteaccount" method="post">
                     <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" name="password">
+                        <label>Saisir votre mot de passe afin de supprimer votre compte :</label>
+                        <input type="password" class="form-control" name="password" placeholder="mot de passe">
                     </div>
-                    <button type="submit" class="btn btn-warning btn-lg">Supprimer mon compte</button>
+                    <button type="submit" class="btn btn-danger btn-lg">Supprimer mon compte</button>
                 </form>
             </div>
         </div>

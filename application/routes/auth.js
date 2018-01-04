@@ -62,10 +62,15 @@ module.exports = function(app, express, passport) {
 
     // process the signup form
     authRoutes.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/signup', // redirect to the secure profile section
+        //successRedirect : '/signup', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
-    }))
+    })
+    , 
+    function(req, res) {
+        if(req) req.logout()
+        res.redirect('/signup')
+    })
 
     // =====================================
     // ACTIVATE ACCOUNT ==============================

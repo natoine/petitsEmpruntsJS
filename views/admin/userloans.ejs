@@ -38,14 +38,29 @@
             </div>
     </nav>
 
-<div class="container">
+<div class="container hero-unit">
     
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span>Les emprunts de : <span id="username"><%=user.local.username%></span></h1>
+        <h3><span class="fa fa-anchor"></span>Les emprunts de : <span id="username"><%=user.local.username%></span></h3>
+
+        <% if(messagesuccessadmin.length > 0 ) { %>
+            <div class="alert alert-success" id="messagesuccessadmin">
+                <%= messagesuccessadmin %>
+            </div>
+        <%
+        }
+        %>
+
+        <% if(messagedangeradmin.length > 0 ) { %>
+            <div class="alert alert-danger" id="messagedangeradmin">
+                <%= messagedangeradmin %>
+            </div>
+        <%
+        }
+        %>
     </div>
 
-    <div class="row">
-
+    <div class="row-fluid" id="users">
         <div>
                     <h3 class="text-left">Ses Emprunts :</h3>
                     <h4>(<%= borrows.length %> en cours )</h4>

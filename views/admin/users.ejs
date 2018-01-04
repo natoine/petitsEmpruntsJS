@@ -37,14 +37,30 @@
             </div>
     </nav>
 
-<div class="container">
+<div class="container hero-unit">
     
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span>Liste des <%=users.length%> utilisateurs</h1>
+        <h3><span class="fa fa-anchor"></span>Liste des <%=users.length%> utilisateurs</h3>
+
+        <% if(messagesuccessadmin.length > 0 ) { %>
+            <div class="alert alert-success" id="messagesuccessadmin">
+                <%= messagesuccessadmin %>
+            </div>
+        <%
+        }
+        %>
+
+        <% if(messagedangeradmin.length > 0 ) { %>
+            <div class="alert alert-danger" id="messagedangeradmin">
+                <%= messagedangeradmin %>
+            </div>
+        <%
+        }
+        %>
     </div>
 
-    <div class="row">
-
+    <div class="row-fluid" id="users">
+    
         <!-- USERS LIST -->
         <div class="col-sm-6">
             <div class="well">
