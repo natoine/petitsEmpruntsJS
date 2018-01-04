@@ -78,8 +78,15 @@ Procédure de test de Petits Emprunts
 ** à partir de là, vous êtes sur la page d'admin qui présente la liste des utilisateurs avec pour chacun un bouton pour désactiver / activer, un lien "emprunts" pour accéder à leurs emprunts, un bouton pour supprimer l'utilisateur.
 	*** tester la suppression d'un emprunt
 		**** sur leurs emprunts vous arrivez à la liste des emprunts d'un utilisateur et vous pouvez les supprimer. Si la suppression se passe bien -> message succès "loan deleted" Sinon -> message erreur : "an error occured, unable to delete loan"
-	*** tester l'activation / désactivation
 	*** tester la suppression d'un utilisateur
+		**** cliquer sur la croix de suppression dans la ligne d'un utilisateur. Si la suppression se passe bien -> message succès "user deleted". Sinon -> message d'erreur : "an error occured"
+	*** tester l'activation d'un utilisateur
+		**** cliquer sur le bouton rouge not activated -> le bouton passe au vert. Message succès : "user activated". L'utilisateur en question peut désormais s'authentifier et utiliser petitsEmprunts.
+		Sinon  -> message erreur : "an error occured [selon le pb]"
+	*** tester la désactivation d'un utilisateur
+		**** cliquer sur le bouton vert activated -> le bouton passe au rouge. Message succès : "user deactivated". L'utilisateur en question ne peut pas s'authentifier.
+		Sinon  -> message erreur : "an error occured [selon le pb]"
+
 ** dans la navbar il y a un lien pour revenir sur votre compte ( votre pseudo), "vos emprunts" et toujours "Daconnexion".
 
 

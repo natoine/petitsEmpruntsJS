@@ -138,43 +138,78 @@ module.exports = function(app, express) {
     adminRoutes.post('/activateuser/:userid', security.isSuperAdmin, function(req, res) {
       oId = new mongo.ObjectID(req.params.userid)
       User.findOne({"_id" : oId}, function(err, user) {
-            if(err) throw err
-            else 
-            {
-              if(user.isActivated()) console.log("pb already activated ...")
+        if(err)
+        {
+          console.log("admin activateuser ERROR : " + err)
+          req.flash("messagedangeradmin", "unable to activate user")
+          res.redirect('/admin/users')
+        }
+        else 
+        {
+          if(user.isActivated())
+          {
+            req.flash("messagedangeradmin", "something odd, this user is already activ ...")
+            res.redirect('/admin/users')
+          } 
+          else
+          {
+            //activate user
+            user.local.mailvalidated = true
+            user.save(function(err) {
+              if(err)
+              {
+                console.log("admin activateuser ERROR2 : " + err)
+                req.flash("messagedangeradmin", "unable to activate user")
+                res.redirect('/admin/users')
+              }
               else
               {
-                console.log("activate user")
-                //activate user
-                user.local.mailvalidated = true
-                user.save(function(err) {
-                  if(err) throw err
-                })
+                req.flash("messagesuccessadmin" , "user activated")
+                res.redirect('/admin/users') 
               }
-            }
-            res.redirect('/admin/users')
-          })
+            })
+          }
+        }
+      })
     })
+ 
 
     adminRoutes.post('/deactivateuser/:userid', security.isSuperAdmin, function(req, res) {
       oId = new mongo.ObjectID(req.params.userid)
       User.findOne({"_id" : oId}, function(err, user) {
-            if(err) throw err
-            else 
-            {
-              if(user.isActivated())
+        if(err) 
+        {
+          console.log("admin deactivate ERROR : " + err)
+          req.flash("messagedangeradmin", "unable to deactivate user")
+          res.redirect('/admin/users')
+        }
+        else 
+        {
+          if(user.isActivated())
+          {
+            //deactivate user
+            user.local.mailvalidated = false
+            user.save(function(err) {
+              if(err)
               {
-                console.log("deactivate user")
-                //deactivate user
-                user.local.mailvalidated = false
-                user.save(function(err) {
-                  if(err) throw err
-                })
+                console.log("admin deactivate ERROR2 : " + err)
+                req.flash("messagedangeradmin", "unable to deactivate user")
+                res.redirect('/admin/users')
+              }
+              else
+              {
+                req.flash("messagesuccessadmin" , "user deactivated")
+                res.redirect('/admin/users') 
               } 
-              else console.log("pb already deactivated ...")
-            }
+            })
+          } 
+          else 
+          {
+            req.flash("messagedangeradmin", "something odd, this user is already deactiv ...")
             res.redirect('/admin/users')
-          })
+          } 
+        }
+      })
     })
 
     //cause HTML cannot call DELETE and cause fetch will not have the user in the request
