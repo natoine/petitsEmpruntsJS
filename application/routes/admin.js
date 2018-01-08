@@ -26,7 +26,7 @@ module.exports = function(app, express) {
     			if(err) 
           {
             console.log("admin ERROR : " + err)
-            throw err
+            //throw err
           }
           else 
           {
@@ -47,7 +47,7 @@ module.exports = function(app, express) {
     			if(err)
           {
             console.log("admin ERROR : " + err)
-            throw err
+            //throw err
           }
           else 
           {
@@ -108,9 +108,8 @@ module.exports = function(app, express) {
                 Loan.remove({"_id" : oId}, function(err, loan) {
                   if(err) 
                   {
-                      console.log("unable to delete loan : " + req.params.loanid)
                       req.flash("messagedangeradmin","an error occured, unable to delete loan")
-                      console.lof("admin deleteloan ERROR : " + err)
+                      console.log("admin deleteloan ERROR : " + err)
                       res.redirect('/admin/loans/' + user._id)
                   }
                   else
@@ -120,7 +119,7 @@ module.exports = function(app, express) {
                       if(err) 
                       {
                         req.flash("messagedangeradmin","an error occured, during deletion of the loan")
-                        console.lof("admin deleteloan ERROR2 : " + err)
+                        console.log("admin deleteloan ERROR2 : " + err)
                         res.redirect('/main')
                       }
                       else

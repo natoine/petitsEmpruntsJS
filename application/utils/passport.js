@@ -51,8 +51,6 @@ module.exports = function(passport)
     function(req, email, password, done) {
 
         //check to see if email is correctly spelled
-        console.log("passport mail signup: " + email)
-        console.log("passport pwd signup : " + password)
         if(!mailSender.validateMail(email))
         {
             return done(null, false, req.flash('signupMessage', 'That email is not correctly spelled'))
@@ -92,7 +90,7 @@ module.exports = function(passport)
                         mailSender.sendMail(email, subject, html, function(error, response){
                             if(error)
                             {
-                                console.log(error)
+                                console.log("local-login sendmail - ERROR : " + error)
                             }
                         })
                     }
@@ -196,7 +194,10 @@ module.exports = function(passport)
 
                             user.save(function(err) {
                                 if (err)
+                                {
+                                    console.log("facebook auth - ERROR : " + err)
                                     throw err
+                                }
                                 return done(null, user)
                             })
                         }
@@ -210,13 +211,12 @@ module.exports = function(passport)
                         User.findOne({ 'local.email' : profile.emails[0].value}, function(err, user) {
                             if(err)
                             {
-                                console.log(err)
+                                console.log("facebook auth - ERROR2 : " + err)
                                 req.flash('fbSignupMessage', 'pb with db try later')
                                 return done(err)
                             }
                             if(user)
                             {
-                                console.log("fb strat : user email already exists by local strat")
                                 req.flash('fbSignupMessage', 'user email already exists by local strat')
                                 return done(err)
                                 //TODO makes the user log by local strat and merge fb local accounts
@@ -226,7 +226,6 @@ module.exports = function(passport)
                                 // if there is no user found with that facebook id, create them
                                 var newUser            = new User()
 
-                                console.log(profile)
                                 // set all of the facebook information in our user model
                                 newUser.facebook.id    = profile.id // set the users facebook id                   
                                 newUser.facebook.token = token // we will save the token that facebook provides to the user                    
@@ -238,7 +237,10 @@ module.exports = function(passport)
                                 // save our user to the database
                                 newUser.save(function(err) {
                                     if (err)
+                                    {
+                                        console.log("facebook auth - ERROR3 : " + err)
                                         throw err
+                                    }
                                     // if successful, return the new user
                                     return done(null, newUser)
                                 })            
@@ -248,7 +250,6 @@ module.exports = function(passport)
                     }
                     else
                     {
-                        console.log("User id : " + profile.id + " facebook should authorize one mail public")
                         req.flash('fbSignupMessage', 'should fill your email in facebook profile')
                         return done(err)   
                     }
@@ -305,7 +306,10 @@ module.exports = function(passport)
             // try to find the user based on their google id
             User.findOne({ 'google.id' : profile.id }, function(err, user) {
                 if (err)
+                {
+                    console.log("google auth - ERROR : " + err)
                     return done(err)
+                }
 
                 if (user) {
                         // if there is a user id already but no token (user was linked at one point and then removed)
@@ -328,13 +332,12 @@ module.exports = function(passport)
                     User.findOne({'local.email' : profile.emails[0].value}, function(err, user) {
                         if(err)
                         {
-                            console.log(err)
+                            console.log("google auth - ERROR2 : " + err)
                             return done(err)
                         }
                         if(user)
                         {
                             req.flash('googleSignupMessage', 'user email already exists by local strat')
-                            console.log("google strat : user email already exists by local strat")
                             return done(err)
                             //TODO makes the user log by local strat and merge google local accounts
                         } 
@@ -355,7 +358,10 @@ module.exports = function(passport)
                             // save the user
                             newUser.save(function(err) {
                                 if (err)
+                                {
+                                    console.log("google auth - ERROR3 : " + err)
                                     throw err
+                                }
                                 return done(null, newUser)
                             })
                         }
@@ -376,7 +382,10 @@ module.exports = function(passport)
                 // save the user
                 user.save(function(err) {
                     if (err)
+                    {
+                        console.log("google auth - ERROR4 : " + err)
                         throw err
+                    }
                     return done(null, user)
                 })   
 

@@ -32,7 +32,7 @@ module.exports = function(app, express) {
                 // if there are any errors, return the error
                 if (err)
                 {
-                    console.log(err)
+                    console.log("pwd recovery - ERROR : " + err)
                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
                     res.render('pwdrecovery' , 
                         { messagedanger: req.flash('pwdrecoveryMessage') , messageok: ""})
@@ -79,7 +79,7 @@ module.exports = function(app, express) {
                 // if there are any errors, return the error
                 if (err)
                 {
-                    console.log(err)
+                    console.log("pwd recovery - ERROR2 : " + err)
                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
                     res.render('pwdrecovery', 
                         { messagedanger: req.flash('pwdrecoveryMessage') , messageok: "" })
@@ -94,7 +94,7 @@ module.exports = function(app, express) {
                     {
                         if (err)
                         {
-                            console.log(err)
+                            console.log("pwd recovery - ERROR3 : " + err)
                             //flash
                             req.flash('pwdrecoveryMessage', 'An error occured, try later')
                             req.flash('pwdrecoveryokMessage', '')
@@ -112,7 +112,7 @@ module.exports = function(app, express) {
                             mailSender.sendMail(email, subject, html, function(error, response){
                                 if(error)
                                 {
-                                    console.log(error)
+                                    console.log("pwd recovery - ERROR4 : " + error)
                                     //flash
                                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
                                     req.flash('pwdrecoveryokMessage', '')
@@ -140,7 +140,7 @@ module.exports = function(app, express) {
                         mailSender.sendMail(email, subject, html, function(error, response){
                             if(error)
                             {
-                                console.log(error)
+                                console.log("pwd recovery - ERROR5 : " + error)
                             }
                         })
 
@@ -162,7 +162,7 @@ module.exports = function(app, express) {
                 // if there are any errors, return the error
                 if (err)
                 {
-                    console.log(err)
+                    console.log("pwd change recovery - ERROR : " + err)
                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
                     res.render('pwdrecovery', 
                         { messagedanger: req.flash('pwdrecoveryMessage') , messageok: "" })
@@ -191,7 +191,7 @@ module.exports = function(app, express) {
                             user.save(function(err) {
                                 if (err)
                                 {
-                                    console.log(err)
+                                    console.log("pwd change recovery - ERROR2 : " + err)
                                     //flash
                                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
                                     req.flash('pwdrecoveryokMessage', '')
@@ -240,7 +240,7 @@ module.exports = function(app, express) {
             {
                 if (err) 
                 {
-                    console.log(err)
+                    console.log("change pwd ERROR : " + err)
                     //flash
                     req.flash('changepwdMessage', 'An error occured, try later')
                     res.render('changepwd', {email: user.local.email, message: req.flash('changepwdMessage')})

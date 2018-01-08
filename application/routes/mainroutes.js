@@ -178,7 +178,6 @@ module.exports = function(app, express) {
                             }
                         else 
                         {   
-                            console.log("nouvel emprunt créé")
                             req.flash('messagesuccessmain', 'nouvel emprunt créé')
                             req.flash('action', action)
                             res.redirect('/main')
@@ -392,7 +391,7 @@ module.exports = function(app, express) {
                 mailSender.sendMail(mail, subject, html, function(error, resp){
                     if(error)
                     {
-                        console.log(error)
+                        console.log("rappel d'emprunt envoi mail - ERROR" + error)
                         req.flash('messagedangermain', 'impossible d\'envoyer un message. Essayez plus tard.')
                         res.redirect('/main')
                     } 
@@ -467,7 +466,6 @@ module.exports = function(app, express) {
                 else
                 {
                     req.flash("messagedeleteusersuccess","Compte supprimé")
-                    console.log("delete user : " + req.user.local.username)
                     res.redirect('/')
                 }
             })
