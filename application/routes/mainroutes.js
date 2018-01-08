@@ -25,12 +25,20 @@ module.exports = function(app, express) {
     // =====================================
     mainRoutes.get('/', security.rememberme, function(req, res) {
         if(req.isAuthenticated() && req.user.isActivated()) res.redirect('/main')
-        else res.render('pages/index', 
+        else 
+        {
+            //customheaders = [{name : "", value:"<meta name='bla'>"}]
+            customheaders = []
+            customscripts = []
+                res.render('pages/index', 
             {   message: req.flash('loginMessage'),
                 messagedeleteusersuccess: req.flash('messagedeleteusersuccess'),
                 googleSignupMessage: req.flash('googleSignupMessage'),
                 fbSignupMessage: req.flash('fbSignupMessage'),
-                pwdChangedMessage : req.flash('pwdChangedMessage') })// load the index.ejs file
+                pwdChangedMessage : req.flash('pwdChangedMessage'),
+                customheaders : customheaders,
+                customscripts : customscripts })// load the index.ejs file
+            }
     })
 
     // =====================================
