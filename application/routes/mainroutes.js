@@ -313,14 +313,21 @@ module.exports = function(app, express) {
                                 {
                                     if(friend.friendmail != null && friend.friendmail.length > 0) othermail = friend.friendmail
                                 }
-                                res.render('reminder' , {
+                                customheaders = []
+                                        customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
+                                customscripts = []
+                                res.render('pages/reminder' , {
                                     loanid : req.params.loanid,
                                     username : user.local.username,
                                     otherusername : borrower,
                                     othermail : othermail,
                                     mailcontent : mailcontent,
                                     messageMail : messageMail,
-                                    messageContent : messageContent
+                                    messageContent : messageContent,
+                                    isadmin : user.isSuperAdmin(),
+                                    customheaders : customheaders,
+                                    customscripts : customscripts,
+                                    customnavs : customnavs
                                 })
                             }
                         })
@@ -354,14 +361,21 @@ module.exports = function(app, express) {
                                     if(friend.friendmail != null && friend.friendmail.length > 0) othermail = friend.friendmail
                                 }
                             }
-                            res.render('reminder' , {
+                            customheaders = []
+                            customscripts = []
+                            customnavs =         customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
+                            res.render('pages/reminder' , {
                                 loanid : req.params.loanid,
                                 username : user.local.username,
                                 otherusername : loaner,
                                 othermail : othermail,
                                 mailcontent : mailcontent,
                                 messageMail : messageMail,
-                                messageContent : messageContent
+                                messageContent : messageContent,
+                                isadmin : user.isSuperAdmin(),
+                                customheaders : customheaders,
+                                customscripts : customscripts,
+                                customnavs : customnavs
                             })
                         })
                 }
