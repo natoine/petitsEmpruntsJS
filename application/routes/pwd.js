@@ -19,11 +19,18 @@ module.exports = function(app, express) {
     // show the pwd recovery form
     pwdRoutes.get('/pwdrecovery', function(req, res) {
         const token = req.query.token
+        customheaders = []
+        customscripts = []
         if(!token)
         {
-            res.render('pwdrecovery', 
-                { messagedanger: req.flash('pwdrecoveryMessage') , 
-                messageok: req.flash('pwdrecoveryokMessage') })
+
+            res.render('pages/pwdrecovery', 
+                { 
+                    messagedanger: req.flash('pwdrecoveryMessage') , 
+                    messageok: req.flash('pwdrecoveryokMessage'),
+                    customheaders : customheaders,
+                    customscripts : customscripts
+                 })
         }
         else
         {
@@ -34,8 +41,13 @@ module.exports = function(app, express) {
                 {
                     console.log("pwd recovery - ERROR : " + err)
                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
-                    res.render('pwdrecovery' , 
-                        { messagedanger: req.flash('pwdrecoveryMessage') , messageok: ""})
+                    res.render('pages/pwdrecovery' , 
+                        { 
+                            messagedanger: req.flash('pwdrecoveryMessage') ,
+                            messageok: "",
+                            customheaders : customheaders,
+                            customscripts : customscripts
+                        })
                 }
                 if (user) 
                 {
@@ -44,12 +56,17 @@ module.exports = function(app, express) {
                     {
                         req.flash('pwdrecoveryMessage', 
                             'too late ! more than one hour since you asked to change pwd')
-                        res.render('pwdrecovery' , 
-                            { messagedanger: req.flash('pwdrecoveryMessage') , messageok: "" })
+                        res.render('pages/pwdrecovery' , 
+                            { 
+                                messagedanger: req.flash('pwdrecoveryMessage') ,
+                                messageok: "",
+                                customheaders : customheaders,
+                                customscripts : customscripts
+                            })
                     }
                     else
                     {
-                        res.render('pwdrecoverylink' , 
+                        res.render('pages/pwdrecoverylink' , 
                             { message: req.flash('pwdrecoverylinkMessage'), 
                                 email: user.local.email, token: token })
                     }
@@ -70,7 +87,7 @@ module.exports = function(app, express) {
         if(!mailSender.validateMail(email))
         {
             req.flash('pwdrecoveryMessage', 'That email is not correctly spelled')
-            res.render('pwdrecovery', { messagedanger: req.flash('pwdrecoveryMessage') , messageok: ""})
+            res.redirect('/pwdrecovery')
         }
         else 
         {
@@ -81,8 +98,7 @@ module.exports = function(app, express) {
                 {
                     console.log("pwd recovery - ERROR2 : " + err)
                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
-                    res.render('pwdrecovery', 
-                        { messagedanger: req.flash('pwdrecoveryMessage') , messageok: "" })
+                    res.redirect('/pwdrecovery') 
                 }
                 // check to see if theres already a user with that email
                 if (user) 
@@ -98,9 +114,7 @@ module.exports = function(app, express) {
                             //flash
                             req.flash('pwdrecoveryMessage', 'An error occured, try later')
                             req.flash('pwdrecoveryokMessage', '')
-                            res.render('pwdrecovery', 
-                                { messageok: req.flash('pwdrecoveryokMessage') , 
-                                messagedanger: req.flash('pwdrecoveryMessage') })
+                            res.redirect('/pwdrecovery')
                         }
                         else
                         {
@@ -116,18 +130,14 @@ module.exports = function(app, express) {
                                     //flash
                                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
                                     req.flash('pwdrecoveryokMessage', '')
-                                    res.render('pwdrecovery', 
-                                        { messageok: req.flash('pwdrecoveryokMessage') , 
-                                        messagedanger: req.flash('pwdrecoveryMessage') })
+                                    res.redirect('/pwdrecovery')
                                 }
                             })
 
                             //flash
                             req.flash('pwdrecoveryokMessage', 'An email has been sent')
                             req.flash('pwdrecoveryMessage', '')
-                            res.render('pwdrecovery', 
-                                { messageok: req.flash('pwdrecoveryokMessage') , 
-                                messagedanger: req.flash('pwdrecoveryMessage') })
+                            res.redirect('/pwdrecovery')
                         }
                     })      
                 } 
@@ -146,9 +156,7 @@ module.exports = function(app, express) {
 
                     //flash
                     req.flash('pwdrecoveryokMessage', 'An email has been sent')
-                    res.render('pwdrecovery', 
-                        { messageok: req.flash('pwdrecoveryokMessage') , 
-                        messagedanger: "" })
+                    res.redirect('/pwdrecovery')
                 }
 
             })
@@ -164,8 +172,7 @@ module.exports = function(app, express) {
                 {
                     console.log("pwd change recovery - ERROR : " + err)
                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
-                    res.render('pwdrecovery', 
-                        { messagedanger: req.flash('pwdrecoveryMessage') , messageok: "" })
+                    res.redirect('/pwdrecovery')
                 }
                 if (user) 
                 {
@@ -176,8 +183,7 @@ module.exports = function(app, express) {
                         req.flash('pwdrecoveryMessage', 
                             'You have taken too long time or are not authorized to change. Try again.')
                         req.flash('pwdrecoveryokMessage', '')
-                        res.render('pwdrecovery', { messageok: req.flash('pwdrecoveryokMessage') ,
-                         messagedanger: req.flash('pwdrecoveryMessage') })
+                        res.redirect('/pwdrecovery')
                     }
                     else
                     {
@@ -195,12 +201,11 @@ module.exports = function(app, express) {
                                     //flash
                                     req.flash('pwdrecoveryMessage', 'An error occured, try later')
                                     req.flash('pwdrecoveryokMessage', '')
-                                    res.render('pwdrecovery', { messageok: req.flash('pwdrecoveryokMessage') , 
-                                        messagedanger: req.flash('pwdrecoveryMessage') })
+                                    res.redirect('/pwdrecovery')
                                 }
                                 else
                                 {
-                                    req.flash('pwdChangedMessage', 'pwd changed. Try to login.')
+                                    req.flash('messagelocalauthsuccess', 'pwd changed. Try to login.')
                                     res.redirect("/")
                                 }
                             })
