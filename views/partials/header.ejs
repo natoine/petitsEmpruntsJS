@@ -12,6 +12,18 @@
                 <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
             </ul>
         </div>
-        
+             
+        <div class="navbar-right pull-right">
+            <div class="nav-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/user/<%= username%>" id="profile"><%= username%></a></li>
+                    <%if(isadmin){%>
+                    <li><a href="/admin/users">admin</a></li>
+                    <%}%>
+                    <li><a href="/logout">Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+     
     </div>
 </nav>
