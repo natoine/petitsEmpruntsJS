@@ -27,7 +27,6 @@ module.exports = function(app, express) {
         if(req.isAuthenticated() && req.user.isActivated()) res.redirect('/main')
         else 
         {
-            //customheaders = [{name : "", value:"<meta name='bla'>"}]
             customheaders = []
             customscripts = []
                 res.render('pages/index', 
@@ -116,7 +115,10 @@ module.exports = function(app, express) {
                                         })
                                     }
                                 })
-                                res.render('main', {
+
+                                customheaders = [{name : "pickaday", value:"<link rel='stylesheet' href='/pikaday.css'>"}]
+                                customscripts = []
+                                res.render('pages/main', {
                                     username : user.local.username , 
                                         messagesuccessmain : req.flash('messagesuccessmain') , 
                                         messagedangermain : req.flash('messagedangermain') ,
@@ -131,7 +133,9 @@ module.exports = function(app, express) {
                                         myloans : myloans ,
                                         friendList : friendList,
                                         reqfriend : reqfriend,
-                                        isadmin : user.isSuperAdmin()
+                                        isadmin : user.isSuperAdmin(),
+                                        customheaders : customheaders,
+                                        customscripts : customscripts
                                 })
                             }
                         })
