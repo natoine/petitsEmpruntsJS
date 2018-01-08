@@ -70,6 +70,8 @@ Procédure de test de Petits Emprunts
 * associer mon compte google
 	** cliquer sur "connect Google" -> vous êtes redirigés sur vos emprunts et si vous cliquez sur votre pseudo en haut à droite, vous retrouvez votre page de profil avec dans la section Google des informations sur votre compte google.
 	** cliquez sur "unlink" -> vous êtes redirigés sur vos emprunts et si vous cliquez sur votre pseudo en haut à droite, vous retrouvez votre page de profil avec dans la section Google aucunes informations
+* changer mon mot de passe
+
 
 ----- admin features -----
 

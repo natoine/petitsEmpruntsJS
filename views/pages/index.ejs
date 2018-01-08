@@ -6,23 +6,16 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-
-        <div class="navbar-header">
-            <ul class="nav navbar-nav">
-                <li><a class="navbar-brand" href="/">Petits Emprunts</a></li>
-            </ul>
-        </div>
-        
-    </div>
-</nav>
+    <% include ../partials/nolognavbar %>
 
 <div class="container hero-unit">
                 <div class="row-fluid">
                     <div class="span12">
-                        <% if (messagedeleteusersuccess.length > 0) { %>
-                            <div class="alert alert-success"><%= messagedeleteusersuccess %></div>
+                        <% if (messagesuccess.length > 0) { %>
+                            <div class="alert alert-success"><%= messagesuccess %></div>
+                        <% } %>
+                        <% if (messagedanger.length > 0) { %>
+                            <div class="alert alert-danger"><%= messagedanger %></div>
                         <% } %>
 
                         <h1 class="text-center">Connectez-vous</h1>
@@ -51,11 +44,11 @@
                     <hr>
                     
                         <!-- show any messages that come back with authentication -->
-                        <% if (message.length > 0) { %>
-                            <div class="alert alert-danger"><%= message %></div>
+                        <% if (messagelocalauthdanger.length > 0) { %>
+                            <div class="alert alert-danger"><%= messagelocalauthdanger %></div>
                         <% } %>
-                        <% if (pwdChangedMessage.length > 0) { %>
-                            <div class="alert alert-success"><%= pwdChangedMessage %></div>
+                        <% if (messagelocalauthsuccess.length > 0) { %>
+                            <div class="alert alert-success"><%= messagelocalauthsuccess %></div>
                         <% } %>
 
                         <form action="/login" method="post">

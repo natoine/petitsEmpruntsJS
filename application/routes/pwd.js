@@ -223,7 +223,12 @@ module.exports = function(app, express) {
 
 
     pwdRoutes.get('/changepwd', security.isLoggedInAndActivated, function(req, res) {
-        res.render('changepwd', {email: req.user.local.email, message: req.flash('changepwdMessage')})
+        res.render('pages/changepwd', {
+            email: req.user.local.email, 
+            message: req.flash('changepwdMessage'),
+            username: req.user.local.username,
+            isadmin : req.user.isSuperAdmin()
+        })
     })
 
     pwdRoutes.post('/changepwd', security.isLoggedInAndActivated, function(req, res){
@@ -231,7 +236,7 @@ module.exports = function(app, express) {
         if(!user.validPassword(req.body.currentpassword))
         {
             req.flash('changepwdMessage', 'not the right password')
-            res.render('changepwd', {email: user.local.email, message: req.flash('changepwdMessage')})
+            res.redirect('/changepwd')
         }
         else
         {
@@ -243,12 +248,13 @@ module.exports = function(app, express) {
                     console.log("change pwd ERROR : " + err)
                     //flash
                     req.flash('changepwdMessage', 'An error occured, try later')
-                    res.render('changepwd', {email: user.local.email, message: req.flash('changepwdMessage')})
+                    res.redirect('/changepwd')
                 }
                 else
                 {
-                    req.flash('loginMessage', 'pwd changed. Try to login.')
-                    res.render('login', { message: req.flash('loginMessage') })
+                    req.flash('messagelocalauthsuccess', 'pwd changed. Try to login.')
+                    req.logout()
+                    res.redirect('/')
                 }
             })
         }

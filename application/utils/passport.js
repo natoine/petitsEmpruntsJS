@@ -118,7 +118,7 @@ module.exports = function(passport)
         //check to see if email is correctly spelled
         if(!mailSender.validateMail(email))
         {
-            return done(null, false, req.flash('loginMessage', 'That email is not correctly spelled'))
+            return done(null, false, req.flash('messagelocalauthdanger', 'That email is not correctly spelled'))
         }
 
         // find a user whose email is the same as the forms email
@@ -130,11 +130,11 @@ module.exports = function(passport)
 
             // if no user is found, return the message
             if (!user)
-                return done(null, false, req.flash('loginMessage', 'No user found.')) // req.flash is the way to set flashdata using connect-flash
+                return done(null, false, req.flash('messagelocalauthdanger', 'No user found.')) // req.flash is the way to set flashdata using connect-flash
 
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
-                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')) // create the loginMessage and save it to session as flashdata
+                return done(null, false, req.flash('messagelocalauthdanger', 'Oops! Wrong password.')) // create the loginMessage and save it to session as flashdata
 
             // all is well, return successful user
             return done(null, user)

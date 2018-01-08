@@ -30,11 +30,12 @@ module.exports = function(app, express) {
             customheaders = []
             customscripts = []
                 res.render('pages/index', 
-            {   message: req.flash('loginMessage'),
-                messagedeleteusersuccess: req.flash('messagedeleteusersuccess'),
+            {   messagesuccess: req.flash('messagesuccess'),
+                messagedanger: req.flash('messagedanger'),
+                messagelocalauthsuccess : req.flash('messagelocalauthsuccess'),
+                messagelocalauthdanger : req.flash('messagelocalauthdanger'),
                 googleSignupMessage: req.flash('googleSignupMessage'),
                 fbSignupMessage: req.flash('fbSignupMessage'),
-                pwdChangedMessage : req.flash('pwdChangedMessage'),
                 customheaders : customheaders,
                 customscripts : customscripts })// load the index.ejs file
             }
@@ -477,7 +478,7 @@ module.exports = function(app, express) {
                 }
                 else
                 {
-                    req.flash("messagedeleteusersuccess","Compte supprimé")
+                    req.flash("messagesuccess","Compte supprimé")
                     res.redirect('/')
                 }
             })

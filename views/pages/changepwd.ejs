@@ -2,18 +2,12 @@
 <!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <title>Petits Emprunts entre amis</title>
-    <meta descr="Suivez vos emprunts entre amis.">
-    
-    <!-- bootstrap -->
-    <link href="/bootstrap.min.css" rel="stylesheet" media="screen">
-    <!-- responsive -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/bootstrap-responsive.css" rel="stylesheet">
-   
+ <% include ../partials/head %>
 </head>
 <body>
+
+   <% include ../partials/navbar %>
+
 <div class="container">
 
 <div class="col-sm-6 col-sm-offset-3">
@@ -47,9 +41,11 @@
 
 </div>
 
-<!-- bootstrap -->
-        <script src="https://code.jquery.com/jquery.js"></script>
-        <script src="/bootstrap.min.js"></script>
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+    <% include ../partials/scripts %>
 
 </body>
 </html>
