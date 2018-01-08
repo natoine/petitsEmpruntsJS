@@ -119,6 +119,7 @@ module.exports = function(app, express) {
 
                                 customheaders = [{name : "pickaday", value:"<link rel='stylesheet' href='/pikaday.css'>"}]
                                 customscripts = []
+                                customnavs = []
                                 res.render('pages/main', {
                                     username : user.local.username , 
                                         messagesuccessmain : req.flash('messagesuccessmain') , 
@@ -136,7 +137,8 @@ module.exports = function(app, express) {
                                         reqfriend : reqfriend,
                                         isadmin : user.isSuperAdmin(),
                                         customheaders : customheaders,
-                                        customscripts : customscripts
+                                        customscripts : customscripts,
+                                        customnavs : customnavs
                                 })
                             }
                         })
@@ -451,11 +453,19 @@ module.exports = function(app, express) {
         {
             res.redirect(`/user/${req.user.local.username}`)
         }
-        res.render('profile', {
+        customheaders = []
+        customscripts = []
+        customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
+        res.render('pages/profile', {
             user : req.user, // get the user out of session and pass to template
             messageusernamesuccess : req.flash('messageusernamesuccess'),
             messageusernamefail : req.flash('messageusernamefail'),
-            messagedeleteuserfail : req.flash('messagedeleteuserfail')
+            messagedeleteuserfail : req.flash('messagedeleteuserfail'),
+            username : req.user.local.username,
+            isadmin : user.isSuperAdmin(),
+            customheaders : customheaders,
+            customscripts : customscripts,
+            customnavs : customnavs
         })
     })
     
