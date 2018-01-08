@@ -25,7 +25,7 @@ module.exports = function(app, express) {
     // =====================================
     mainRoutes.get('/', security.rememberme, function(req, res) {
         if(req.isAuthenticated() && req.user.isActivated()) res.redirect('/main')
-        else res.render('index', 
+        else res.render('pages/index', 
             {   message: req.flash('loginMessage'),
                 messagedeleteusersuccess: req.flash('messagedeleteusersuccess'),
                 googleSignupMessage: req.flash('googleSignupMessage'),
