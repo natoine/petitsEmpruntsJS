@@ -236,7 +236,12 @@ module.exports = function(app, express) {
     mainRoutes.post("/deleteloan/:loanid", security.isLoggedInAndActivated, function(req, res) {
         oId = new mongo.ObjectID(req.params.loanid)
         Loan.findOne({"_id" : oId}, function(err, loan) {
-            if(err) throw err
+            if(err) 
+            {
+                req.flash('messagedangermain', "pas possible de supprimer l'emprunt. Cet emprunt n'existe déjà plus.")
+                //throw err
+                res.redirect('/main')
+            }
             if(loan) 
             {
                 if(loan.loaner === req.user.local.username || loan.loaner === req.user.local.email
@@ -245,8 +250,8 @@ module.exports = function(app, express) {
                     Loan.remove({"_id" : oId}, function(err, loan) {
                         if(err) 
                             {
-                                req.flash('messagedangermain', 'pas possible de supprimer l\'emprunt. Essayez plus tard.')
-                                throw err
+                                req.flash('messagedangermain', "pas possible de supprimer l'emprunt. Essayez plus tard.")
+                                //throw err
                                 res.redirect('/main')
                             }
                             else
@@ -259,13 +264,13 @@ module.exports = function(app, express) {
                 }
                 else
                 {
-                    req.flash('messagedangermain', 'pas authorisé à supprimer l\'emprunt.')
+                    req.flash('messagedangermain', "pas authorisé à supprimer l'emprunt.")
                     res.redirect('/main')
                 }
             }
             else
             {
-                req.flash('messagedangermain', 'cet emprunt n\'existe pas.')
+                req.flash('messagedangermain', "cet emprunt n'existe pas.")
                 res.redirect('/main')
             } 
         })
@@ -314,7 +319,7 @@ module.exports = function(app, express) {
                                     if(friend.friendmail != null && friend.friendmail.length > 0) othermail = friend.friendmail
                                 }
                                 customheaders = []
-                                        customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
+                                customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
                                 customscripts = []
                                 res.render('pages/reminder' , {
                                     loanid : req.params.loanid,
@@ -363,7 +368,7 @@ module.exports = function(app, express) {
                             }
                             customheaders = []
                             customscripts = []
-                            customnavs =         customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
+                            customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
                             res.render('pages/reminder' , {
                                 loanid : req.params.loanid,
                                 username : user.local.username,
@@ -387,7 +392,7 @@ module.exports = function(app, express) {
             }
             else 
             {
-                req.flash('messagedangermain', 'cet emprunt n\'existe pas')                   
+                req.flash('messagedangermain', "cet emprunt n'existe pas")                   
                 res.redirect('/main')
             }
         })
@@ -398,16 +403,16 @@ module.exports = function(app, express) {
         msg = req.body.inputremindermsg
         if(!mailSender.validateMail(mail))
         {
-            req.flash('messageMail' , 'ce n\'est pas un email valide')
+            req.flash('messageMail' , "ce n'est pas un email valide")
             if(msg.length > 0) req.flash('mailcontent' , msg)
-            else req.flash('messageContent' , 'ce n\'est pas un message valide' )
+            else req.flash('messageContent' , "ce n'est pas un message valide")
             res.redirect(`/remind/${req.params.loanid}`)
         }
         else
         {
             if(!msg.length > 0)
             {
-                req.flash('messageContent' , 'ce n\'est pas un message valide' )
+                req.flash('messageContent' , "ce n'est pas un message valide")
                 req.flash('othermail' , mail)
                 res.redirect(`/remind/${req.params.loanid}`)
             }
@@ -421,7 +426,7 @@ module.exports = function(app, express) {
                     if(error)
                     {
                         console.log("rappel d'emprunt envoi mail - ERROR" + error)
-                        req.flash('messagedangermain', 'impossible d\'envoyer un message. Essayez plus tard.')
+                        req.flash('messagedangermain', "impossible d'envoyer un message. Essayez plus tard.")
                         res.redirect('/main')
                     } 
                     else
@@ -461,7 +466,7 @@ module.exports = function(app, express) {
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
-    // TODO should see some page of other users maybe ?
+    // TODO should be able to see pages of other users maybe ?
     mainRoutes.get('/user/:username', security.rememberme, security.isLoggedInAndActivated, function(req, res) {
         if(req.user.local.username !== req.params.username)
         {

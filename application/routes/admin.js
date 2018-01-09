@@ -65,18 +65,33 @@ module.exports = function(app, express) {
     adminRoutes.get('/loans/:userid', security.isSuperAdmin, function(req, res) {
       oId = new mongo.ObjectID(req.params.userid)
       User.findOne({"_id" : oId}, function(err, user) {
-            if(err) throw err
+            if(err)
+            {
+              console.log("admin loans per user - ERROR : " + err)
+              redirect('/admin/loans')
+              //throw err
+            } 
             else 
             {
               var hisborrows 
               Loan.find( { 'borrower' : user.local.email }, function(err, loans) {
-                if(err) throw err
+                if(err) 
+                {
+                  console.log("admin loans per user - ERROR2 : " + err)
+                  redirect('/admin/loans')
+                  //throw err
+                } 
                 else 
                 {
                   hisborrows = loans
                   var hisloans
                   Loan.find( { 'loaner' : user.local.email }, function(err, loans) {
-                    if(err) throw err
+                    if(err) 
+                    {
+                      console.log("admin loans per user - ERROR3 : " + err)
+                      redirect('/admin/loans')
+                      //throw err
+                    } 
                     else 
                     {
                       hisloans = loans
@@ -102,14 +117,18 @@ module.exports = function(app, express) {
         oId = new mongo.ObjectID(req.params.loanid)
         username = req.body.username
         Loan.findOne({"_id" : oId}, function(err, loan) {
-            if(err) throw err
+            if(err) 
+            {
+              console.log('admin deleteloan ERROR : ' + err)
+              res.redirect('/admin/loans/' + user._id)
+            }
             if(loan) 
             {
                 Loan.remove({"_id" : oId}, function(err, loan) {
                   if(err) 
                   {
                       req.flash("messagedangeradmin","an error occured, unable to delete loan")
-                      console.log("admin deleteloan ERROR : " + err)
+                      console.log("admin deleteloan ERROR2 : " + err)
                       res.redirect('/admin/loans/' + user._id)
                   }
                   else
@@ -118,8 +137,8 @@ module.exports = function(app, express) {
                     User.findOne({"local.username" : username}, function(err, user) {
                       if(err) 
                       {
-                        req.flash("messagedangeradmin","an error occured, during deletion of the loan")
-                        console.log("admin deleteloan ERROR2 : " + err)
+                        req.flash("messagedangermain","an error occured, during deletion of the loan")
+                        console.log("admin deleteloan ERROR3 : " + err)
                         res.redirect('/main')
                       }
                       else

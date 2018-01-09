@@ -16,14 +16,14 @@ module.exports = function(app, express) {
 	// =====================================
     // PWD RECOVERY ==============================
     // =====================================
-    // show the pwd recovery form
+    // show the pwd recovery form ( form to ask an email to recover )
+    // or if ?token="" shows the form to select a new pwd
     pwdRoutes.get('/pwdrecovery', function(req, res) {
         const token = req.query.token
         customheaders = []
         customscripts = []
         if(!token)
         {
-
             res.render('pages/pwdrecovery', 
                 { 
                     messagedanger: req.flash('pwdrecoveryMessage') , 
@@ -40,7 +40,7 @@ module.exports = function(app, express) {
                 if (err)
                 {
                     console.log("pwd recovery - ERROR : " + err)
-                    req.flash('pwdrecoveryMessage', 'An error occured, try later')
+                    req.flash('pwdrecoveryMessage', 'An error occured, retry')
                     res.render('pages/pwdrecovery' , 
                         { 
                             messagedanger: req.flash('pwdrecoveryMessage') ,
@@ -52,7 +52,7 @@ module.exports = function(app, express) {
                 if (user) 
                 {
                     const now = new Date().getTime()
-                    if( now - user.local.timepwdreco > TIMINGTOCHANGEPWD ) 
+                    if( now - user.local.timepwdreco > TIMINGTOCHANGEPWD )
                     {
                         req.flash('pwdrecoveryMessage', 
                             'too late ! more than one hour since you asked to change pwd')
@@ -67,8 +67,10 @@ module.exports = function(app, express) {
                     else
                     {
                         res.render('pages/pwdrecoverylink' , 
-                            { message: req.flash('pwdrecoverylinkMessage'), 
-                                email: user.local.email, token: token })
+                            { 
+                                message: req.flash('pwdrecoverylinkMessage'), 
+                                email: user.local.email, 
+                                token: token })
                     }
                 }
                 else
@@ -79,7 +81,7 @@ module.exports = function(app, express) {
         }
     })
 
-    //process the pwd recovery form
+    //process the ask for pwd recovery form
     pwdRoutes.post('/pwdrecovery' , function(req, res) {
 
         const email = req.body.email
@@ -163,7 +165,7 @@ module.exports = function(app, express) {
         }
     })
    
-    //process the pwd recovery form
+    //process the new pwd recovery form
     pwdRoutes.post('/pwdchangerecovery' , function(req, res) {
         User.findOne({ 'local.email' :  req.body.email }, function(err, user) 
             {
@@ -214,8 +216,11 @@ module.exports = function(app, express) {
                         {
                             req.flash('pwdrecoverylinkMessage', 'Bad pwd, try again')
                             res.render('pwdrecoverylink' , 
-                            { message: req.flash('pwdrecoverylinkMessage'), 
-                                email: user.local.email, token: req.body.token })
+                            { 
+                                message: req.flash('pwdrecoverylinkMessage'), 
+                                email: user.local.email, 
+                                token: req.body.token 
+                            })
                         }
                     }
                 }

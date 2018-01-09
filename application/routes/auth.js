@@ -85,7 +85,10 @@ module.exports = function(app, express, passport) {
                     console.log(err)
                     req.flash('activateAccountDangerMessage', 'An error occured, try later')
                     res.render('activateaccount', 
-                        { messagedanger: req.flash('activateAccountDangerMessage') , messageok: "" })
+                        { 
+                            messagedanger: req.flash('activateAccountDangerMessage') ,
+                            messageok: "" 
+                        })
                 }
                 if(user)
                 {
@@ -93,7 +96,7 @@ module.exports = function(app, express, passport) {
                     {
                         if(user.isActivated())
                         {
-                            console.log("user already activated")
+                            //user already activated
                             res.redirect('/')
                         }
                         else
@@ -107,14 +110,19 @@ module.exports = function(app, express, passport) {
                                     //flash
                                     req.flash('activateAccountDangerMessage', 'An error occured, try later')
                                     res.render('activateaccount', 
-                                        { messagedanger: req.flash('activateAccountDangerMessage') , 
-                                        messageok: "" })
+                                        { 
+                                            messagedanger: req.flash('activateAccountDangerMessage') ,
+                                            messageok: "" 
+                                        })
                                 }
                                 else
                                 {
                                     req.flash('activateAccountOkMessage', 'Account activated !')
                                     res.render('activateaccount', 
-                                        { messagedanger: "" , messageok: req.flash('activateAccountOkMessage') })
+                                        { 
+                                            messagedanger: "" , 
+                                            messageok: req.flash('activateAccountOkMessage') 
+                                        })
                                 }
                             })
                         }    
@@ -175,8 +183,10 @@ module.exports = function(app, express, passport) {
 
     // locally --------------------------------
         authRoutes.get('/connect/local', security.isLoggedInAndActivated, function(req, res) {
-            res.render('connect-local', { message: req.flash('loginMessage') })
+            res.render('connect-local', 
+                { message: req.flash('loginMessage') })
         })
+
         authRoutes.post('/connect/local', security.isLoggedInAndActivated, passport.authenticate('local-signup', {
             successRedirect : '/main', // redirect to the secure main section
             failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
