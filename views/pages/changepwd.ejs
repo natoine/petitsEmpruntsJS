@@ -15,9 +15,7 @@
     <h1><span class="fa fa-sign-in"></span> Change your Password <%= email %></h1>
 
     <!-- show any messages that come back with changepwd -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
+    <% include ../partials/messages %>
 
     <!-- PWD CHANGE FORM -->
     <form action="/changepwd" method="post">

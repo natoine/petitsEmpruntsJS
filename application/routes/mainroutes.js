@@ -122,8 +122,8 @@ module.exports = function(app, express) {
                                 customnavs = []
                                 res.render('pages/main', {
                                     username : user.local.username , 
-                                        messagesuccessmain : req.flash('messagesuccessmain') , 
-                                        messagedangermain : req.flash('messagedangermain') ,
+                                        messagesuccess : req.flash('messagesuccess') , 
+                                        messagedanger : req.flash('messagedanger') ,
                                         messagedangerwhat: req.flash('messagedangerwhat') , 
                                         messagedangerwhom: req.flash('messagedangerwhom') ,
                                         messagedangerwhen: req.flash('messagedangerwhen') ,
@@ -165,12 +165,12 @@ module.exports = function(app, express) {
         if(!whom) 
         {
                 cancreateloan = false
-                req.flash('messagedangerwhom', 'Précisez avec qui se passe l\'emprunt')
+                req.flash('messagedangerwhom', "Précisez avec qui se passe l'emprunt")
         }
         if(!when) 
         {
                 cancreateloan = false
-                req.flash('messagedangerwhen', 'Précisez quand l\'emprunt a lieu')
+                req.flash('messagedangerwhen', "Précisez quand l'emprunt a lieu")
         }
         if(cancreateloan)
         {
@@ -187,13 +187,13 @@ module.exports = function(app, express) {
                         if (err) 
                             {
                                 throw err
-                                req.flash('messagedangermain', 'unable to create borrow. Try later')
+                                req.flash('messagedanger', 'unable to create borrow. Try later')
                                 req.flash('action', action)
                                 res.redirect('/main')
                             }
                         else 
                         {   
-                            req.flash('messagesuccessmain', 'nouvel emprunt créé')
+                            req.flash('messagesuccess', 'nouvel emprunt créé')
                             req.flash('action', action)
                             res.redirect('/main')
                         }
@@ -206,13 +206,13 @@ module.exports = function(app, express) {
                         if (err) 
                             {
                                 throw err
-                                req.flash('messagedangermain', 'unable to create loan. Try later')
+                                req.flash('messagedanger', 'unable to create loan. Try later')
                                 req.flash('action', action)
                                 res.redirect('/main')
                             }
                         else 
                         {
-                            req.flash('messagesuccessmain', 'nouveau prêt créé')
+                            req.flash('messagesuccess', 'nouveau prêt créé')
                             req.flash('action', action)
                             res.redirect('/main')
                         }
@@ -238,7 +238,7 @@ module.exports = function(app, express) {
         Loan.findOne({"_id" : oId}, function(err, loan) {
             if(err) 
             {
-                req.flash('messagedangermain', "pas possible de supprimer l'emprunt. Cet emprunt n'existe déjà plus.")
+                req.flash('messagedanger', "pas possible de supprimer l'emprunt. Cet emprunt n'existe déjà plus.")
                 //throw err
                 res.redirect('/main')
             }
@@ -250,13 +250,13 @@ module.exports = function(app, express) {
                     Loan.remove({"_id" : oId}, function(err, loan) {
                         if(err) 
                             {
-                                req.flash('messagedangermain', "pas possible de supprimer l'emprunt. Essayez plus tard.")
+                                req.flash('messagedanger', "pas possible de supprimer l'emprunt. Essayez plus tard.")
                                 //throw err
                                 res.redirect('/main')
                             }
                             else
                             {
-                                req.flash('messagesuccessmain', 'emprunt supprimé')
+                                req.flash('messagesuccess', 'emprunt supprimé')
                                 res.redirect('/main')
                             }
 
@@ -264,13 +264,13 @@ module.exports = function(app, express) {
                 }
                 else
                 {
-                    req.flash('messagedangermain', "pas authorisé à supprimer l'emprunt.")
+                    req.flash('messagedanger', "pas authorisé à supprimer l'emprunt.")
                     res.redirect('/main')
                 }
             }
             else
             {
-                req.flash('messagedangermain', "cet emprunt n'existe pas.")
+                req.flash('messagedanger', "cet emprunt n'existe pas.")
                 res.redirect('/main')
             } 
         })
@@ -386,13 +386,13 @@ module.exports = function(app, express) {
                 }
                 else 
                 {
-                    req.flash('messagedangermain', 'cet emprunt ne vous concerne pas')
+                    req.flash('messagedanger', 'cet emprunt ne vous concerne pas')
                     res.redirect('/main')
                 }
             }
             else 
             {
-                req.flash('messagedangermain', "cet emprunt n'existe pas")                   
+                req.flash('messagedanger', "cet emprunt n'existe pas")                   
                 res.redirect('/main')
             }
         })
@@ -426,12 +426,12 @@ module.exports = function(app, express) {
                     if(error)
                     {
                         console.log("rappel d'emprunt envoi mail - ERROR" + error)
-                        req.flash('messagedangermain', "impossible d'envoyer un message. Essayez plus tard.")
+                        req.flash('messagedanger', "impossible d'envoyer un message. Essayez plus tard.")
                         res.redirect('/main')
                     } 
                     else
                     {
-                        req.flash('messagesuccessmain', 'message de relance envoyé')
+                        req.flash('messagesuccess', 'message de relance envoyé')
                         //update loan to add date of last reminder
                         oId = new mongo.ObjectID(req.params.loanid)
                         Loan.findOne({"_id" : oId}, function(err, loan) {
@@ -477,9 +477,8 @@ module.exports = function(app, express) {
         customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
         res.render('pages/profile', {
             user : req.user, // get the user out of session and pass to template
-            messageusernamesuccess : req.flash('messageusernamesuccess'),
-            messageusernamefail : req.flash('messageusernamefail'),
-            messagedeleteuserfail : req.flash('messagedeleteuserfail'),
+            messagesuccess : req.flash('messagesuccess'),
+            messagedanger : req.flash('messagedanger'),
             username : req.user.local.username,
             isadmin : user.isSuperAdmin(),
             customheaders : customheaders,
@@ -493,7 +492,7 @@ module.exports = function(app, express) {
         // if the password is wrong
         if (!req.user.validPassword(req.body.password))
         {
-            req.flash("messagedeleteuserfail","Ce n'est pas le bon mot de passe")
+            req.flash("messagedanger","Ce n'est pas le bon mot de passe")
             res.redirect(`/user/${req.user.local.username}`)
         }
         else
@@ -502,7 +501,7 @@ module.exports = function(app, express) {
                 if(err) 
                 {
                     console.log("unable to suppress user : " + user.local.username + "ERROR : " + err)
-                    req.flash("messagedeleteuserfail","unable to suppress user. Try later.")
+                    req.flash("messagedanger","unable to suppress user. Try later.")
                     res.redirect('/user/' + req.user.local.username)
                 }
                 else
@@ -529,12 +528,12 @@ module.exports = function(app, express) {
                 {
                     if(user)
                     {
-                        req.flash("messageusernamefail", "ce nom d'utilisateur est déjà utilisé")
+                        req.flash("messagedanger", "ce nom d'utilisateur est déjà utilisé")
                         res.redirect(`/user/${req.user.local.username}`)   
                     }
                     else
                     {
-                        req.flash("messageusernamesuccess", "nom d'utilisateur changé")
+                        req.flash("messagesuccess", "nom d'utilisateur changé")
                         req.user.local.username = newusername
                         req.user.save()
                         res.redirect(`/user/${newusername}`)

@@ -19,10 +19,7 @@
     <div class="span4 offset4">
         <hr>
 
-        <!-- show any messages that come back with pwdrecoverylinks -->
-        <% if (message.length > 0) { %>
-            <div class="alert alert-danger"><%= message %></div>
-        <% } %>
+        <% include ../partials/messages %>
 
         <!-- PWD CHANGE FORM -->
         <form action="/pwdchangerecovery" method="post">

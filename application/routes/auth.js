@@ -56,8 +56,8 @@ module.exports = function(app, express, passport) {
     authRoutes.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
         res.render('pages/signup', 
-            {   message: req.flash('signupMessage'),
-                messageSuccess: req.flash('signupMessageSuccess') })
+            {   messagedanger: req.flash('messagedanger'),
+                messagesuccess: req.flash('messagesuccess') })
     })
 
     // process the signup form
@@ -83,11 +83,11 @@ module.exports = function(app, express, passport) {
                 if (err)
                 {
                     console.log(err)
-                    req.flash('activateAccountDangerMessage', 'An error occured, try later')
+                    req.flash('messagedanger', 'An error occured, try later')
                     res.render('activateaccount', 
                         { 
-                            messagedanger: req.flash('activateAccountDangerMessage') ,
-                            messageok: "" 
+                            messagedanger: req.flash('messagedanger') ,
+                            messagesuccess: req.flash('messagesuccess') 
                         })
                 }
                 if(user)
@@ -108,20 +108,20 @@ module.exports = function(app, express, passport) {
                                 {
                                     console.log(err)
                                     //flash
-                                    req.flash('activateAccountDangerMessage', 'An error occured, try later')
+                                    req.flash('messagedanger', 'An error occured, try later')
                                     res.render('activateaccount', 
                                         { 
-                                            messagedanger: req.flash('activateAccountDangerMessage') ,
-                                            messageok: "" 
+                                            messagedanger: req.flash('messagedanger') ,
+                                            messagesuccess: req.flash('messagesuccess') 
                                         })
                                 }
                                 else
                                 {
-                                    req.flash('activateAccountOkMessage', 'Account activated !')
+                                    req.flash('messagesuccess', 'Account activated !')
                                     res.render('activateaccount', 
                                         { 
-                                            messagedanger: "" , 
-                                            messageok: req.flash('activateAccountOkMessage') 
+                                            messagedanger: req.flash('messagedanger') , 
+                                            messagesuccess: req.flash('messagesuccess') 
                                         })
                                 }
                             })
@@ -252,15 +252,6 @@ module.exports = function(app, express, passport) {
         user.facebook.token = undefined
         user.save(function(err) {
             res.redirect('/main')
-        })
-    })
-
-    // twitter --------------------------------
-    authRoutes.get('/unlink/twitter', security.isLoggedInAndActivated, function(req, res) {
-        var user           = req.user
-        user.twitter.token = undefined
-        user.save(function(err) {
-           res.redirect('/main')
         })
     })
 

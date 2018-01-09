@@ -13,21 +13,8 @@
     <div class="span12">
         <h3 class="text-center">Liste des <%=users.length%> utilisateurs</h3>
 
-        <% if(messagesuccessadmin.length > 0 ) { %>
-            <div class="alert alert-success" id="messagesuccessadmin">
-                <%= messagesuccessadmin %>
-            </div>
-        <%
-        }
-        %>
-
-        <% if(messagedangeradmin.length > 0 ) { %>
-            <div class="alert alert-danger" id="messagedangeradmin">
-                <%= messagedangeradmin %>
-            </div>
-        <%
-        }
-        %>
+        <% include ../partials/messages %>
+        
     </div>
 
     <div class="row-fluid" id="users">

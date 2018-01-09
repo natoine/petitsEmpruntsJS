@@ -53,7 +53,7 @@ module.exports = function(passport)
         //check to see if email is correctly spelled
         if(!mailSender.validateMail(email))
         {
-            return done(null, false, req.flash('signupMessage', 'That email is not correctly spelled'))
+            return done(null, false, req.flash('messagedanger', 'That email is not correctly spelled'))
         }
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
@@ -63,7 +63,7 @@ module.exports = function(passport)
                 return done(err)
             // check to see if theres already a user with that email
             if (user) {
-                return done(null, false, req.flash('signupMessage', 'That email is already taken.'))
+                return done(null, false, req.flash('messagedanger', 'That email is already taken.'))
             } else {
 
                 // if there is no user with that email
@@ -95,7 +95,7 @@ module.exports = function(passport)
                         })
                     }
                     return done(null, newUser, 
-                                    req.flash('signupMessageSuccess', 'We have sent you an activation email'))
+                                    req.flash('messagesuccess', 'We have sent you an activation email'))
                 })
             }
         })

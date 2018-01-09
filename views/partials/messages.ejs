@@ -1,0 +1,17 @@
+<div>
+	<% if(messagesuccess.length > 0 ) { %>
+        <div class="alert alert-success" id="messagesuccess">
+            <%= messagesuccess %>
+        </div>
+    <%
+    }
+    %>
+
+    <% if(messagedanger.length > 0 ) { %>
+       	<div class="alert alert-danger" id="messagedanger">
+            <%= messagedanger %>
+        </div>
+    <%
+    }
+    %>
+</div>

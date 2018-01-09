@@ -11,12 +11,8 @@
 <div class="container hero-unit">
                 <div class="row-fluid">
                     <div class="span12">
-                        <% if (messagesuccess.length > 0) { %>
-                            <div class="alert alert-success"><%= messagesuccess %></div>
-                        <% } %>
-                        <% if (messagedanger.length > 0) { %>
-                            <div class="alert alert-danger"><%= messagedanger %></div>
-                        <% } %>
+                        
+                        <% include ../partials/messages %>
 
                         <h1 class="text-center">Connectez-vous</h1>
                     </div>

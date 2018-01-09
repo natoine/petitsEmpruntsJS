@@ -12,21 +12,8 @@
 
             <div class="row-fluid">
                 <div class="span12">
-                    <% if(messagesuccessmain.length > 0 ) { %>
-                        <div class="alert alert-success" id="messagesuccessmain">
-                            <%= messagesuccessmain %>
-                        </div>
-                    <%
-                    }
-                    %>
-
-                    <% if(messagedangermain.length > 0 ) { %>
-                        <div class="alert alert-danger" id="messagedangermain">
-                            <%= messagedangermain %>
-                        </div>
-                    <%
-                    }
-                    %>
+                    
+                    <% include ../partials/messages %>
 
                     <h2 class="text-center">Petit Emprunt :</h2>
                 </div>

@@ -13,22 +13,7 @@
     <div class="span12">
         <h3 class="text-center">Liste des <%=loans.length%> emprunts</h3>
         
-        <% if(messagesuccessadmin.length > 0 ) { %>
-            <div class="alert alert-success" id="messagesuccessadmin">
-                <%= messagesuccessadmin %>
-            </div>
-        <%
-        }
-        %>
-
-        <% if(messagedangeradmin.length > 0 ) { %>
-            <div class="alert alert-danger" id="messagedangeradmin">
-                <%= messagedangeradmin %>
-            </div>
-        <%
-        }
-        %>
-
+        <% include ../partials/messages %>
 
     </div>
 

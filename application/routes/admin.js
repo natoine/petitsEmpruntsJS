@@ -26,6 +26,7 @@ module.exports = function(app, express) {
     			if(err) 
           {
             console.log("admin ERROR : " + err)
+            req.flash("messagedanger", "unable to find users list")
             //throw err
           }
           else 
@@ -37,8 +38,8 @@ module.exports = function(app, express) {
               {
                 username : req.user.local.username, 
                 users : users,
-                messagesuccessadmin : req.flash("messagesuccessadmin"),
-                messagedangeradmin : req.flash("messagedangeradmin"),
+                messagesuccess : req.flash("messagesuccess"),
+                messagedanger : req.flash("messagedanger"),
                 isadmin : req.user.isSuperAdmin(),
                 customheaders : customheaders,
                 customscripts : customscripts,
@@ -54,6 +55,7 @@ module.exports = function(app, express) {
     			if(err)
           {
             console.log("admin ERROR : " + err)
+            req.flash("messagedanger", "unable to find loans list")
             //throw err
           }
           else 
@@ -65,8 +67,8 @@ module.exports = function(app, express) {
               {
                 username : req.user.local.username, 
                 loans : loans,
-                messagesuccessadmin : req.flash("messagesuccessadmin"),
-                messagedangeradmin : req.flash("messagedangeradmin"),
+                messagesuccess : req.flash("messagesuccess"),
+                messagedanger : req.flash("messagedanger"),
                 isadmin : req.user.isSuperAdmin(),
                 customheaders : customheaders,
                 customscripts : customscripts,
@@ -82,6 +84,7 @@ module.exports = function(app, express) {
             if(err)
             {
               console.log("admin loans per user - ERROR : " + err)
+              req.flash("messagedanger", "unable to find this user")
               redirect('/admin/loans')
               //throw err
             } 
@@ -92,6 +95,7 @@ module.exports = function(app, express) {
                 if(err) 
                 {
                   console.log("admin loans per user - ERROR2 : " + err)
+                  req.flash("messagedanger", "unable to find loans list for this user")
                   redirect('/admin/loans')
                   //throw err
                 } 
@@ -103,6 +107,7 @@ module.exports = function(app, express) {
                     if(err) 
                     {
                       console.log("admin loans per user - ERROR3 : " + err)
+                      req.flash("messagedanger", "unable to find loans list for this user")
                       redirect('/admin/loans')
                       //throw err
                     } 
@@ -117,8 +122,8 @@ module.exports = function(app, express) {
                           borrows : hisborrows , 
                           loans : hisloans , 
                           user: user, 
-                          messagesuccessadmin : req.flash("messagesuccessadmin"),
-                          messagedangeradmin : req.flash("messagedangeradmin"),
+                          messagesuccess : req.flash("messagesuccess"),
+                          messagedanger : req.flash("messagedanger"),
                           isadmin : req.user.isSuperAdmin(),
                           customheaders : customheaders,
                           customscripts : customscripts,
@@ -141,6 +146,7 @@ module.exports = function(app, express) {
             if(err) 
             {
               console.log('admin deleteloan ERROR : ' + err)
+              req.flash("messagedanger", "unable to delete this loan")
               res.redirect('/admin/loans/' + user._id)
             }
             if(loan) 
@@ -148,7 +154,7 @@ module.exports = function(app, express) {
                 Loan.remove({"_id" : oId}, function(err, loan) {
                   if(err) 
                   {
-                      req.flash("messagedangeradmin","an error occured, unable to delete loan")
+                      req.flash("messagedanger","an error occured, unable to delete loan")
                       console.log("admin deleteloan ERROR2 : " + err)
                       res.redirect('/admin/loans/' + user._id)
                   }
@@ -158,13 +164,13 @@ module.exports = function(app, express) {
                     User.findOne({"local.username" : username}, function(err, user) {
                       if(err) 
                       {
-                        req.flash("messagedangermain","an error occured, during deletion of the loan")
+                        req.flash("messagedanger","an error occured, during deletion of the loan")
                         console.log("admin deleteloan ERROR3 : " + err)
                         res.redirect('/main')
                       }
                       else
                       {
-                        req.flash("messagesuccessadmin", "loan deleted")
+                        req.flash("messagesuccess", "loan deleted")
                         res.redirect('/admin/loans/' + user._id)
                       }
                     })
@@ -180,14 +186,14 @@ module.exports = function(app, express) {
         if(err)
         {
           console.log("admin activateuser ERROR : " + err)
-          req.flash("messagedangeradmin", "unable to activate user")
+          req.flash("messagedanger", "unable to activate user")
           res.redirect('/admin/users')
         }
         else 
         {
           if(user.isActivated())
           {
-            req.flash("messagedangeradmin", "something odd, this user is already activ ...")
+            req.flash("messagedanger", "something odd, this user is already activ ...")
             res.redirect('/admin/users')
           } 
           else
@@ -198,12 +204,12 @@ module.exports = function(app, express) {
               if(err)
               {
                 console.log("admin activateuser ERROR2 : " + err)
-                req.flash("messagedangeradmin", "unable to activate user")
+                req.flash("messagedanger", "unable to activate user")
                 res.redirect('/admin/users')
               }
               else
               {
-                req.flash("messagesuccessadmin" , "user activated")
+                req.flash("messagesuccess" , "user activated")
                 res.redirect('/admin/users') 
               }
             })
@@ -219,7 +225,7 @@ module.exports = function(app, express) {
         if(err) 
         {
           console.log("admin deactivate ERROR : " + err)
-          req.flash("messagedangeradmin", "unable to deactivate user")
+          req.flash("messagedanger", "unable to deactivate user")
           res.redirect('/admin/users')
         }
         else 
@@ -232,19 +238,19 @@ module.exports = function(app, express) {
               if(err)
               {
                 console.log("admin deactivate ERROR2 : " + err)
-                req.flash("messagedangeradmin", "unable to deactivate user")
+                req.flash("messagedanger", "unable to deactivate user")
                 res.redirect('/admin/users')
               }
               else
               {
-                req.flash("messagesuccessadmin" , "user deactivated")
+                req.flash("messagesuccess" , "user deactivated")
                 res.redirect('/admin/users') 
               } 
             })
           } 
           else 
           {
-            req.flash("messagedangeradmin", "something odd, this user is already deactiv ...")
+            req.flash("messagedanger", "something odd, this user is already deactiv ...")
             res.redirect('/admin/users')
           } 
         }
@@ -258,7 +264,7 @@ module.exports = function(app, express) {
         if(err) 
         {
           console.log("admin deleteuser ERROR : "+ err)
-          req.flash("messagedangeradmin", "unable to delete user try later")
+          req.flash("messagedanger", "unable to delete user try later")
           res.redirect('/admin/users')
         }
         else 
@@ -270,19 +276,19 @@ module.exports = function(app, express) {
               if(err) 
               {
                 console.log("admin deleteuser ERROR2 : "+ err)
-                req.flash("messagedangeradmin", "unable to delete user try later")
+                req.flash("messagedanger", "unable to delete user try later")
                 res.redirect('/admin/users')
               }
               else
               {
-                req.flash("messagesuccessadmin","user deleted")
+                req.flash("messagesuccess","user deleted")
                 res.redirect('/admin/users')
               }
             })
           }
           else 
           {
-            req.flash("messagedangeradmin", "cannot delete your own account")
+            req.flash("messagedanger", "cannot delete your own account")
             res.redirect('/admin/users')
           }
         }
