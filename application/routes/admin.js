@@ -30,18 +30,25 @@ module.exports = function(app, express) {
           }
           else 
           {
-            res.render('admin/users' , 
+            customheaders = []
+            customscripts = []
+            customnavs = [{name:"utilisateurs", value:"<li><a href='/admin/users'>utilisateurs</a></li>"}, {name:"loans", value:"<li><a href='/admin/loans'>emprunts</a></li>"}]
+            res.render('adminpages/users' , 
               {
                 username : req.user.local.username, 
                 users : users,
                 messagesuccessadmin : req.flash("messagesuccessadmin"),
-                messagedangeradmin : req.flash("messagedangeradmin")
+                messagedangeradmin : req.flash("messagedangeradmin"),
+                isadmin : req.user.isSuperAdmin(),
+                customheaders : customheaders,
+                customscripts : customscripts,
+                customnavs : customnavs
               })
           }
     		}
     	)
     })
-
+    
     adminRoutes.get('/loans', security.isSuperAdmin, function(req, res) {
     	Loan.find( {} , {} , function(err, loans) {
     			if(err)
@@ -51,12 +58,19 @@ module.exports = function(app, express) {
           }
           else 
           {
-            res.render('admin/loans' , 
+            customheaders = []
+            customscripts = []
+            customnavs = [{name:"utilisateurs", value:"<li><a href='/admin/users'>utilisateurs</a></li>"}, {name:"loans", value:"<li><a href='/admin/loans'>emprunts</a></li>"}]
+            res.render('adminpages/loans' , 
               {
                 username : req.user.local.username, 
                 loans : loans,
                 messagesuccessadmin : req.flash("messagesuccessadmin"),
-                messagedangeradmin : req.flash("messagedangeradmin")
+                messagedangeradmin : req.flash("messagedangeradmin"),
+                isadmin : req.user.isSuperAdmin(),
+                customheaders : customheaders,
+                customscripts : customscripts,
+                customnavs : customnavs
               })
           }
     		})
@@ -95,13 +109,20 @@ module.exports = function(app, express) {
                     else 
                     {
                       hisloans = loans
-                      res.render('admin/userloans' , 
+                      customheaders = []
+                      customscripts = []
+                      customnavs = [{name:"utilisateurs", value:"<li><a href='/admin/users'>utilisateurs</a></li>"}, {name:"loans", value:"<li><a href='/admin/loans'>emprunts</a></li>"}]
+                      res.render('adminpages/userloans' , 
                         { username : req.user.local.username, 
                           borrows : hisborrows , 
                           loans : hisloans , 
                           user: user, 
                           messagesuccessadmin : req.flash("messagesuccessadmin"),
-                          messagedangeradmin : req.flash("messagedangeradmin")
+                          messagedangeradmin : req.flash("messagedangeradmin"),
+                          isadmin : req.user.isSuperAdmin(),
+                          customheaders : customheaders,
+                          customscripts : customscripts,
+                          customnavs : customnavs
                         })
                     }
                   })
