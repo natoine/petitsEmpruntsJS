@@ -15,11 +15,24 @@
                     
                     <% include ../partials/messages %>
 
-                    <h2 class="text-center">Petit Emprunt :</h2>
+                    <h2 class="text-center">Vos <%= friendlist.length %> amis :</h2>
                 </div>
             </div>
 
             <div class="row-fluid">
+            	<div class="span8">
+            		<table id="friendstable" class="table table-striped">
+                        <tbody id="friends">
+                        	<% for( i = 0; i < friendlist.length ; i+=1) { %>
+                        		<tr id="<%=friendlist[i]._id%>">
+                        			<td><%=friendlist[i].friendname%></td>
+                        			<td><%=friendlist[i].friendmail%></td>
+                        			<td><%=friendlist[i].friendid%></td>
+                        		</tr>
+                        	<% } %>
+                        </tbody>
+                    </table>
+            	</div>
             </div>
 	</div>
 

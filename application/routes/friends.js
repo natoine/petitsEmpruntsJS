@@ -32,6 +32,7 @@ module.exports = function(app, express) {
 		            	username : req.user.local.username , 
 		                messagesuccess : req.flash('messagesuccess') , 
 		                messagedanger : req.flash('messagedanger') ,
+		                friendlist : friendListDB ,
 		                isadmin : req.user.isSuperAdmin(),
 		                customheaders : customheaders,
 		                customscripts : customscripts,
