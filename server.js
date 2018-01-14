@@ -38,7 +38,7 @@ app.use(flash()) // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 require('./application/routes/mainroutes.js')(app, express)
-// load our routes and pass in our app and fully configured passport
+require('./application/routes/friends.js')(app, express)
 require('./application/routes/clientfiles.js')(app, express)
 require('./application/routes/pwd.js')(app, express)
 require('./application/routes/admin.js')(app, express)

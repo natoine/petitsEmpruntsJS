@@ -122,23 +122,23 @@ module.exports = function(app, express) {
                                 customnavs = []
                                 res.render('pages/main', {
                                     username : user.local.username , 
-                                        messagesuccess : req.flash('messagesuccess') , 
-                                        messagedanger : req.flash('messagedanger') ,
-                                        messagedangerwhat: req.flash('messagedangerwhat') , 
-                                        messagedangerwhom: req.flash('messagedangerwhom') ,
-                                        messagedangerwhen: req.flash('messagedangerwhen') ,
-                                        what : what ,
-                                        whom : whom ,
-                                        when : when ,
-                                        action : action ,
-                                        myborrows : myborrows ,
-                                        myloans : myloans ,
-                                        friendList : friendList,
-                                        reqfriend : reqfriend,
-                                        isadmin : user.isSuperAdmin(),
-                                        customheaders : customheaders,
-                                        customscripts : customscripts,
-                                        customnavs : customnavs
+                                    messagesuccess : req.flash('messagesuccess') , 
+                                    messagedanger : req.flash('messagedanger') ,
+                                    messagedangerwhat: req.flash('messagedangerwhat') , 
+                                    messagedangerwhom: req.flash('messagedangerwhom') ,
+                                    messagedangerwhen: req.flash('messagedangerwhen') ,
+                                    what : what ,
+                                    whom : whom ,
+                                    when : when ,
+                                    action : action ,
+                                    myborrows : myborrows ,
+                                    myloans : myloans ,
+                                    friendList : friendList,
+                                    reqfriend : reqfriend,
+                                    isadmin : user.isSuperAdmin(),
+                                    customheaders : customheaders,
+                                    customscripts : customscripts,
+                                    customnavs : customnavs
                                 })
                             }
                         })
