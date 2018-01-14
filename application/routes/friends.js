@@ -1,6 +1,8 @@
 
 const security = require('../utils/securityMiddleware')
 
+//load up the friendlist model
+const FriendList = require('../models/friendlist')
 
 // application/friends.js
 module.exports = function(app, express) {
@@ -14,18 +16,29 @@ module.exports = function(app, express) {
     // list your friends
     friendsRoutes.get('/friends', security.rememberme, security.isLoggedInAndActivated, 
     	function(req, res) {
-    		customheaders = []
-            customscripts = []
-            customnavs = []
-            res.render('pages/friends' , {
-            	username : req.user.local.username , 
-                messagesuccess : req.flash('messagesuccess') , 
-                messagedanger : req.flash('messagedanger') ,
-                isadmin : req.user.isSuperAdmin(),
-                customheaders : customheaders,
-                customscripts : customscripts,
-                customnavs : customnavs                 
-            })
+    		FriendList.find( {'creator' : user} , function(err, friendListDB) {
+	            if(err)
+	            {
+	            	console.log("friends ERROR : " + err)
+	            	req.flash('messagedanger' , 'something odd happened trying to fetch your friends')
+	            	res.redirect('/main')
+	            }
+	            else 
+	            {
+	            	customheaders = []
+            		customscripts = []
+            		customnavs = []
+            		res.render('pages/friends' , {
+		            	username : req.user.local.username , 
+		                messagesuccess : req.flash('messagesuccess') , 
+		                messagedanger : req.flash('messagedanger') ,
+		                isadmin : req.user.isSuperAdmin(),
+		                customheaders : customheaders,
+		                customscripts : customscripts,
+		                customnavs : customnavs                 
+		            })
+	            }
+	        })
     	}
     )
 
