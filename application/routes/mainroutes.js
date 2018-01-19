@@ -312,6 +312,25 @@ module.exports = function(app, express) {
                                     friend.save(function(err)
                                     {
                                         if (err) throw err
+                                        else
+                                        {
+                                            User.findOne({"local.email" : friend.friendmail} 
+                                                , function(err, user) { 
+                                                    if(err)
+                                                    {
+                                                        console.log("remindLoan error : " + err)
+                                                    }
+                                                    else
+                                                    {
+                                                        if(user)
+                                                        {
+                                                            friend.frienduserid = user
+                                                            console.log("will add user to friend")
+                                                            friend.save()
+                                                        }
+                                                    }
+                                            })
+                                        }
                                     })
                                 }
                                 else
@@ -359,6 +378,25 @@ module.exports = function(app, express) {
                                     friend.save(function(err)
                                     {
                                         if (err) throw err
+                                        else
+                                        {
+                                            User.findOne({"local.email" : friend.friendmail} 
+                                                , function(err, user) { 
+                                                    if(err)
+                                                    {
+                                                        console.log("remindLoan error : " + err)
+                                                    }
+                                                    else
+                                                    {
+                                                        if(user)
+                                                        {
+                                                            friend.frienduserid = user
+                                                            console.log("will add user to friend")
+                                                            friend.save()
+                                                        }
+                                                    }
+                                            })
+                                        }
                                     })
                                 }
                                 else
@@ -452,6 +490,29 @@ module.exports = function(app, express) {
                                     {
                                         friend.friendmail = mail
                                         friend.save()
+                                        friend.save(function(err)
+                                    {
+                                        if (err) throw err
+                                        else
+                                        {
+                                            User.findOne({"local.email" : friend.friendmail} 
+                                                , function(err, user) { 
+                                                    if(err)
+                                                    {
+                                                        console.log("remindLoan error : " + err)
+                                                    }
+                                                    else
+                                                    {
+                                                        if(user)
+                                                        {
+                                                            friend.frienduserid = user
+                                                            console.log("will add user to friend")
+                                                            friend.save()
+                                                        }
+                                                    }
+                                            })
+                                        }
+                                    })
                                     }   
                                 })
                             }
