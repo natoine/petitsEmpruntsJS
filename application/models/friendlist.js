@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 // define the schema for our friendlist model
 const friendlistSchema = mongoose.Schema({
 	creator		: {type : mongoose.Schema.Types.ObjectId, ref : 'User'}, 
-	friendid	: {type : mongoose.Schema.Types.ObjectId, ref : 'User'},
+	frienduserid	: {type : mongoose.Schema.Types.ObjectId, ref : 'User'},
     friendname : String,
    	friendmail : String
 })
