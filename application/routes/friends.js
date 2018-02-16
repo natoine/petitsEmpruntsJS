@@ -101,6 +101,7 @@ module.exports = function(app, express) {
 			    						else if(user)
 			    						{
 			    							friend.frienduserid = user
+			    							friend.friendusername = user.local.username
 			    							friend.save(function(err){
 			    								if(err) 
 			    								{

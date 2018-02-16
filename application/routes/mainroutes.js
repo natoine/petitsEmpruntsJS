@@ -325,6 +325,7 @@ module.exports = function(app, express) {
                                                         if(user)
                                                         {
                                                             friend.frienduserid = user
+                                                            friend.friendusername = user.local.username
                                                             console.log("will add user to friend")
                                                             friend.save()
                                                         }
@@ -391,6 +392,7 @@ module.exports = function(app, express) {
                                                         if(user)
                                                         {
                                                             friend.frienduserid = user
+                                                            friend.friendusername = user.local.username
                                                             console.log("will add user to friend")
                                                             friend.save()
                                                         }
@@ -505,6 +507,7 @@ module.exports = function(app, express) {
                                                             if(user)
                                                             {
                                                                 friend.frienduserid = user
+                                                                friend.friendusername = user.local.username
                                                                 console.log("will add user to friend")
                                                                 friend.save()
                                                             }
@@ -596,6 +599,8 @@ module.exports = function(app, express) {
                         req.flash("messagesuccess", "nom d'utilisateur changé")
                         req.user.local.username = newusername
                         req.user.save()
+                        //must now also change friendusername in all friendlists
+                        //TODO
                         res.redirect(`/user/${newusername}`)
                     }
                 }
