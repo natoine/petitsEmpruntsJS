@@ -27,6 +27,7 @@
                         			<form action="/updatefriend/<%=friendlist[i]._id%>" method="post">
 	                        			<input type="text" class="form-control" name="newfriendname" placeholder="<%=friendlist[i].friendname%>">
 	                        			<input type="text" class="form-control" name="newfriendmail" placeholder="<%=friendlist[i].friendmail%>">
+                                        Nom de compte utilisateur : <%=friendlist[i].friendusername%>
 	                        			<%=friendlist[i].frienduserid%>
 	                        			<button type="submit" class="btn btn-info btn-lg">Modifier</button>
                         		    </form>

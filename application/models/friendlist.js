@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const friendlistSchema = mongoose.Schema({
 	creator		: {type : mongoose.Schema.Types.ObjectId, ref : 'User'}, 
 	frienduserid	: {type : mongoose.Schema.Types.ObjectId, ref : 'User'},
+	friendusername	: String,
     friendname : String,
    	friendmail : String
 })
