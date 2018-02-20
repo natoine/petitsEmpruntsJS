@@ -529,25 +529,56 @@ module.exports = function(app, express) {
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
-    // TODO should be able to see pages of other users maybe ?
     mainRoutes.get('/user/:username', security.rememberme, security.isLoggedInAndActivated, function(req, res) {
-        if(req.user.local.username !== req.params.username)
+        //show my own user page
+        if(req.user.local.username == req.params.username)
         {
-            res.redirect(`/user/${req.user.local.username}`)
+            customheaders = []
+            customscripts = []
+            customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
+            res.render('pages/myprofile', {
+                user : req.user, // get the user out of session and pass to template
+                messagesuccess : req.flash('messagesuccess'),
+                messagedanger : req.flash('messagedanger'),
+                username : req.user.local.username,
+                isadmin : user.isSuperAdmin(),
+                customheaders : customheaders,
+                customscripts : customscripts,
+                customnavs : customnavs
+            })
         }
-        customheaders = []
-        customscripts = []
-        customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
-        res.render('pages/profile', {
-            user : req.user, // get the user out of session and pass to template
-            messagesuccess : req.flash('messagesuccess'),
-            messagedanger : req.flash('messagedanger'),
-            username : req.user.local.username,
-            isadmin : user.isSuperAdmin(),
-            customheaders : customheaders,
-            customscripts : customscripts,
-            customnavs : customnavs
-        })
+        //show another user page
+        else
+        {
+            User.findOne({"local.username" : req.params.username}, function(err, user) {
+                if(err) throw err
+                else 
+                {
+                    if(user)
+                    {
+                        customheaders = []
+                        customscripts = []
+                        customnavs = [{name:"mes emprunts" , value:"<li><a href='/main'>mes emprunts</a></li>"}]
+                        res.render('pages/profile', {
+                            user : req.user,
+                            username : req.user.local.username,
+                            messagesuccess : req.flash('messagesuccess'),
+                            messagedanger : req.flash('messagedanger'),
+                            friendname : user.local.username,
+                            isadmin : req.user.isSuperAdmin(),
+                            customheaders : customheaders,
+                            customscripts : customscripts,
+                            customnavs : customnavs
+                        })
+                    }
+                    else
+                    {
+                        req.flash('messagedanger', 'no user with this username : ' + req.params.username)
+                        res.redirect('/user/' + req.user.local.username)
+                    }
+                }
+            })   
+        }
     })
     
     //to delete Account
