@@ -65,6 +65,11 @@ module.exports = function(app, express) {
     				req.flash('messagedanger', "mail non valide")
     				res.redirect('/friends')
     			}
+    			else if(newfriendmail.length != 0 && newfriendmail == req.user.local.email)
+    			{
+    				req.flash('messagedanger', "ce ne peut pas être votre propre mail")
+    				res.redirect('/friends')
+    			}
     			else
     			{
     				oId = new mongo.ObjectID(req.params.friendlistid)
