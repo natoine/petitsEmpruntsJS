@@ -20,7 +20,7 @@ module.exports = function(app, express) {
     // get an instance of the router for reminder routes
     const reminder = express.Router()
 
-    //REMIND A LOAN
+    //RENDER FORM TO REMIND A LOAN
     reminder.get('/remind/:loanid', security.isLoggedInAndActivated, function(req, res) {
         oId = new mongo.ObjectID(req.params.loanid)
         Loan.findOne({"_id" : oId}, function(err, loan) {
@@ -182,12 +182,20 @@ module.exports = function(app, express) {
         })
     })
 
+	//POSTS THE REMINDER
     reminder.post("/newreminder/:loanid", security.isLoggedInAndActivated, function(req, res) {  
         mail = req.body.inputothermail
         msg = req.body.inputremindermsg
         if(!mailSender.validateMail(mail))
         {
             req.flash('messageMail' , "ce n'est pas un email valide")
+            if(msg.length > 0) req.flash('mailcontent' , msg)
+            else req.flash('messageContent' , "ce n'est pas un message valide")
+            res.redirect(`/remind/${req.params.loanid}`)
+        }
+        else if(mail == req.user.local.email)
+        {
+			req.flash('messageMail' , "ce ne peut pas être votre propre mail")
             if(msg.length > 0) req.flash('mailcontent' , msg)
             else req.flash('messageContent' , "ce n'est pas un message valide")
             res.redirect(`/remind/${req.params.loanid}`)
